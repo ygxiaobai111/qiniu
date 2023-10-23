@@ -22,6 +22,8 @@ func (f *MyFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	message := entry.Message
 	return []byte(fmt.Sprintf("[%s]: %s [%s]\n", level, timestamp, message)), nil
 }
+
+// 初始化日志系统
 func init() {
 	src, err := setOutPutFile()
 	if err != nil {
@@ -41,6 +43,7 @@ func init() {
 	LogrusObj = logger
 }
 
+// 设置日志输出目录
 func setOutPutFile() (*os.File, error) {
 	now := time.Now()
 	logFilePath := ""

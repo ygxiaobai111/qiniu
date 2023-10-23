@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	//配置信息初始化
 	err := config.Init()
 	if err != nil {
 		log.Println(err)

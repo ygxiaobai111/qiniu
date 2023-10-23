@@ -1,5 +1,6 @@
 package e
 
+// MsgFlags 错误详细信息
 var MsgFlags = map[int]string{
 	SUCCESS:               "ok",
 	UpdatePasswordSuccess: "修改密码成功",

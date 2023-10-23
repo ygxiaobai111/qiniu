@@ -60,11 +60,7 @@ func Init() error {
 	RedisPw = viper.GetString("redis.RedisPw")
 	RedisDbName = viper.GetString("redis.RedisDbName")
 
-	// 解析 Nacos 配置
-	NacosAddress = viper.GetString("nacos.Ip")
-	NacosPort = uint64(viper.GetInt("nacos.Port"))
-
-	// 解析各个微服务的服务名
+	// mysql 连接地址
 	path := strings.Join([]string{DbUser, ":", DbPassword, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
 	dao.Database(path)
 	return nil

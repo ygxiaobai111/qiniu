@@ -1,5 +1,8 @@
 package e
 
+/*
+错误定义
+*/
 const (
 	SUCCESS               = 200
 	UpdatePasswordSuccess = 201

@@ -23,7 +23,7 @@ const (
 
 )
 
-// SetPassword 设置密码
+// SetPassword 设置密码加密
 func (u *User) SetPassword(password string) error {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), PassWordCost)
 	if err != nil {

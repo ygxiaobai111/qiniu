@@ -19,14 +19,6 @@ const (
 	ErrorExistFavorite      = 10009
 	ErrorUserNotFound       = 10010
 
-	//店家错误
-	ErrorBossCheckTokenFail        = 20001
-	ErrorBossCheckTokenTimeout     = 20002
-	ErrorBossToken                 = 20003
-	ErrorBoss                      = 20004
-	ErrorBossInsufficientAuthority = 20005
-	ErrorBossProduct               = 20006
-
 	// 购物车
 	ErrorProductExistCart = 20007
 	ErrorProductMoreCart  = 20008

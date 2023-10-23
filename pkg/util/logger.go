@@ -1,4 +1,4 @@
-package log
+package util
 
 import (
 	"fmt"
@@ -15,6 +15,7 @@ type MyFormatter struct {
 }
 
 // Format 自定义日志模式
+// 例：[error]: 2023/09/03 22:43:12 [<Register>  用户名格式出错 [be from req]:&{ 123456}]
 func (f *MyFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	timestamp := entry.Time.Format("2006/01/02 15:04:05")
 	level := entry.Level.String()

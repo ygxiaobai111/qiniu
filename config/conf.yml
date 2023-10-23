@@ -1,0 +1,25 @@
+mysql:
+  DB: mysql
+  DbHost: localhost
+  DbPort: 3306
+  DbUser: root
+  DbPassword:
+  DbName: qiniu
+
+redis:
+  RedisDb: redis
+  RedisAddr: r-bp12xmzrbjr36iq7lepd.redis.rds.aliyuncs.com:6379
+  RedisPw:
+  RedisDbName: 0
+
+nacos:
+  Ip: 127.0.0.1
+  Port: 8848
+
+application:
+  ServiceName: user-center
+  Ip: localhost
+  Port: 8811
+
+  video-center:
+    ServiceName: vid

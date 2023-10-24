@@ -26,9 +26,31 @@ func NewRouter() *gin.Engine {
 		})
 		//创建user组
 		uG := r.Group("user")
-		//用户注册接口
-		uG.POST("register", api.UserRegister)
+		{
+			uG.GET("info/:id")
+			//注册
+			uG.POST("register", api.UserRegister)
+			//登录
+			uG.POST("login")
+			//关注
+			uG.POST("action")
+			//关注列表
+			uG.GET("follow/list/:id")
+			//粉丝列表
+			uG.GET("follower/list/:id")
+			//好友列表
+			uG.GET("friend/list/:id")
 
+		}
+		vG := v1.Group("video")
+		{
+			//用户视频列表
+			vG.GET("publish/list/:id")
+			//用户投稿
+			vG.POST("publish/action")
+		}
+
+		v1.GET("favlist/:uid/:fid")
 	}
 	return r
 }

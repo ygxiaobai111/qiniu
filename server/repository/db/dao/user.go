@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 	"gorm.io/gorm"
-	"www.github.com/ygxiaobai111/qiniu/repository/db/model"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
 )
 
 type UserDao struct {

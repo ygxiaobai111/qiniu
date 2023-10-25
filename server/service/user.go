@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 	"sync"
-	"www.github.com/ygxiaobai111/qiniu/pkg/util"
-	"www.github.com/ygxiaobai111/qiniu/repository/db/dao"
-	"www.github.com/ygxiaobai111/qiniu/repository/db/model"
+	"www.github.com/ygxiaobai111/qiniu/server/pkg/util"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
 	"www.github.com/ygxiaobai111/qiniu/types"
 )
 

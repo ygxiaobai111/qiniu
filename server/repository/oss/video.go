@@ -12,7 +12,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"www.github.com/ygxiaobai111/qiniu/pkg/util"
+	"www.github.com/ygxiaobai111/qiniu/server/pkg/util"
 )
 
 var FormUploader *storage.FormUploader

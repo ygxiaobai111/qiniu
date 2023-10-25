@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"www.github.com/ygxiaobai111/qiniu/pkg/util"
+	"www.github.com/ygxiaobai111/qiniu/server/pkg/util"
 	"www.github.com/ygxiaobai111/qiniu/service"
 	"www.github.com/ygxiaobai111/qiniu/types"
 )

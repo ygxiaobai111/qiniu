@@ -1,10 +1,8 @@
-package types
+package serializer
 
 import (
-	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"www.github.com/ygxiaobai111/qiniu/pkg/e"
-	"www.github.com/ygxiaobai111/qiniu/serializer"
+	e2 "www.github.com/ygxiaobai111/qiniu/server/pkg/e"
 )
 
 type Response struct {
@@ -38,7 +36,7 @@ func BuildListResponse(items interface{}, total uint) Response {
 // RespSuccess 带data成功返回
 func RespSuccess(ctx *gin.Context, data interface{}, code ...int) *Response {
 
-	status := e.SUCCESS
+	status := e2.SUCCESS
 	if code != nil {
 		status = code[0]
 	}
@@ -50,25 +48,8 @@ func RespSuccess(ctx *gin.Context, data interface{}, code ...int) *Response {
 	r := &Response{
 		Status: status,
 		Data:   data,
-		Msg:    e.GetMsg(status),
+		Msg:    e2.GetMsg(status),
 	}
 
 	return r
-}
-
-// ErrorResponse 定义返回错误格式
-func ErrorResponse(err error) serializer.Response {
-	if _, ok := err.(*json.UnmarshalTypeError); ok {
-		return serializer.Response{
-			Status: 400,
-			Msg:    "JSON类型不匹配",
-			Error:  err.Error(),
-		}
-	}
-	return serializer.Response{
-		Status: 400,
-		Msg:    "参数错误",
-		Error:  err.Error(),
-	}
-
 }

@@ -1,4 +1,4 @@
-module www.github.com/ygxiaobai111/qiniu
+module www.github.com/ygxiaobai111/qiniu/server
 
 go 1.20
 

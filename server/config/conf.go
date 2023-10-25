@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/spf13/viper"
 	"strings"
-	"www.github.com/ygxiaobai111/qiniu/repository/db/dao"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 )
 
 var (

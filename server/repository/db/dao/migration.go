@@ -1,6 +1,8 @@
 package dao
 
-import "www.github.com/ygxiaobai111/qiniu/repository/db/model"
+import (
+	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
+)
 
 // migration 自动迁移数据库表结构
 func migration() error {

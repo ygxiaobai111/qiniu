@@ -2,8 +2,8 @@ package routes
 
 import (
 	"net/http"
-	"www.github.com/ygxiaobai111/qiniu/api"
-	"www.github.com/ygxiaobai111/qiniu/middleware"
+	"www.github.com/ygxiaobai111/qiniu/server/api"
+	"www.github.com/ygxiaobai111/qiniu/server/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,13 +44,24 @@ func NewRouter() *gin.Engine {
 		}
 		vG := v1.Group("video")
 		{
+			vG.GET("feed")
 			//用户视频列表
 			vG.GET("publish/list/:id")
 			//用户投稿
 			vG.POST("publish/action")
 		}
-
+		//收藏夹
 		v1.GET("favlist/:uid/:fid")
+		//点赞
+		v1.POST("favorite/action/")
+		//用户喜欢列表
+		v1.GET("/favorite/list/:id")
+		//评论
+		v1.POST("comment/action/")
+		//评论列表
+		v1.GET("comment/list/:id")
+		//弹幕发送
+		v1.POST("barrage")
 	}
 	return r
 }

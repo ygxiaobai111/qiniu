@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"www.github.com/ygxiaobai111/qiniu/config"
-	"www.github.com/ygxiaobai111/qiniu/routes"
+	"www.github.com/ygxiaobai111/qiniu/server/config"
+	"www.github.com/ygxiaobai111/qiniu/server/routes"
 )
 
 func main() {

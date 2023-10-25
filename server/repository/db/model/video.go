@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 // Video
 type Video struct {
+	gorm.Model
 	// 视频作者信息
 	AuthorId int64 `json:"author_id"`
 	// 视频的评论总数
@@ -12,8 +13,6 @@ type Video struct {
 	CoverURL string `json:"cover_url"`
 	// 视频的点赞总数
 	FavoriteCount int64 `json:"favorite_count"`
-	// 视频唯一标识
-	ID int64 `json:"id"`
 
 	// true-已点赞，false-未点赞
 	IsFavorite bool `json:"is_favorite"`
@@ -34,6 +33,15 @@ type Comment struct {
 	Content string `json:"content"`
 	// 评论发布日期，格式 mm-dd
 	CreateDate string `json:"create_date"`
+}
+
+// Collection 收藏夹模型
+type Collection struct {
+	gorm.Model
+	Name      string  // 收藏夹名称
+	IsPrivate bool    // 是否私有
+	UserID    uint    // 所属用户的ID
+	Videos    []Video `gorm:"many2many:collection_videos;"` // 包含的视频列表
 }
 
 // Danmaku 弹幕模型

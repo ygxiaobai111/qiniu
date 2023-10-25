@@ -15,15 +15,6 @@ type User struct {
 	Fans           []*User `gorm:"many2many:follows;joinForeignKey:follow_id"` // 粉丝列表
 }
 
-// Collection 收藏夹模型
-type Collection struct {
-	gorm.Model
-	Name      string  // 收藏夹名称
-	IsPrivate bool    // 是否私有
-	UserID    uint    // 所属用户的ID
-	Videos    []Video // 包含的视频列表
-}
-
 const (
 	PassWordCost = 12 // 密码加密难度
 

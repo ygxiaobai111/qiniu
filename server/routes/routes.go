@@ -27,41 +27,62 @@ func NewRouter() *gin.Engine {
 		//创建user组
 		uG := r.Group("user")
 		{
-			uG.GET("info/:id")
+			//用户信息
+			uG.GET("info", api.UserInfo)
 			//注册
 			uG.POST("register", api.UserRegister)
 			//登录
-			uG.POST("login")
-			//关注
-			uG.POST("action")
+			uG.POST("login", api.UserLogin)
+			//关注/取关
+			uG.POST("action", api.UserAction)
 			//关注列表
-			uG.GET("follow/list/:id")
+			uG.GET("follow/list", api.UserFollow)
 			//粉丝列表
-			uG.GET("follower/list/:id")
+			uG.GET("follower/list", api.UserFollower)
 			//好友列表
-			uG.GET("friend/list/:id")
+			uG.GET("friend/list", api.UserFriend)
 
 		}
 		vG := v1.Group("video")
 		{
+			//搜索
+			vG.GET("search")
+			//视频分类
+			vG.GET("channel/:id")
+			//视频流
 			vG.GET("feed")
 			//用户视频列表
-			vG.GET("publish/list/:id")
+			vG.GET("publish/list")
 			//用户投稿
-			vG.POST("publish/action")
+			vG.POST("publish/action", api.VideoCreate)
+			vG.PUT("publish/action")
+			vG.DELETE("publish/action")
+			//历史视频
+			vG.GET("before")
+
 		}
-		//收藏夹
-		v1.GET("favlist/:uid/:fid")
-		//点赞
-		v1.POST("favorite/action/")
-		//用户喜欢列表
-		v1.GET("/favorite/list/:id")
-		//评论
-		v1.POST("comment/action/")
-		//评论列表
-		v1.GET("comment/list/:id")
-		//弹幕发送
-		v1.POST("barrage")
+		iG := v1.Group("interaction")
+		{
+			//收藏夹
+			iG.GET("favlist")
+			//创建收藏夹
+			iG.POST("favlist")
+			//加入收藏夹
+			iG.PUT("favlist")
+			//删除收藏夹
+			iG.DELETE("favlist")
+			//点赞/取消点赞
+			iG.POST("favorite/action")
+			//用户喜欢列表
+			iG.GET("/favorite/list")
+			//评论
+			iG.POST("comment/action")
+			//评论列表
+			iG.GET("comment/list")
+			//弹幕发送
+			iG.POST("barrage")
+		}
+
 	}
 	return r
 }

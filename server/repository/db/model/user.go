@@ -9,13 +9,19 @@ import (
 type User struct {
 	gorm.Model
 	UserName       string `gorm:"unique"`
-	Email          string
 	PasswordDigest string
-	NickName       string
-	Status         string
-	Avatar         string `gorm:"size:1000"`
-	Money          string
-	Relations      []User `gorm:"many2many:relation;"`
+	Avatar         string  `gorm:"size:1000"`
+	Follows        []*User `gorm:"many2many:follows;"`                         // 关注列表
+	Fans           []*User `gorm:"many2many:follows;joinForeignKey:follow_id"` // 粉丝列表
+}
+
+// Collection 收藏夹模型
+type Collection struct {
+	gorm.Model
+	Name      string  // 收藏夹名称
+	IsPrivate bool    // 是否私有
+	UserID    uint    // 所属用户的ID
+	Videos    []Video // 包含的视频列表
 }
 
 const (

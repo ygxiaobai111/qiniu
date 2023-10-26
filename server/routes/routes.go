@@ -46,19 +46,19 @@ func NewRouter() *gin.Engine {
 		vG := v1.Group("video")
 		{
 			//搜索
-			vG.GET("search")
+			vG.GET("search", api.VideoSearch)
 			//视频分类
-			vG.GET("channel/:id")
+			vG.GET("channel/:id", api.VideoChannel)
 			//视频流
 			vG.GET("feed")
 			//用户视频列表
-			vG.GET("publish/list")
+			vG.GET("publish/list", api.VideoGetPublish)
 			//用户投稿
 			vG.POST("publish/action", api.VideoCreate)
-			vG.PUT("publish/action")
-			vG.DELETE("publish/action")
+			vG.PUT("publish/action", api.VideoUpdatePublish)
+			vG.DELETE("publish/action", api.VideoDelPublish)
 			//历史视频
-			vG.GET("before")
+			vG.GET("before", api.VideoBefore)
 
 		}
 		iG := v1.Group("interaction")

@@ -11,7 +11,7 @@ import (
 
 // @Summary 创建用户
 // @Description 通过表单提交创建用户
-// @ID UserRegister
+// @ID VideoCreate
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param username formData string true "用户名"
@@ -52,7 +52,7 @@ func VideoCreate(ctx *gin.Context) {
 
 // @Summary 视频搜索
 // @Description 通过表单提交进行视频搜索
-// @ID UserAction
+// @ID VideoSearch
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param text formData int64 true "关键字"
@@ -87,10 +87,10 @@ func VideoSearch(ctx *gin.Context) {
 
 // @Summary 视频分类
 // @Description 通过表单提交获取该分类的视频
-// @ID UserAction
+// @ID VideoChannel
 // @Accept x-www-form-urlencoded
 // @Produce json
-// @Param user_id formData int64 true "分类id"
+// @Param channel_id formData int64 true "分类id"
 // @Header 200 {string} Token "我的token"
 // @Success 200 {object} VideoChannelResponse
 // @Failure 400 {object} ErrorResponse
@@ -99,7 +99,7 @@ func VideoSearch(ctx *gin.Context) {
 type VideoChannelResponse types.Response
 
 func VideoChannel(ctx *gin.Context) {
-	var req *types.UserLoginReq
+	var req *types.VideoChannel
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
@@ -111,6 +111,146 @@ func VideoChannel(ctx *gin.Context) {
 	srv := service.GetVideoSrv()
 
 	resp, err := srv.VideoChannel(ctx.Request.Context(), req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
+		return
+	}
+	//返回给前端相应信息
+	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
+}
+
+// @Summary 用户视频列表
+// @Description 通过表单获取该用户发布的视频
+// @ID VideoPublish
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Param user_id formData int64 true "用户id"
+// @Header 200 {string} Token true "我的token"
+// @Success 200 {object} VideoPublishResponse
+// @Failure 400 {object} ErrorResponse
+// @Router /video/Publish [post]
+
+type VideoGetPublishResponse types.Response
+
+func VideoGetPublish(ctx *gin.Context) {
+	var req *types.VideoGetPublish
+	//ctx.ShouldBind(&req) 获取前端输入的表单信息
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
+		//打日志
+		util.LogrusObj.Error(err)
+		return
+	}
+	// 获取userSrv对象
+	srv := service.GetVideoSrv()
+
+	resp, err := srv.VideoGetPublish(ctx.Request.Context(), req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
+		return
+	}
+	//返回给前端相应信息
+	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
+}
+
+// @Summary 用户视频更新
+// @Description 通过表单提交用户发布的视频
+// @ID VideoPublish
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Param user_id formData int64 true "用户id"
+// @Header 200 {string} Token true "我的token"
+// @Success 200 {object} VideoUpdatePublishResponse
+// @Failure 400 {object} ErrorResponse
+// @Router /video/Publish [post]
+
+type VideoUpdatePublishResponse types.Response
+
+func VideoUpdatePublish(ctx *gin.Context) {
+	var req *types.VideoUpdatePublish
+	//ctx.ShouldBind(&req) 获取前端输入的表单信息
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
+		//打日志
+		util.LogrusObj.Error(err)
+		return
+	}
+	// 获取userSrv对象
+	srv := service.GetVideoSrv()
+
+	resp, err := srv.VideoUpdatePublish(ctx.Request.Context(), req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
+		return
+	}
+	//返回给前端相应信息
+	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
+}
+
+// @Summary 删除用户视频
+// @Description 通过表单删除用户的视频
+// @ID VideoDelPublish
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Param user_id formData int64 true "用户id"
+// @Header 200 {string} Token true "我的token"
+// @Success 200 {object} VideoDelPublishResponse
+// @Failure 400 {object} ErrorResponse
+// @Router /video/Publish [post]
+
+type VideoDelPublishResponse types.Response
+
+func VideoDelPublish(ctx *gin.Context) {
+	var req *types.VideoDelPublish
+	//ctx.ShouldBind(&req) 获取前端输入的表单信息
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
+		//打日志
+		util.LogrusObj.Error(err)
+		return
+	}
+	// 获取userSrv对象
+	srv := service.GetVideoSrv()
+
+	resp, err := srv.VideoDelPublish(ctx.Request.Context(), req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
+		return
+	}
+	//返回给前端相应信息
+	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
+}
+
+// @Summary 用户历史视频
+// @Description 通过表单获取该用户的历史视频
+// @ID VideoBefore
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Param user_id formData int64 true "用户id"
+// @Header 200 {string} Token true "我的token"
+// @Success 200 {object} VideoBeforeResponse
+// @Failure 400 {object} ErrorResponse
+// @Router /video/Before [post]
+
+type VideoBeforeResponse types.Response
+
+func VideoBefore(ctx *gin.Context) {
+	var req *types.VideoBefore
+	//ctx.ShouldBind(&req) 获取前端输入的表单信息
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
+		//打日志
+		util.LogrusObj.Error(err)
+		return
+	}
+	// 获取userSrv对象
+	srv := service.GetVideoSrv()
+
+	resp, err := srv.VideoBefore(ctx.Request.Context(), req)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

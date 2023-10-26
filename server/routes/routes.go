@@ -1,6 +1,8 @@
 package routes
 
 import (
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
 	"www.github.com/ygxiaobai111/qiniu/server/api"
 	"www.github.com/ygxiaobai111/qiniu/server/middleware"
@@ -14,16 +16,18 @@ func NewRouter() *gin.Engine {
 	//允许跨域请求
 	r.Use(middleware.Cors())
 	//加载静态页面
-	r.LoadHTMLGlob("view/*")
+	//r.LoadHTMLGlob("view/*")
 	//静态资源服务
 	r.StaticFS("/static", http.Dir("./static"))
 	v1 := r.Group("/")
 	{
+
 		v1.GET("ping", func(context *gin.Context) {
 			context.JSON(200, gin.H{
 				"code": 200,
 			})
 		})
+
 		//创建user组
 		uG := r.Group("user")
 		{
@@ -94,5 +98,6 @@ func NewRouter() *gin.Engine {
 		}
 
 	}
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }

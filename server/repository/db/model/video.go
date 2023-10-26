@@ -7,15 +7,18 @@ type Video struct {
 	gorm.Model
 	// 视频作者信息
 	AuthorId int64 `json:"author_id"`
-	// 视频的评论总数
-	CommentCount int64 `json:"comment_count"`
+
 	// 视频封面地址
 	CoverURL string `json:"cover_url"`
+
+	// 视频的评论总数
+	CommentCount int64 `json:"comment_count"`
 	// 视频的点赞总数
 	FavoriteCount int64 `json:"favorite_count"`
-
-	// true-已点赞，false-未点赞
-	IsFavorite bool `json:"is_favorite"`
+	// 视频总收藏数
+	CollectionCount int64 `json:"collection_count"`
+	//弹幕总数
+	DanmakuCount int64
 	// 视频播放地址
 	PlayURL string `json:"play_url"`
 	// 视频标题
@@ -29,6 +32,8 @@ type Comment struct {
 	gorm.Model
 	//视频id
 	VideoID int64 `json:"video_id"`
+	//用户id
+	UserId int64 `json:"user_id"`
 	// 评论内容
 	Content string `json:"content"`
 	// 评论发布日期，格式 mm-dd

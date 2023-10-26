@@ -27,8 +27,10 @@ type VideoGetPublish struct {
 	UserId string `json:"user_id"`
 }
 type VideoUpdatePublish struct {
-	//用户id
-	UserId string `json:"user_id"`
+	// 视频标题
+	Title string `json:"title"`
+	// 视频所属领域
+	CategoryId string `json:"category_id"`
 	//视频id
 	VideoId string `json:"video_id"`
 }

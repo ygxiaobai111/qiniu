@@ -5,6 +5,7 @@ import (
 	"github.com/h2non/filetype"
 	"mime/multipart"
 	"sync"
+	"www.github.com/ygxiaobai111/qiniu/server/types"
 )
 
 /*
@@ -79,4 +80,28 @@ func (s *VideoSrv) IsImageFile(file *multipart.FileHeader) (bool, error) {
 
 	// 否则，不是图片文件
 	return false, nil
+}
+func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch) (resp interface{}, err error) {
+	return
+
+}
+func (s *VideoSrv) VideoChannel(ctx context.Context, req *types.VideoChannel) (resp interface{}, err error) {
+	return
+
+}
+func (s *VideoSrv) VideoGetPublish(ctx context.Context, req *types.VideoGetPublish) (resp interface{}, err error) {
+	return
+
+}
+func (s *VideoSrv) VideoUpdatePublish(ctx context.Context, req *types.VideoUpdatePublish) (resp interface{}, err error) {
+	return
+
+}
+func (s *VideoSrv) VideoDelPublish(ctx context.Context, req *types.VideoDelPublish) (resp interface{}, err error) {
+	return
+
+}
+func (s *VideoSrv) VideoBefore(ctx context.Context, req *types.VideoBefore) (resp interface{}, err error) {
+	return
+
 }

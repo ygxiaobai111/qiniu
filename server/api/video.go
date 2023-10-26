@@ -9,17 +9,21 @@ import (
 	"www.github.com/ygxiaobai111/qiniu/server/types"
 )
 
-// @Summary 创建用户
-// @Description 通过表单提交创建用户
-// @ID VideoCreate
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param username formData string true "用户名"
-// @Param password formData string true "密码"
-// @Success 200 {object} UserRegisterResponse
-// @Failure 400 {object} ErrorResponse
-// @Router /video/register [post]
-
+//	@Summary		创上传视频
+//	@Description	通过表单提交创建用户
+//	@ID				VideoCreate
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Param			username	formData	string	true	"用户名"
+//	@Param			password	formData	string	true	"密码"
+//	@Param			image		formData	file	false	"封面"
+//	@Param			video		formData	file	true	"视频"
+//
+//	@Header			201			{string}	Token	"访问Token"
+//
+//	@Success		200			{object}	Response
+//	@Failure		400			{object}	ErrorResponse
+//	@Router			/video/publish/action [post]
 func VideoCreate(ctx *gin.Context) {
 	var req types.VideoCreateReq
 	if err := ctx.ShouldBind(&req); err != nil {
@@ -50,19 +54,16 @@ func VideoCreate(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp))
 }
 
-// @Summary 视频搜索
-// @Description 通过表单提交进行视频搜索
-// @ID VideoSearch
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param text formData int64 true "关键字"
-// @Header 200 {string} Token  "我的token"
-// @Success 200 {object} VideoSearchResponse
-// @Failure 400 {object} ErrorResponse
-// @Router /video/search [get]
-
-type VideoSearchResponse types.Response
-
+//	@Summary		视频搜索
+//	@Description	通过表单提交进行视频搜索
+//	@ID				VideoSearch
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Param			text	query		int64	true	"关键字"
+//	@Header			200		{string}	Token	"我的token"
+//	@Success		200		{object}	types.GetFavResp
+//	@Failure		400		{object}	ErrorResponse
+//	@Router			/video/search [get]
 func VideoSearch(ctx *gin.Context) {
 	var req *types.VideoSearch
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -85,19 +86,16 @@ func VideoSearch(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-// @Summary 视频分类
-// @Description 通过表单提交获取该分类的视频
-// @ID VideoChannel
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param channel_id formData int64 true "分类id"
-// @Header 200 {string} Token "我的token"
-// @Success 200 {object} VideoChannelResponse
-// @Failure 400 {object} ErrorResponse
-// @Router /video/channel [post]
-
-type VideoChannelResponse types.Response
-
+//	@Summary		视频分类
+//	@Description	通过表单提交获取该分类的视频
+//	@ID				VideoChannel
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Param			channel_id	query		int64	true	"分类id"
+//	@Header			200			{string}	Token	"我的token"
+//	@Success		200			{object}	types.GetFavResp
+//	@Failure		400			{object}	ErrorResponse
+//	@Router			/video/channel [get]
 func VideoChannel(ctx *gin.Context) {
 	var req *types.VideoChannel
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -120,19 +118,16 @@ func VideoChannel(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-// @Summary 用户视频列表
-// @Description 通过表单获取该用户发布的视频
-// @ID VideoPublish
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param user_id formData int64 true "用户id"
-// @Header 200 {string} Token true "我的token"
-// @Success 200 {object} VideoPublishResponse
-// @Failure 400 {object} ErrorResponse
-// @Router /video/Publish [post]
-
-type VideoGetPublishResponse types.Response
-
+//	@Summary		用户视频列表
+//	@Description	通过表单获取该用户发布的视频
+//	@ID				VideoGetPublish
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Param			user_id	query		int64	true	"用户id"
+//	@Header			200		{string}	Token	true	"我的token"
+//	@Success		200		{object}	types.GetFavResp
+//	@Failure		400		{object}	ErrorResponse
+//	@Router			/video/publish/list [get]
 func VideoGetPublish(ctx *gin.Context) {
 	var req *types.VideoGetPublish
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -155,19 +150,18 @@ func VideoGetPublish(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-// @Summary 用户视频更新
-// @Description 通过表单提交用户发布的视频
-// @ID VideoPublish
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param user_id formData int64 true "用户id"
-// @Header 200 {string} Token true "我的token"
-// @Success 200 {object} VideoUpdatePublishResponse
-// @Failure 400 {object} ErrorResponse
-// @Router /video/Publish [post]
-
-type VideoUpdatePublishResponse types.Response
-
+//	@Summary		用户视频更新
+//	@Description	通过表单提交用户发布的视频
+//	@ID				VideoUpdatePublish
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//
+//	@Param			request	body		types.VideoUpdatePublish	true	"更新后的视频信息"
+//
+//	@Header			200		{string}	Token						true	"我的token"
+//	@Success		200		{object}	types.Response
+//	@Failure		400		{object}	ErrorResponse
+//	@Router			/video/publish/action [put]
 func VideoUpdatePublish(ctx *gin.Context) {
 	var req *types.VideoUpdatePublish
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -190,17 +184,16 @@ func VideoUpdatePublish(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-// @Summary 删除用户视频
-// @Description 通过表单删除用户的视频
-// @ID VideoDelPublish
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param user_id formData int64 true "用户id"
-// @Header 200 {string} Token true "我的token"
-// @Success 200 {object} VideoDelPublishResponse
-// @Failure 400 {object} ErrorResponse
-// @Router /video/Publish [post]
-
+//	@Summary		删除用户视频
+//	@Description	通过表单删除用户的视频
+//	@ID				VideoDelPublish
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Param			user_id	formData	int		true	"用户id"
+//	@Header			200		{string}	Token	true	"我的token"
+//	@Success		200		{object}	VideoDelPublishResponse
+//	@Failure		400		{object}	ErrorResponse
+//	@Router			/video/publish/action [delete]
 type VideoDelPublishResponse types.Response
 
 func VideoDelPublish(ctx *gin.Context) {
@@ -225,17 +218,16 @@ func VideoDelPublish(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-// @Summary 用户历史视频
-// @Description 通过表单获取该用户的历史视频
-// @ID VideoBefore
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param user_id formData int64 true "用户id"
-// @Header 200 {string} Token true "我的token"
-// @Success 200 {object} VideoBeforeResponse
-// @Failure 400 {object} ErrorResponse
-// @Router /video/Before [post]
-
+//	@Summary		用户历史视频
+//	@Description	通过表单获取该用户的历史视频
+//	@ID				VideoBefore
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Param			user_id	query		int64	true	"用户id"
+//	@Header			200		{string}	Token	true	"我的token"
+//	@Success		200		{object}	VideoBeforeResponse
+//	@Failure		400		{object}	ErrorResponse
+//	@Router			/video/before [get]
 type VideoBeforeResponse types.Response
 
 func VideoBefore(ctx *gin.Context) {

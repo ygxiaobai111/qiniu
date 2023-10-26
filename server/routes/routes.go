@@ -64,23 +64,33 @@ func NewRouter() *gin.Engine {
 		iG := v1.Group("interaction")
 		{
 			//收藏夹
-			iG.GET("favlist")
-			//创建收藏夹
-			iG.POST("favlist")
-			//加入收藏夹
-			iG.PUT("favlist")
-			//删除收藏夹
-			iG.DELETE("favlist")
-			//点赞/取消点赞
-			iG.POST("favorite/action")
+			iG.GET("favlist", api.GetFavlist)
+
 			//用户喜欢列表
-			iG.GET("/favorite/list")
-			//评论
-			iG.POST("comment/action")
+			iG.GET("favorite", api.GetFavorite)
+
 			//评论列表
-			iG.GET("comment/list")
+			iG.GET("comment", api.GetComment)
+
+			//弹幕获取
+			iG.GET("barrage", api.GetBarrage)
+
+			iG.Use()
+			//创建收藏夹
+			iG.POST("favlist", api.FavlistCreate)
+			//加入收藏夹
+			iG.PUT("fav", api.FavlistAdd)
+			//退出收藏夹
+			iG.DELETE("fav", api.FavlistDel)
+			//删除收藏夹
+			iG.DELETE("favlist", api.DelFavlist)
+			//评论
+			iG.POST("comment", api.CommentCreate)
+			//点赞/取消点赞
+			iG.POST("favorite", api.Favorite)
 			//弹幕发送
-			iG.POST("barrage")
+			iG.POST("barrage", api.Barrage)
+
 		}
 
 	}

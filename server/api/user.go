@@ -20,7 +20,6 @@ import (
 // @Router /user/register [post]
 
 type UserRegisterResponse types.Response
-type ErrorResponse types.Response
 
 func UserRegister(ctx *gin.Context) {
 	var req *types.UserRegisterReq

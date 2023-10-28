@@ -94,13 +94,16 @@ func (s *VideoSrv) VideoGetPublish(ctx context.Context, req *types.VideoGetPubli
 	vdao := dao2.NewVideoDao(ctx)
 	udao := dao2.NewUserDao(ctx)
 	cdao := dao2.NewCateDao(ctx)
+	//通过用户id获取视频
 	videos, err := vdao.GetVideoByUId(req.UserId)
 	if err != nil {
 		return
 	}
+	//因为是一个作者，提出来共用
 	user, _ := udao.GetUserById(uint(videos[0].AuthorId))
 	var r []types.GetFavResp
 	for _, video := range videos {
+		//获取视频标签
 		c, _ := cdao.GetCateById(int64(video.CategoryId))
 		data := types.GetFavResp{
 			CreateTime:      video.CreatedAt.Unix(),

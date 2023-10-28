@@ -228,7 +228,7 @@ func UserFriend(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserLogin(ctx.Request.Context(), req)
+	resp, err := srv.UserF(ctx.Request.Context(), req)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

@@ -3,7 +3,9 @@ package service
 import (
 	"context"
 	"errors"
+	"golang.org/x/crypto/bcrypt"
 	"sync"
+	e2 "www.github.com/ygxiaobai111/qiniu/server/pkg/e"
 	"www.github.com/ygxiaobai111/qiniu/server/pkg/util"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
@@ -39,12 +41,16 @@ func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) 
 		return
 	}
 	if exist {
-		err = errors.New("用户已经存在了")
+		err = errors.New(e2.GetMsg(e2.ErrorAdminFindUser))
 		return
 	}
 	user := &model.User{
 
-		UserName: req.UserName,
+		UserName:       req.UserName,
+		PasswordDigest: req.Password,
+		FollowCount:    0,
+		FanCount:       0,
+		Avatar:         "http://www.xzkckj.cn/image/T.jpg",
 	}
 	// 加密密码
 	if err = user.SetPassword(req.Password); err != nil {
@@ -62,5 +68,47 @@ func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) 
 	return
 }
 func (s *UserSrv) UserLogin(ctx context.Context, req *types.UserLoginReq) (resp interface{}, err error) {
-	return
+
+	defer func() {
+		// 返回时若err!=nil则写入日志
+		if err != nil {
+			util.LogrusObj.Error("<login> ", err, " [be from req]:", req)
+		}
+	}()
+	// 数据验证
+	if err = util.ValidateUser(req.UserName, req.Password); err != nil {
+		return nil, errors.New(e2.GetMsg(e2.InvalidParams))
+	}
+
+	// 查询用户是否存在
+	userDao := dao.NewUserDao(ctx)
+	user, exist, err := userDao.ExistOrNotByUserName(req.UserName)
+	if err != nil {
+		return nil, errors.New(e2.GetMsg(e2.ERROR))
+	}
+	if exist == false {
+		return nil, errors.New(e2.GetMsg(e2.ErrorUserNotFound))
+	}
+
+	// 比较密码是否匹配
+	if err = bcrypt.CompareHashAndPassword([]byte(user.PasswordDigest), []byte(req.Password)); err != nil {
+		return nil, errors.New(e2.GetMsg(e2.ErrorNotCompare))
+	}
+
+	// 签发token
+	token, err := util.GenerateToken(user.ID, req.UserName, 0)
+	if err != nil {
+		return nil, errors.New(e2.GetMsg(e2.ERROR))
+	}
+	userResp := &types.UserInfoResp{
+		ID:            int64(user.ID),
+		Name:          user.UserName,
+		Avatar:        user.Avatar,
+		FollowCount:   user.FollowCount,
+		FollowerCount: user.FanCount,
+	}
+	return &types.TokenData{
+		User:  userResp,
+		Token: token,
+	}, nil
 }

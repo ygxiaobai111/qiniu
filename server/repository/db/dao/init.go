@@ -7,12 +7,16 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"strings"
 	"time"
+	"www.github.com/ygxiaobai111/qiniu/server/config"
 )
 
 var db *gorm.DB
 
-func Database(conn string) error {
+func Init() error {
+	conn := strings.Join([]string{config.DbUser, ":", config.DbPassword, "@tcp(", config.DbHost, ":", config.DbPort, ")/", config.DbName, "?charset=utf8mb4&parseTime=true"}, "")
+
 	var ormLogger logger.Interface
 
 	// 根据运行模式设置日志级别

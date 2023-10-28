@@ -1,0 +1,8 @@
+qiniu:
+  accessKey: p24autFrh5TIe8AOtQ6VfAdO6oCLFwADiz-loaLN
+  secretKey: unDpGkbnqMw74d26KISzgezOc4_MKBTBR-L1fdMn
+
+  bucket: bytedance-bucket
+  url: http://rzhmys0lm.hn-bkt.clouddn.com/
+ffmpet:
+  Path: D:\wg\ffmpeg.exe

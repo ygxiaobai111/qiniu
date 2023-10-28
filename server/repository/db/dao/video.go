@@ -11,8 +11,8 @@ type VideoDao struct {
 }
 
 // NewUserDao 获取 UserDao 的函数
-func NewVideoDao(ctx context.Context) *UserDao {
-	return &UserDao{NewDBClient(ctx)}
+func NewVideoDao(ctx context.Context) *VideoDao {
+	return &VideoDao{NewDBClient(ctx)}
 }
 
 // Create a new video
@@ -26,13 +26,19 @@ func (dao *VideoDao) UpdateVideo(video *model.Video) error {
 }
 
 // Delete video by ID
-func (dao *VideoDao) DeleteVideoByID(id int) error {
+func (dao *VideoDao) DeleteVideoByID(id uint) error {
 	return dao.Delete(&model.Video{}, id).Error
 }
 
 // GetVideoByUId 根据uid获取video
 func (dao *VideoDao) GetVideoByUId(id uint) (videos []*model.Video, err error) {
 	err = dao.DB.Model(&model.Video{}).Where("user_id = ?", id).Find(&videos).Error
+	return
+}
+
+// GetVideoCountByUId 根据uid获取video数量
+func (dao *VideoDao) GetVideoCountByUId(id uint) (count int64, err error) {
+	err = dao.DB.Model(&model.Video{}).Where("user_id = ?", id).Count(&count).Error
 	return
 }
 

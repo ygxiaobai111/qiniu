@@ -21,7 +21,8 @@ type UserTokenData struct {
 }
 
 type UserLoginReq struct {
-	UserId uint `json:"user_id"`
+	UserName string `form:"user_name" json:"user_name"`
+	Password string `form:"password" json:"password"`
 }
 
 type UserInfoUpdateReq struct {

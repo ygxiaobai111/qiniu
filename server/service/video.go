@@ -5,6 +5,7 @@ import (
 	"github.com/h2non/filetype"
 	"mime/multipart"
 	"sync"
+	dao2 "www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 	"www.github.com/ygxiaobai111/qiniu/server/types"
 )
 
@@ -90,17 +91,67 @@ func (s *VideoSrv) VideoChannel(ctx context.Context, req *types.VideoChannel) (r
 
 }
 func (s *VideoSrv) VideoGetPublish(ctx context.Context, req *types.VideoGetPublish) (resp interface{}, err error) {
+	vdao := dao2.NewVideoDao(ctx)
+	udao := dao2.NewUserDao(ctx)
+	cdao := dao2.NewCateDao(ctx)
+	videos, err := vdao.GetVideoByUId(req.UserId)
+	if err != nil {
+		return
+	}
+	user, _ := udao.GetUserById(uint(videos[0].AuthorId))
+	var r []types.GetFavResp
+	for _, video := range videos {
+		c, _ := cdao.GetCateById(int64(video.CategoryId))
+		data := types.GetFavResp{
+			CreateTime:      video.CreatedAt.Unix(),
+			AuthorName:      user.UserName,
+			PlayCount:       0,
+			CoverURL:        video.CoverURL,
+			PlayURL:         video.PlayURL,
+			FavoriteCount:   video.FavoriteCount,
+			CollectionCount: video.CollectionCount,
+			Title:           video.Title,
+			Category:        c.CategoryName,
+		}
+		r = append(r, data)
+
+	}
+	resp = types.DataList{
+		Item:  r,
+		Total: uint(len(r)),
+	}
 	return
 
 }
 func (s *VideoSrv) VideoUpdatePublish(ctx context.Context, req *types.VideoUpdatePublish) (resp interface{}, err error) {
+	dao := dao2.NewVideoDao(ctx)
+	video, err := dao.GetVideoById(req.VideoId)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Title != "" {
+		video.Title = req.Title
+	}
+	if req.CategoryId != 0 {
+		video.CategoryId = req.CategoryId
+	}
+	err = dao.UpdateVideo(video)
 	return
 
 }
 func (s *VideoSrv) VideoDelPublish(ctx context.Context, req *types.VideoDelPublish) (resp interface{}, err error) {
+	dao := dao2.NewVideoDao(ctx)
+	_, err = dao.GetVideoById(req.VideoId)
+	if err != nil {
+		return nil, err
+	}
+	err = dao.DeleteVideoByID(req.VideoId)
 	return
 
 }
+
+// 历史视频
 func (s *VideoSrv) VideoBefore(ctx context.Context, req *types.VideoBefore) (resp interface{}, err error) {
 	return
 

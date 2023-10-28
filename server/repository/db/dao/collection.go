@@ -23,7 +23,7 @@ func (dao *CollectionDao) Update(collection model.Collection) (err error) {
 }
 
 // AddVideo 添加视频到收藏夹
-func (dao *CollectionDao) AddVideo(collection model.Collection, videoID uint) error {
+func (dao *CollectionDao) AddVideo(collection *model.Collection, videoID uint) error {
 	// 检查视频是否存在
 	var video model.Video
 	err := db.First(&video, videoID).Error
@@ -44,7 +44,7 @@ func (dao *CollectionDao) AddVideo(collection model.Collection, videoID uint) er
 }
 
 // RemoveVideo 从收藏夹中移除视频
-func (dao *CollectionDao) RemoveVideo(collection model.Collection, videoID uint) error {
+func (dao *CollectionDao) RemoveVideo(collection *model.Collection, videoID uint) error {
 	// 查找要移除的视频在 Videos 数组中的索引
 	index := -1
 	for i, video := range collection.Videos {
@@ -85,7 +85,7 @@ func (dao *CollectionDao) GetCollection(id int64) (collection *model.Collection,
 	return
 }
 
-func (dao *CollectionDao) DelCollection(id, userId int64) (collections []*model.Collection, err error) {
+func (dao *CollectionDao) DelCollection(id, userId int64) (err error) {
 	err = dao.Model(model.Collection{}).Where("id=? and user_id=?", id, userId).Delete(model.Collection{}).Error
 
 	return

@@ -36,6 +36,12 @@ func (dao *VideoDao) GetVideoByUId(id uint) (videos []*model.Video, err error) {
 	return
 }
 
+// GetVideoCountByUId 根据uid获取video数量
+func (dao *VideoDao) GetVideoCountByUId(id uint) (count int64, err error) {
+	err = dao.DB.Model(&model.Video{}).Where("user_id = ?", id).Count(&count).Error
+	return
+}
+
 // GetVideoById 根据id获取video
 func (dao *VideoDao) GetVideoById(id uint) (video *model.Video, err error) {
 	err = dao.DB.Model(&model.Video{}).Where("id = ?", id).First(&video).Error

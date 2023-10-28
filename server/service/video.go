@@ -91,11 +91,34 @@ func (s *VideoSrv) VideoChannel(ctx context.Context, req *types.VideoChannel) (r
 
 }
 func (s *VideoSrv) VideoGetPublish(ctx context.Context, req *types.VideoGetPublish) (resp interface{}, err error) {
-	dao := dao2.NewVideoDao(ctx)
-	videos, err := dao.GetVideoByUId(req.UserId)
+	vdao := dao2.NewVideoDao(ctx)
+	udao := dao2.NewUserDao(ctx)
+	cdao := dao2.NewCateDao(ctx)
+	videos, err := vdao.GetVideoByUId(req.UserId)
+	if err != nil {
+		return
+	}
+	user, _ := udao.GetUserById(uint(videos[0].AuthorId))
 	var r []types.GetFavResp
 	for _, video := range videos {
+		c, _ := cdao.GetCateById(int64(video.CategoryId))
+		data := types.GetFavResp{
+			CreateTime:      video.CreatedAt.Unix(),
+			AuthorName:      user.UserName,
+			PlayCount:       0,
+			CoverURL:        video.CoverURL,
+			PlayURL:         video.PlayURL,
+			FavoriteCount:   video.FavoriteCount,
+			CollectionCount: video.CollectionCount,
+			Title:           video.Title,
+			Category:        c.CategoryName,
+		}
+		r = append(r, data)
 
+	}
+	resp = types.DataList{
+		Item:  r,
+		Total: uint(len(r)),
 	}
 	return
 
@@ -123,7 +146,7 @@ func (s *VideoSrv) VideoDelPublish(ctx context.Context, req *types.VideoDelPubli
 	if err != nil {
 		return nil, err
 	}
-	dao.DeleteVideoByID(req.VideoId)
+	err = dao.DeleteVideoByID(req.VideoId)
 	return
 
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/h2non/filetype"
 	"mime/multipart"
 	"sync"
+	dao2 "www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 	"www.github.com/ygxiaobai111/qiniu/server/types"
 )
 
@@ -90,17 +91,44 @@ func (s *VideoSrv) VideoChannel(ctx context.Context, req *types.VideoChannel) (r
 
 }
 func (s *VideoSrv) VideoGetPublish(ctx context.Context, req *types.VideoGetPublish) (resp interface{}, err error) {
+	dao := dao2.NewVideoDao(ctx)
+	videos, err := dao.GetVideoByUId(req.UserId)
+	var r []types.GetFavResp
+	for _, video := range videos {
+
+	}
 	return
 
 }
 func (s *VideoSrv) VideoUpdatePublish(ctx context.Context, req *types.VideoUpdatePublish) (resp interface{}, err error) {
+	dao := dao2.NewVideoDao(ctx)
+	video, err := dao.GetVideoById(req.VideoId)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Title != "" {
+		video.Title = req.Title
+	}
+	if req.CategoryId != 0 {
+		video.CategoryId = req.CategoryId
+	}
+	err = dao.UpdateVideo(video)
 	return
 
 }
 func (s *VideoSrv) VideoDelPublish(ctx context.Context, req *types.VideoDelPublish) (resp interface{}, err error) {
+	dao := dao2.NewVideoDao(ctx)
+	_, err = dao.GetVideoById(req.VideoId)
+	if err != nil {
+		return nil, err
+	}
+	dao.DeleteVideoByID(req.VideoId)
 	return
 
 }
+
+// 历史视频
 func (s *VideoSrv) VideoBefore(ctx context.Context, req *types.VideoBefore) (resp interface{}, err error) {
 	return
 

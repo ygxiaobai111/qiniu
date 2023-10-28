@@ -45,19 +45,19 @@ func GetFavlist(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		喜欢列表
-//	@Description	通过表单提交方式查看喜欢列表
-//	@ID				GetFavorite
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			UserId	query		int	true	"用户id"
-//	@Success		200		{object}	types.GetFavoriteResp
-//	@Failure		400		{object}	ErrorResponse
-//	@Router			/interaction/favorite [get]
+// @Summary		喜欢列表
+// @Description	通过表单提交方式查看喜欢列表
+// @ID				GetFavorite
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			UserId	query		int	true	"用户id"
+// @Success		200		{object}	types.GetFavoriteResp
+// @Failure		400		{object}	ErrorResponse
+// @Router			/interaction/favorite [get]
 func GetFavorite(ctx *gin.Context) {
 	var req *types.GetFavoriteReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
-	if err := ctx.ShouldBind(&req); err != nil {
+	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
 		//打日志
 		util.LogrusObj.Error(err)
@@ -77,15 +77,15 @@ func GetFavorite(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		视频评论列表
-//	@Description	通过表单提交查看评论列表
-//	@ID				GetComment
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			VideoId	query		int	true	"视频id"
-//	@Success		200		{object}	types.GetCommentResp
-//	@Failure		400		{object}	ErrorResponse
-//	@Router			/interaction/comment [get]
+// @Summary		视频评论列表
+// @Description	通过表单提交查看评论列表
+// @ID				GetComment
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			VideoId	query		int	true	"视频id"
+// @Success		200		{object}	types.GetCommentResp
+// @Failure		400		{object}	ErrorResponse
+// @Router			/interaction/comment [get]
 func GetComment(ctx *gin.Context) {
 	var req *types.GetCommentReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -109,15 +109,15 @@ func GetComment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		弹幕获取
-//	@Description	通过表单提交获取弹幕
-//	@ID				GetBarrage
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			VideoId	query		int	true	"视频id"
-//	@Success		200		{object}	types.GetBarrageResp
-//	@Failure		400		{object}	ErrorResponse
-//	@Router			/interaction/barrage [get]
+// @Summary		弹幕获取
+// @Description	通过表单提交获取弹幕
+// @ID				GetBarrage
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			VideoId	query		int	true	"视频id"
+// @Success		200		{object}	types.GetBarrageResp
+// @Failure		400		{object}	ErrorResponse
+// @Router			/interaction/barrage [get]
 func GetBarrage(ctx *gin.Context) {
 	var req *types.GetBarrageReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -141,17 +141,17 @@ func GetBarrage(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		创建收藏夹
-//	@Description	通过表单提交创建收藏夹
-//	@ID				FavlistCreate
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			FavlistName	formData	string	true	"收藏夹名称"
-//	@Param			Type		formData	int		true	"收藏夹类型，1为公开 2为隐藏"
-//	@Header			200			{string}	Token	"我的token"
-//	@Success		200			{object}	Response
-//	@Failure		400			{object}	ErrorResponse
-//	@Router			/interaction/favlist [post]
+// @Summary		创建收藏夹
+// @Description	通过表单提交创建收藏夹
+// @ID				FavlistCreate
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			FavlistName	formData	string	true	"收藏夹名称"
+// @Param			Type		formData	int		true	"收藏夹类型，1为公开 2为隐藏"
+// @Header			200			{string}	Token	"我的token"
+// @Success		200			{object}	Response
+// @Failure		400			{object}	ErrorResponse
+// @Router			/interaction/favlist [post]
 func FavlistCreate(ctx *gin.Context) {
 	var req *types.FavlisCreatetReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -162,10 +162,10 @@ func FavlistCreate(ctx *gin.Context) {
 		return
 
 	}
-	// 获取userSrv对象
+
 	srv := service.GetInterSrv()
 
-	resp, err := srv.FavlistCreate(ctx.Request.Context(), req)
+	resp, err := srv.FavlistCreate(ctx.Request.Context(), req, 0)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -175,16 +175,16 @@ func FavlistCreate(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		加入收藏夹
-//	@Description	通过表单提交将视频加入收藏夹
-//	@ID				FavlistAdd
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			request	body		types.FavlistAddReq	true	"想要添加的视频id和文件夹id"
-//	@Header			200		{string}	Token				"我的token"
-//	@Success		200		{object}	Response
-//	@Failure		400		{object}	ErrorResponse
-//	@Router			/interaction/fav [put]
+// @Summary		加入收藏夹
+// @Description	通过表单提交将视频加入收藏夹
+// @ID				FavlistAdd
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			request	body		types.FavlistAddReq	true	"想要添加的视频id和文件夹id"
+// @Header			200		{string}	Token				"我的token"
+// @Success		200		{object}	Response
+// @Failure		400		{object}	ErrorResponse
+// @Router			/interaction/fav [put]
 func FavlistAdd(ctx *gin.Context) {
 	var req *types.FavlistAddReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -208,17 +208,17 @@ func FavlistAdd(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		视频移除收藏夹
-//	@Description	通过表单提交将视频移除收藏夹
-//	@ID				FavlistDel
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			FavlistId	formData	string	true	"收藏夹id"
-//	@Param			VideoId		formData	string	true	"视频id"
-//	@Header			200			{string}	Token	"我的token"
-//	@Success		200			{object}	Response
-//	@Failure		400			{object}	ErrorResponse
-//	@Router			/interaction/fav [delete]
+// @Summary		视频移除收藏夹
+// @Description	通过表单提交将视频移除收藏夹
+// @ID				FavlistDel
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			FavlistId	formData	string	true	"收藏夹id"
+// @Param			VideoId		formData	string	true	"视频id"
+// @Header			200			{string}	Token	"我的token"
+// @Success		200			{object}	Response
+// @Failure		400			{object}	ErrorResponse
+// @Router			/interaction/fav [delete]
 func FavlistDel(ctx *gin.Context) {
 	var req *types.FavlistDelReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -242,16 +242,16 @@ func FavlistDel(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		删除收藏夹
-//	@Description	通过表单提交删除收藏夹
-//	@ID				DelFavlist
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			FavlistId	formData	string	true	"收藏夹id"
-//	@Header			200			{string}	Token	"我的token"
-//	@Success		200			{object}	Response
-//	@Failure		400			{object}	ErrorResponse
-//	@Router			/interaction/favlist [delete]
+// @Summary		删除收藏夹
+// @Description	通过表单提交删除收藏夹
+// @ID				DelFavlist
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			FavlistId	formData	string	true	"收藏夹id"
+// @Header			200			{string}	Token	"我的token"
+// @Success		200			{object}	Response
+// @Failure		400			{object}	ErrorResponse
+// @Router			/interaction/favlist [delete]
 func DelFavlist(ctx *gin.Context) {
 	var req *types.DelFavlistReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -265,7 +265,7 @@ func DelFavlist(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetInterSrv()
 
-	resp, err := srv.DelFavlist(ctx.Request.Context(), req)
+	resp, err := srv.DelFavlist(ctx.Request.Context(), req, 0)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -275,17 +275,17 @@ func DelFavlist(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		创建评论
-//	@Description	通过表单提交创建评论
-//	@ID				CommentCreateReq
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			VideoId	formData	int		true	"视频id"
-//	@Param			Content	formData	string	true	"内容"
-//	@Header			200		{string}	Token	"我的token"
-//	@Success		200		{object}	Response
-//	@Failure		400		{object}	ErrorResponse
-//	@Router			/interaction/comment [post]
+// @Summary		创建评论
+// @Description	通过表单提交创建评论
+// @ID				CommentCreateReq
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			VideoId	formData	int		true	"视频id"
+// @Param			Content	formData	string	true	"内容"
+// @Header			200		{string}	Token	"我的token"
+// @Success		200		{object}	Response
+// @Failure		400		{object}	ErrorResponse
+// @Router			/interaction/comment [post]
 func CommentCreate(ctx *gin.Context) {
 	var req *types.CommentCreateReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -299,7 +299,7 @@ func CommentCreate(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetInterSrv()
 
-	resp, err := srv.CommentCreate(ctx.Request.Context(), req)
+	resp, err := srv.CommentCreate(ctx.Request.Context(), req, 0)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -309,17 +309,17 @@ func CommentCreate(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		点赞/取消赞
-//	@Description	通过表单提交点赞/取消赞
-//	@ID				Favorite
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			VideoId	formData	int		true	"视频id"
-//	@Param			Type	formData	int		true	"1点赞 2取消"
-//	@Header			200		{string}	Token	"我的token"
-//	@Success		200		{object}	Response
-//	@Failure		400		{object}	ErrorResponse
-//	@Router			/interaction/favorite [post]
+// @Summary		点赞/取消赞
+// @Description	通过表单提交点赞/取消赞
+// @ID				Favorite
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			VideoId	formData	int		true	"视频id"
+// @Param			Type	formData	int		true	"1点赞 2取消"
+// @Header			200		{string}	Token	"我的token"
+// @Success		200		{object}	Response
+// @Failure		400		{object}	ErrorResponse
+// @Router			/interaction/favorite [post]
 func Favorite(ctx *gin.Context) {
 	var req *types.FavoriteReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -333,7 +333,7 @@ func Favorite(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetInterSrv()
 
-	resp, err := srv.Favorite(ctx.Request.Context(), req)
+	resp, err := srv.Favorite(ctx.Request.Context(), req, 0)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -343,19 +343,19 @@ func Favorite(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
 
-//	@Summary		弹幕发送
-//	@Description	通过表单提交弹幕
-//	@ID				Barrage
-//	@Accept			x-www-form-urlencoded
-//	@Produce		json
-//	@Param			VideoID		formData	int		true	" 弹幕所属视频的ID"
-//	@Param			Content		formData	string	true	"弹幕内容"
-//	@Param			Color		formData	string	true	"弹幕颜色"
-//	@Param			Timestamp	formData	int		true	"弹幕出现的时间戳"
-//	@Header			200			{string}	Token	"我的token"
-//	@Success		200			{object}	Response
-//	@Failure		400			{object}	ErrorResponse
-//	@Router			/interaction/barrage [post]
+// @Summary		弹幕发送
+// @Description	通过表单提交弹幕
+// @ID				Barrage
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			VideoID		formData	int		true	" 弹幕所属视频的ID"
+// @Param			Content		formData	string	true	"弹幕内容"
+// @Param			Color		formData	string	true	"弹幕颜色"
+// @Param			Timestamp	formData	int		true	"弹幕出现的时间戳"
+// @Header			200			{string}	Token	"我的token"
+// @Success		200			{object}	Response
+// @Failure		400			{object}	ErrorResponse
+// @Router			/interaction/barrage [post]
 func Barrage(ctx *gin.Context) {
 	var req *types.BarrageReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -369,7 +369,7 @@ func Barrage(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetInterSrv()
 
-	resp, err := srv.Barrage(ctx.Request.Context(), req)
+	resp, err := srv.Barrage(ctx.Request.Context(), req, 0)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

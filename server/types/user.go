@@ -42,11 +42,8 @@ type UserFriendReq struct {
 	UserId uint `json:"user_id"`
 }
 type UserFollowingReq struct {
-	Id uint `json:"id" form:"id"`
-}
-
-type UserUnFollowingReq struct {
-	Id uint `json:"id" form:"id"`
+	Type int
+	Id   uint `json:"id" form:"id"`
 }
 
 type UserInfoResp struct {

@@ -111,6 +111,7 @@ func UserInfo(ctx *gin.Context) {
 // @Accept			x-www-form-urlencoded
 // @Produce		json
 // @Param			user_id	formData	int64	true	"对方用户id"
+// @Param			type	formData	int64	true	"1为关注，2取关"
 // @Header			200		{string}	Token	true	"我的token"
 // @Success		200		{object}	Response
 // @Failure		400		{object}	ErrorResponse

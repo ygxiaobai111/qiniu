@@ -33,6 +33,7 @@ func GetUserSrv() *UserSrv {
 func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) (resp interface{}, err error) {
 	//获取user的数据库连接对象
 	userDao := dao.NewUserDao(ctx)
+
 	//查询该name是否存在于数据库
 	_, exist, err := userDao.ExistOrNotByUserName(req.UserName)
 	if err != nil {

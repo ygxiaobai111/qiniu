@@ -67,8 +67,10 @@ type BarrageReq struct {
 }
 
 type GetFavResp struct {
+	VideoId int64 `json:"video_id"`
 	//视频创建时间
 	CreateTime int64 `json:"create_time"`
+	AuthorId   int64 `json:"author_id"`
 	// 视频作者
 	AuthorName string `json:"author_name"`
 	//播放总数
@@ -90,10 +92,10 @@ type GetFavlistResp struct {
 	//收藏夹创建人
 	UserName string `json:"user_name"`
 	//收藏夹名
-	CollectionName string       `json:"collection_name"`
-	CreateTime     int64        `json:"create_time"`
-	Favlist        []GetFavResp `json:"favlist"`
-	Total          int64        `json:"total"`
+	CollectionName string        `json:"collection_name"`
+	CreateTime     int64         `json:"create_time"`
+	Favlist        []*GetFavResp `json:"favlist"`
+	Total          int64         `json:"total"`
 }
 type GetFavoriteResp struct {
 	// 视频作者
@@ -106,7 +108,7 @@ type GetFavoriteResp struct {
 	Title string `json:"title"`
 }
 type GetCommentResp struct {
-
+	UserId int64 `json:"user_id"`
 	//用户名
 	UserName string `json:"user_name"`
 	//用户头像

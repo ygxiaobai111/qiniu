@@ -42,7 +42,7 @@ func VideoCreate(ctx *gin.Context) {
 	}
 	image, _ := ctx.FormFile("image")
 
-	resp, err := srv.VideoCreate(ctx.Request.Context(), video, image)
+	resp, err := srv.VideoCreate(ctx.Request.Context(), req, video, image, 100001)
 
 	if err != nil {
 		util.LogrusObj.Infoln(err)
@@ -242,6 +242,31 @@ func VideoBefore(ctx *gin.Context) {
 	srv := service.GetVideoSrv()
 
 	resp, err := srv.VideoBefore(ctx.Request.Context(), req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
+		return
+	}
+	//返回给前端相应信息
+	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
+}
+
+// @Summary		视频流
+// @Description	通过表单获取该用户的历史视频
+// @ID				VideoFeed
+// @Produce		json
+// @Header			200		{string}	Token	true	"我的token"
+// @Success		200		{object}	VideoFeedResponse
+// @Failure		400		{object}	ErrorResponse
+// @Router			/video/before [get]
+type VideoFeedResponse types.Response
+
+func VideoFeed(ctx *gin.Context) {
+
+	// 获取userSrv对象
+	srv := service.GetVideoSrv()
+
+	resp, err := srv.VideoFeed(ctx.Request.Context(), 100001)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

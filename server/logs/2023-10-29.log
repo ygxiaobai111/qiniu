@@ -1,0 +1,8 @@
+[info]: 2023/10/29 02:05:03 [http: no such file]
+[info]: 2023/10/29 02:05:56 [http: no such file]
+[info]: 2023/10/29 02:05:57 [http: no such file]
+[info]: 2023/10/29 02:07:22 [Post "http://up-z2.qiniup.com": readfrom tcp 10.51.76.28:49393->120.232.185.7:80: write tcp 10.51.76.28:49393->120.232.185.7:80: wsasend: An existing connection was forcibly closed by the remote host.]
+[info]: 2023/10/29 10:29:47 [Error 1146 (42S02): Table 'qiniu.video' doesn't exist]
+[info]: 2023/10/29 10:35:39 [Error 1146 (42S02): Table 'qiniu.video' doesn't exist]
+[info]: 2023/10/29 10:37:10 [Error 1146 (42S02): Table 'qiniu.video' doesn't exist]
+[info]: 2023/10/29 10:38:07 [Error 1146 (42S02): Table 'qiniu.video' doesn't exist]

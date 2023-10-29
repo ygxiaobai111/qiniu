@@ -27,7 +27,6 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (re
 
 	cdao := dao2.NewCollectionDao(ctx)
 	udao := dao2.NewUserDao(ctx)
-	catedao := dao2.NewCateDao(ctx)
 	user, err := udao.GetUserById(uint(req.UserId))
 	if err != nil {
 		return nil, errors.New(e.GetMsg(e.ERROR))
@@ -41,23 +40,12 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (re
 		}
 		var getFavlistResp []types.GetFavlistResp
 		for _, collection := range collections {
-			var videos []types.GetFavResp
-			for _, video := range collection.Videos {
-				author, _ := udao.GetUserById(uint(video.AuthorId))
-				category, _ := catedao.GetCateById(int64(video.CategoryId))
-				v := types.GetFavResp{
-					CreateTime:      video.CreatedAt.Unix(),
-					AuthorName:      author.UserName,
-					PlayCount:       0,
-					CoverURL:        video.CoverURL,
-					PlayURL:         video.PlayURL,
-					FavoriteCount:   video.FavoriteCount,
-					CollectionCount: video.CollectionCount,
-					Title:           video.Title,
-					Category:        category.CategoryName,
-				}
-				videos = append(videos, v)
+			var videos []*types.GetFavResp
+			if err != nil {
+				return
 			}
+			videos = BuildVideos(ctx, collection.Videos)
+
 			r := types.GetFavlistResp{
 				UserName:       user.UserName,
 				CollectionName: collection.Name,
@@ -80,24 +68,12 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (re
 	if err != nil {
 		return nil, err
 	}
-	var videos []types.GetFavResp
-	for _, video := range collection.Videos {
-		author, _ := udao.GetUserById(uint(video.AuthorId))
-		category, _ := catedao.GetCateById(int64(video.CategoryId))
-		v := types.GetFavResp{
-			CreateTime:      video.CreatedAt.Unix(),
-			AuthorName:      author.UserName,
-			PlayCount:       0,
-			CoverURL:        video.CoverURL,
-			PlayURL:         video.PlayURL,
-			FavoriteCount:   video.FavoriteCount,
-			CollectionCount: video.CollectionCount,
-			Title:           video.Title,
-			Category:        category.CategoryName,
-		}
-
-		videos = append(videos, v)
+	var videos []*types.GetFavResp
+	if err != nil {
+		return
 	}
+	videos = BuildVideos(ctx, collection.Videos)
+
 	resp = types.GetFavlistResp{
 		UserName:       user.UserName,
 		CollectionName: collection.Name,
@@ -110,31 +86,19 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (re
 }
 func (s *InterSrv) GetFavorite(ctx context.Context, req *types.GetFavoriteReq) (resp interface{}, err error) {
 	fdao := dao2.NewFavDao(ctx)
-	udao := dao2.NewUserDao(ctx)
-	cdao := dao2.NewCateDao(ctx)
+
 	videos := fdao.ListFav(ctx, req.UserId)
-	var r []types.GetFavResp
-	for _, video := range videos {
-		author, _ := udao.GetUserById(uint(video.AuthorId))
-		category, _ := cdao.GetCateById(int64(video.CategoryId))
-		data := types.GetFavResp{
-			CreateTime:      video.CreatedAt.Unix(),
-			AuthorName:      author.UserName,
-			PlayCount:       0,
-			CoverURL:        video.CoverURL,
-			PlayURL:         video.PlayURL,
-			FavoriteCount:   video.FavoriteCount,
-			CollectionCount: video.CollectionCount,
-			Title:           video.Title,
-			Category:        category.CategoryName,
-		}
-		r = append(r, data)
-		resp = types.DataList{
-			Item:  r,
-			Total: uint(len(r)),
-		}
+	if err != nil {
+		return
+	}
+	r := BuildVideos(ctx, videos)
+
+	resp = types.DataList{
+		Item:  r,
+		Total: uint(len(r)),
 	}
 	return
+
 }
 func (s *InterSrv) GetComment(ctx context.Context, req *types.GetCommentReq) (resp interface{}, err error) {
 	commentdao := dao2.NewCommentDao(ctx)
@@ -194,7 +158,7 @@ func (s *InterSrv) FavlistCreate(ctx context.Context, req *types.FavlisCreatetRe
 		Name:      req.FavlistName,
 		IsPrivate: req.Type,
 		UserID:    userId,
-		Videos:    []model.Video{},
+		Videos:    []*model.Video{},
 	}
 	err = dao.Create(collection)
 	return

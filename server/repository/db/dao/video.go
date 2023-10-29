@@ -20,6 +20,11 @@ func (dao *VideoDao) CreateVideo(video *model.Video) error {
 	return dao.Model(model.Video{}).Create(video).Error
 }
 
+func (dao *VideoDao) VideoFeed(cate int64) (videos []*model.Video, err error) {
+	err = dao.Order("RAND()").Limit(10).Find(&videos).Error
+	return
+}
+
 // Update video
 func (dao *VideoDao) UpdateVideo(video *model.Video) error {
 	return dao.Model(model.Video{}).Save(video).Error

@@ -60,17 +60,17 @@ func (dao *FavDao) UpdateFavoriteCountByVideoId(videoID int64, favoriteCount int
 }
 
 // ListFav 获取用户喜欢列表
-func (dao *FavDao) ListFav(ctx context.Context, userId int64) []model.Video {
-	var favs []model.Fav
+func (dao *FavDao) ListFav(ctx context.Context, userId int64) (favs []*model.Video) {
+
 	dao.WithContext(ctx).Where("user_id = ? ", userId).Find(&favs)
-	var videoIDs []int64
+	var videoIDs []uint
 	for _, rel := range favs {
-		videoIDs = append(videoIDs, rel.VideoId)
+		videoIDs = append(videoIDs, rel.ID)
 	}
 	if len(videoIDs) == 0 {
-		return []model.Video{}
+		return []*model.Video{}
 	}
-	var videos []model.Video
+	var videos []*model.Video
 	dao.WithContext(ctx).Find(&videos, videoIDs)
 	return videos
 }

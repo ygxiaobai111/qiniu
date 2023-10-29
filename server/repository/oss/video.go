@@ -29,7 +29,7 @@ func Add(authorId int, title string, data []byte) (string, error) {
 		return "", err
 	}
 
-	videoUrl := "http://http://www.xzkckj.cn/" + Ret.Key
+	videoUrl := "http://xzkckj.cn/" + Ret.Key
 	//coverUrl := videoUrl + "?vframe/jpg/offset/1"
 	return videoUrl, nil
 }

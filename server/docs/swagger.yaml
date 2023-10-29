@@ -58,7 +58,7 @@ definitions:
     properties:
       author_name:
         description: 视频作者
-        type: integer
+        type: string
       category_id:
         description: 视频所属领域
         type: string
@@ -70,10 +70,13 @@ definitions:
         type: string
       create_time:
         description: 视频创建时间
-        type: string
+        type: integer
       favorite_count:
         description: 视频的点赞总数
         type: integer
+      play_url:
+        description: 播放地址
+        type: string
       title:
         description: 视频标题
         type: string
@@ -84,7 +87,7 @@ definitions:
         description: 收藏夹名
         type: string
       create_time:
-        type: string
+        type: integer
       favlist:
         items:
           $ref: '#/definitions/types.GetFavResp'
@@ -124,13 +127,13 @@ definitions:
     properties:
       category_id:
         description: 视频所属领域
-        type: string
+        type: integer
       title:
         description: 视频标题
         type: string
       video_id:
         description: 视频id
-        type: string
+        type: integer
     type: object
 host: localhost:8811
 info:

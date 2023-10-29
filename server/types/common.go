@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	e2 "www.github.com/ygxiaobai111/qiniu/server/pkg/e"
 	"www.github.com/ygxiaobai111/qiniu/server/serializer"
 )
@@ -58,6 +59,13 @@ func RespSuccess(ctx *gin.Context, data interface{}, code ...int) *Response {
 
 // ErrorResponse 定义返回错误格式
 func ErrorResponse(err error) serializer.Response {
+	if err == gorm.ErrRecordNotFound {
+		return serializer.Response{
+			Status: 404,
+			Msg:    "并没有你想要的数据捏",
+			Error:  err.Error(),
+		}
+	}
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
 		return serializer.Response{
 			Status: 400,

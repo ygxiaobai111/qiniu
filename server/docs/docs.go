@@ -876,7 +876,7 @@ const docTemplate = `{
             "properties": {
                 "author_name": {
                     "description": "视频作者",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "category_id": {
                     "description": "视频所属领域",
@@ -892,11 +892,15 @@ const docTemplate = `{
                 },
                 "create_time": {
                     "description": "视频创建时间",
-                    "type": "string"
+                    "type": "integer"
                 },
                 "favorite_count": {
                     "description": "视频的点赞总数",
                     "type": "integer"
+                },
+                "play_url": {
+                    "description": "播放地址",
+                    "type": "string"
                 },
                 "title": {
                     "description": "视频标题",
@@ -912,7 +916,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "create_time": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "favlist": {
                     "type": "array",
@@ -970,7 +974,7 @@ const docTemplate = `{
             "properties": {
                 "category_id": {
                     "description": "视频所属领域",
-                    "type": "string"
+                    "type": "integer"
                 },
                 "title": {
                     "description": "视频标题",
@@ -978,7 +982,7 @@ const docTemplate = `{
                 },
                 "video_id": {
                     "description": "视频id",
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         }

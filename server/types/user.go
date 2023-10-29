@@ -7,7 +7,8 @@ type UserServiceReq struct {
 	UserName string `form:"user_name" json:"user_name"`
 	Password string `form:"password" json:"password"`
 }
-
+type UserLoginResp struct {
+}
 type UserRegisterReq struct {
 	UserName string `form:"user_name" json:"username"`
 	Password string `form:"password" json:"password"`
@@ -39,17 +40,6 @@ type UserUnFollowingReq struct {
 	Id uint `json:"id" form:"id"`
 }
 
-type SendEmailServiceReq struct {
-	Email    string `form:"email" json:"email"`
-	Password string `form:"password" json:"password"`
-	// OpertionType 1:绑定邮箱 2：解绑邮箱 3：改密码
-	OperationType uint `form:"operation_type" json:"operation_type"`
-}
-
-type ValidEmailServiceReq struct {
-	Token string `json:"token" form:"token"`
-}
-
 type UserInfoResp struct {
 	Avatar          string `json:"avatar"`           // 用户头像
 	BackgroundImage string `json:"background_image"` // 用户个人页顶部大图
@@ -59,7 +49,6 @@ type UserInfoResp struct {
 	ID              int64  `json:"id"`               // 用户id
 	IsFollow        bool   `json:"is_follow"`        // true-已关注，false-未关注
 	Name            string `json:"name"`             // 用户名称
-	Signature       string `json:"signature"`        // 个人简介
 	TotalFavorited  int64  `json:"total_favorited"`  // 获赞数量
 	WorkCount       int64  `json:"work_count"`       // 作品数
 }

@@ -1,13 +1,11 @@
 package routes
 
 import (
+	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
-	"net/http"
 	"www.github.com/ygxiaobai111/qiniu/server/api"
 	"www.github.com/ygxiaobai111/qiniu/server/middleware"
-
-	"github.com/gin-gonic/gin"
 )
 
 // NewRouter 路由配置
@@ -17,8 +15,6 @@ func NewRouter() *gin.Engine {
 	r.Use(middleware.Cors())
 	//加载静态页面
 	//r.LoadHTMLGlob("view/*")
-	//静态资源服务
-	r.StaticFS("/static", http.Dir("./static"))
 	v1 := r.Group("/")
 	{
 
@@ -54,7 +50,7 @@ func NewRouter() *gin.Engine {
 			//视频分类
 			vG.GET("channel/:id", api.VideoChannel)
 			//视频流
-			vG.GET("feed")
+			vG.GET("feed", api.VideoFeed)
 			//用户视频列表
 			vG.GET("publish/list", api.VideoGetPublish)
 			//用户投稿

@@ -2,8 +2,6 @@ package config
 
 import (
 	"github.com/spf13/viper"
-	"strings"
-	"www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 )
 
 var (
@@ -21,7 +19,7 @@ var (
 	RedisDb     string
 	RedisAddr   string
 	RedisPw     string
-	RedisDbName string
+	RedisDbName int64
 )
 
 // nacos配置项
@@ -58,10 +56,9 @@ func Init() error {
 	RedisDb = viper.GetString("redis.RedisDb")
 	RedisAddr = viper.GetString("redis.RedisAddr")
 	RedisPw = viper.GetString("redis.RedisPw")
-	RedisDbName = viper.GetString("redis.RedisDbName")
+	RedisDbName = viper.GetInt64("redis.RedisDbName")
 
 	// mysql 连接地址
-	path := strings.Join([]string{DbUser, ":", DbPassword, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
-	dao.Database(path)
+
 	return nil
 }

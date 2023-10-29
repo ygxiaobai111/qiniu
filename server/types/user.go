@@ -30,8 +30,17 @@ type UserInfoUpdateReq struct {
 }
 
 type UserInfoShowReq struct {
+	UserId uint `json:"user_id"`
 }
-
+type UserFollowReq struct {
+	UserId uint `json:"user_id"`
+}
+type UserFollowerReq struct {
+	UserId uint `json:"user_id"`
+}
+type UserFriendReq struct {
+	UserId uint `json:"user_id"`
+}
 type UserFollowingReq struct {
 	Id uint `json:"id" form:"id"`
 }
@@ -49,6 +58,5 @@ type UserInfoResp struct {
 	ID              int64  `json:"id"`               // 用户id
 	IsFollow        bool   `json:"is_follow"`        // true-已关注，false-未关注
 	Name            string `json:"name"`             // 用户名称
-	TotalFavorited  int64  `json:"total_favorited"`  // 获赞数量
 	WorkCount       int64  `json:"work_count"`       // 作品数
 }

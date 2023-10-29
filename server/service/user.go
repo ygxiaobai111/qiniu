@@ -113,3 +113,43 @@ func (s *UserSrv) UserLogin(ctx context.Context, req *types.UserLoginReq) (resp 
 		Token: token,
 	}, nil
 }
+func (s *UserSrv)UserInfo(ctx context.Context,req types.UserInfoShowReq)(resp interface{},err error){
+	udao :=dao.NewUserDao(ctx)
+	vdao:=dao.NewVideoDao(ctx)
+	fdao:=dao.NewFavDao(ctx)
+
+	data,err:=udao.GetUserById(req.UserId)
+	if err != nil {
+		return
+	}
+	workcount,_:=vdao.GetVideoCountByUId(data.ID)
+	favcount,_:=fdao.GetFavoriteCount(ctx, int64(data.ID))
+	user:=types.UserInfoResp{
+		Avatar:          data.Avatar,
+		BackgroundImage: "",
+		FavoriteCount:   favcount,
+		FollowCount:     data.FollowCount,
+		FollowerCount:   data.FanCount,
+		ID: int64(data.ID),
+		IsFollow:        false,
+		Name:            "",
+		WorkCount:       workcount,
+	}
+	resp = user
+}
+func (s *UserSrv)UserAction(ctx context.Context,req types.UserFollowingReq)(resp interface{},err error){
+	dao :=dao.NewUserDao(ctx)
+	users:=dao.
+}
+func (s *UserSrv)UserFollow(ctx context.Context,req types.UserFollowReq)(resp interface{},err error){
+	dao :=dao.NewUserDao(ctx)
+	users:=dao.
+}
+func (s *UserSrv)UserFollower(ctx context.Context,req types.UserFollowerReq)(resp interface{},err error){
+	dao :=dao.NewUserDao(ctx)
+	users:=dao.
+}
+func (s *UserSrv)UserFriend(ctx context.Context,req types.UserFriendReq)(resp interface{},err error){
+	dao :=dao.NewUserDao(ctx)
+	users:=dao.
+}

@@ -35,13 +35,13 @@ func (dao *FavDao) IsFavorite(ctx context.Context, videoId int64, userId int64) 
 }
 
 // GetFavoriteCount 获取用户点赞数量(给别人的赞)
-func (dao *FavDao) GetFavoriteCount(ctx context.Context, userId int64) (int32, error) {
+func (dao *FavDao) GetFavoriteCount(ctx context.Context, userId int64) (int64, error) {
 	var favCount int64
 	result := dao.WithContext(ctx).Model(&model.Fav{}).Where("user_id = ?", userId).Count(&favCount)
 	if result.Error != nil {
 		return 0, result.Error
 	}
-	return int32(favCount), nil
+	return favCount, nil
 }
 
 // GetSingleVideoFavoriteCount 获取单个视频点赞数量

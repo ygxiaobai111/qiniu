@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"log"
 	"sync"
 	"www.github.com/ygxiaobai111/qiniu/server/pkg/e"
 	dao2 "www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
@@ -153,7 +154,7 @@ func (s *InterSrv) GetBarrage(ctx context.Context, req *types.GetBarrageReq) (re
 
 func (s *InterSrv) FavlistCreate(ctx context.Context, req *types.FavlisCreatetReq, userId uint) (resp interface{}, err error) {
 	dao := dao2.NewCollectionDao(ctx)
-	collection := model.Collection{
+	collection := &model.Collection{
 
 		Name:      req.FavlistName,
 		IsPrivate: req.Type,
@@ -168,6 +169,7 @@ func (s *InterSrv) FavlistAdd(ctx context.Context, req *types.FavlistAddReq) (re
 
 	c, err := cdao.GetCollection(req.FavlistId)
 	if err != nil {
+		log.Println("err1:", err)
 		return
 	}
 	err = cdao.AddVideo(c, uint(req.VideoId))

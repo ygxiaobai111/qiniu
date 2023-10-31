@@ -67,7 +67,7 @@
               <span slot="title">直播</span>
             </el-menu-item>
             <el-menu-item index="7">
-              <i class="el-icon-setting"></i>
+              <el-icon><Fries /></el-icon>
               <span slot="title">热点</span>
             </el-menu-item>
             <el-menu-item index="8">

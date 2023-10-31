@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gorm.io/gorm"
+	"log"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
 )
 
@@ -16,7 +17,7 @@ func NewCollectionDao(ctx context.Context) *CollectionDao {
 }
 
 // Update 更新收藏夹信息
-func (dao *CollectionDao) Update(collection model.Collection) (err error) {
+func (dao *CollectionDao) Update(collection *model.Collection) (err error) {
 	err = dao.Save(collection).Error
 
 	return
@@ -25,18 +26,21 @@ func (dao *CollectionDao) Update(collection model.Collection) (err error) {
 // AddVideo 添加视频到收藏夹
 func (dao *CollectionDao) AddVideo(collection *model.Collection, videoID uint) error {
 	// 检查视频是否存在
-	var video model.Video
+	var video *model.Video
 	err := db.First(&video, videoID).Error
 	if err != nil {
+
 		return err
+
 	}
 
 	// 将视频添加到收藏夹的 Videos 数组中
 	collection.Videos = append(collection.Videos, video)
 
 	// 保存收藏夹
-	err = dao.Save(collection).Error
+	err = dao.Update(collection)
 	if err != nil {
+
 		return err
 	}
 
@@ -69,21 +73,23 @@ func (dao *CollectionDao) RemoveVideo(collection *model.Collection, videoID uint
 	return nil
 }
 
-func (dao *CollectionDao) Create(collection model.Collection) (err error) {
+func (dao *CollectionDao) Create(collection *model.Collection) (err error) {
 	err = dao.Model(model.Collection{}).Create(collection).Error
+	log.Println("err:", err)
 	if err != nil {
+
 		return
 	}
 	err = dao.UpdateUserCollectionCount(context.Background(), int64(collection.UserID), -1)
 	return
 }
 func (dao *CollectionDao) GetCollections(userId int64) (collections []*model.Collection, err error) {
-	err = dao.Model(model.Collection{}).Where("user_id=?", userId).Find(collections).Error
+	err = dao.Model(model.Collection{}).Where("user_id=?", userId).Find(&collections).Error
 
 	return
 }
 func (dao *CollectionDao) GetCollection(id int64) (collection *model.Collection, err error) {
-	err = dao.Model(model.Collection{}).Where("id=?", id).First(collection).Error
+	err = dao.Model(model.Collection{}).Where("id=?", id).First(&collection).Error
 
 	return
 }

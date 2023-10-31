@@ -9,6 +9,7 @@ const (
 	NotExistInentifier    = 202
 	ERROR                 = 500
 	InvalidParams         = 400
+	ERRORNULL             = 410
 
 	//成员错误
 	ErrorExistNick          = 10001

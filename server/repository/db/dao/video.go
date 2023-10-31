@@ -3,6 +3,7 @@ package dao
 import (
 	"context"
 	"gorm.io/gorm"
+	"time"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
 )
 
@@ -41,9 +42,24 @@ func (dao *VideoDao) GetVideoByUId(id uint) (videos []*model.Video, err error) {
 	return
 }
 
+// GetVideoByUId 根据id列表获取videos
+func (dao *VideoDao) GetVideoByIds(ids []int64) (videos []*model.Video, err error) {
+	err = dao.DB.Model(&model.Video{}).Where("id IN ?", ids).Find(&videos).Error
+	return
+}
+
 // GetVideoCountByUId 根据uid获取video数量
 func (dao *VideoDao) GetVideoCountByUId(id uint) (count int64, err error) {
 	err = dao.DB.Model(&model.Video{}).Where("user_id = ?", id).Count(&count).Error
+	return
+}
+
+// GetHotVideo 获取7天内的点赞最高的前20个视频
+func (dao *VideoDao) GetHotVideo() (videos []*model.Video, err error) {
+	// 计算7天前的时间
+	sevenDaysAgo := time.Now().AddDate(0, 0, -7)
+	// 查询视频记录，按点赞量倒序排序，限制返回前20条记录
+	err = dao.Where("created_at >= ?", sevenDaysAgo).Order("favorite_count DESC").Limit(20).Find(&videos).Error
 	return
 }
 

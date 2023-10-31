@@ -55,8 +55,8 @@ func (dao *CommentDao) UpdateVideoCommentCount(ctx context.Context, videoID int6
 }
 
 // CommentList 根据视频ID查看所有评论
-func (dao *CommentDao) CommentList(ctx context.Context, videoId int64) ([]model.Comment, error) {
-	var comments []model.Comment
+func (dao *CommentDao) CommentList(ctx context.Context, videoId int64) ([]*model.Comment, error) {
+	var comments []*model.Comment
 	err := dao.Where("video_id = ?", videoId).Find(&comments).Error
 	if err == nil {
 		return comments, nil
@@ -67,8 +67,8 @@ func (dao *CommentDao) CommentList(ctx context.Context, videoId int64) ([]model.
 
 // IsUserComment 该评论是否为用户发布的 是返回true
 // 是否找到评论 评论是否为该用户的
-func (dao *CommentDao) IsUserComment(ctx context.Context, userId int64, commentId int64, videoId int64) (bool, bool, model.Comment, error) {
-	var comment model.Comment
+func (dao *CommentDao) IsUserComment(ctx context.Context, userId int64, commentId int64, videoId int64) (bool, bool, *model.Comment, error) {
+	var comment *model.Comment
 	// 查询数据库，找到指定的评论
 	if err := dao.WithContext(ctx).Where("id = ?  AND video_id = ?", commentId, videoId).First(&comment).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {

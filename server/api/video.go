@@ -275,3 +275,28 @@ func VideoFeed(ctx *gin.Context) {
 	//返回给前端相应信息
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
+
+// @Summary		热门视频
+// @Description	获取热门视频
+// @ID				VideoHot
+// @Produce		json
+// @Header			200		{string}	Token	true	"我的token"
+// @Success		200		{object}	VideoHotResponse
+// @Failure		400		{object}	ErrorResponse
+// @Router			/video/hot [get]
+type VideoHotResponse types.Response
+
+func VideoHot(ctx *gin.Context) {
+
+	// 获取userSrv对象
+	srv := service.GetVideoSrv()
+
+	resp, err := srv.VideoHot(ctx.Request.Context(), 100001)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
+		return
+	}
+	//返回给前端相应信息
+	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
+}

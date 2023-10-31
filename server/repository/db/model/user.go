@@ -8,13 +8,14 @@ import (
 // User 用户模型
 type User struct {
 	gorm.Model
-	UserName       string `gorm:"unique"`
-	PasswordDigest string
-	FollowCount    int64
-	FanCount       int64
-	Avatar         string  `gorm:"size:1000"`
-	Follows        []*User `gorm:"many2many:follows;"`                         // 关注列表
-	Fans           []*User `gorm:"many2many:follows;joinForeignKey:follow_id"` // 粉丝列表
+	UserName        string `gorm:"unique"`
+	PasswordDigest  string
+	FollowCount     int64
+	FanCount        int64
+	CollectionCount int64
+	Avatar          string  `gorm:"size:1000"`
+	Follows         []*User `gorm:"many2many:follows;"`                         // 关注列表
+	Fans            []*User `gorm:"many2many:follows;joinForeignKey:follow_id"` // 粉丝列表
 }
 
 const (

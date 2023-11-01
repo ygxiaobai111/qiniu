@@ -51,7 +51,7 @@ func GetFavlist(ctx *gin.Context) {
 // @Accept			x-www-form-urlencoded
 // @Produce		json
 // @Param			UserId	query		int	true	"用户id"
-// @Success		200		{object}	types.GetFavoriteResp
+// @Success		200		{object}	types.GetFavResp
 // @Failure		400		{object}	ErrorResponse
 // @Router			/interaction/favorite [get]
 func GetFavorite(ctx *gin.Context) {

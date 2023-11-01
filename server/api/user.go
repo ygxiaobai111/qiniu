@@ -48,7 +48,7 @@ func UserRegister(ctx *gin.Context) {
 // @Produce		json
 // @Param			username	formData	string	true	"用户名"
 // @Param			password	formData	string	true	"密码"
-// @Success		200			{object}	Response
+// @Success		200			{object}	types.TokenData
 // @Failure		400			{object}	ErrorResponse
 // @Router			/user/login [post]
 func UserLogin(ctx *gin.Context) {
@@ -80,11 +80,11 @@ func UserLogin(ctx *gin.Context) {
 // @Produce		json
 // @Param			id	query		int		true	"对方用户ID"
 // @Header			200	{string}	Token	"我的token"
-// @Success		200	{object}	Response
+// @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse
-// @Router			/user/login [post]
+// @Router			/user/info [get]
 func UserInfo(ctx *gin.Context) {
-	var req *types.UserLoginReq
+	var req *types.UserInfoShowReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
@@ -95,7 +95,7 @@ func UserInfo(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserLogin(ctx.Request.Context(), req)
+	resp, err := srv.UserInfo(ctx.Request.Context(), req, 10001)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -144,11 +144,9 @@ func UserAction(ctx *gin.Context) {
 // @Produce		json
 // @Param			id	query		int		true	"用户ID"
 // @Header			200	{string}	Token	"我的token"
-// @Success		200	{object}	UserFollowResponse
+// @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse
 // @Router			/user/follow [get]
-type UserFollowResponse types.Response
-
 func UserFollow(ctx *gin.Context) {
 	var req *types.UserLoginReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -178,11 +176,9 @@ func UserFollow(ctx *gin.Context) {
 // @Produce		json
 // @Param			id	query		int		true	"用户ID"
 // @Header			200	{string}	Token	"我的token"
-// @Success		200	{object}	UserFollowerResponse
+// @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse
 // @Router			/user/follower [get]
-type UserFollowerResponse types.Response
-
 func UserFollower(ctx *gin.Context) {
 	var req *types.UserLoginReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -212,10 +208,10 @@ func UserFollower(ctx *gin.Context) {
 // @Produce		json
 // @Param			id	query		int		true	"用户ID"
 // @Header			200	{string}	Token	"我的token"
-// @Success		200	{object}	UserFriendResponse
+// @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse
 // @Router			/user/friend [get]
-type UserFriendResponse types.Response
+type UserFriendResp types.DataList
 
 func UserFriend(ctx *gin.Context) {
 	var req *types.UserLoginReq

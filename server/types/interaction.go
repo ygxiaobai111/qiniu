@@ -90,13 +90,6 @@ type GetFavlistResp struct {
 	Total          int64         `json:"total" form:"total"`
 }
 
-type GetFavoriteResp struct {
-	AuthorName string `json:"author_name" form:"author_name"`
-	PlayCount  int64  `json:"collection_count" form:"collection_count"`
-	CoverURL   string `json:"cover_url" form:"cover_url"`
-	Title      string `json:"title" form:"title"`
-}
-
 type GetCommentResp struct {
 	UserId     int64  `json:"user_id" form:"user_id"`
 	UserName   string `json:"user_name" form:"user_name"`

@@ -158,7 +158,7 @@ func VideoGetPublish(ctx *gin.Context) {
 // @Param			request	body		types.VideoUpdatePublish	true	"更新后的视频信息"
 //
 // @Header			200		{string}	Token						true	"我的token"
-// @Success		200		{object}	types.Response
+// @Success		200		{object}	Response
 // @Failure		400		{object}	ErrorResponse
 // @Router			/video/publish/action [put]
 func VideoUpdatePublish(ctx *gin.Context) {
@@ -190,11 +190,9 @@ func VideoUpdatePublish(ctx *gin.Context) {
 // @Produce		json
 // @Param			user_id	formData	int		true	"用户id"
 // @Header			200		{string}	Token	true	"我的token"
-// @Success		200		{object}	VideoDelPublishResponse
+// @Success		200		{object}	Response
 // @Failure		400		{object}	ErrorResponse
 // @Router			/video/publish/action [delete]
-type VideoDelPublishResponse types.Response
-
 func VideoDelPublish(ctx *gin.Context) {
 	var req *types.VideoDelPublish
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -224,11 +222,9 @@ func VideoDelPublish(ctx *gin.Context) {
 // @Produce		json
 // @Param			user_id	query		int64	true	"用户id"
 // @Header			200		{string}	Token	true	"我的token"
-// @Success		200		{object}	VideoBeforeResponse
+// @Success		200		{object}	types.GetFavResp
 // @Failure		400		{object}	ErrorResponse
 // @Router			/video/before [get]
-type VideoBeforeResponse types.Response
-
 func VideoBefore(ctx *gin.Context) {
 	var req *types.VideoBefore
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -256,11 +252,9 @@ func VideoBefore(ctx *gin.Context) {
 // @ID				VideoFeed
 // @Produce		json
 // @Header			200		{string}	Token	true	"我的token"
-// @Success		200		{object}	VideoFeedResponse
+// @Success		200		{object}	types.GetFavResp
 // @Failure		400		{object}	ErrorResponse
 // @Router			/video/before [get]
-type VideoFeedResponse types.Response
-
 func VideoFeed(ctx *gin.Context) {
 
 	// 获取userSrv对象
@@ -277,15 +271,13 @@ func VideoFeed(ctx *gin.Context) {
 }
 
 // @Summary		热门视频
-// @Description	获取热门视频
+// @Description	获取热门视频列表
 // @ID				VideoHot
 // @Produce		json
 // @Header			200		{string}	Token	true	"我的token"
-// @Success		200		{object}	VideoHotResponse
+// @Success		200		{object}	types.GetFavResp
 // @Failure		400		{object}	ErrorResponse
 // @Router			/video/hot [get]
-type VideoHotResponse types.Response
-
 func VideoHot(ctx *gin.Context) {
 
 	// 获取userSrv对象

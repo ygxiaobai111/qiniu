@@ -108,3 +108,16 @@ func (dao *UserDao) GetFriendList(userId int64) ([]*model.User, error) {
 		Scan(&friends)
 	return friends, nil
 }
+
+// IsFollow 查询是否关注该用户
+func (dao *UserDao) IsFollow(uId, followId uint) (bool, error) {
+	var user model.User
+	err := dao.Where("id = ?", uId).Preload("Follows", "id = ?", followId).Find(&user).Error
+	if err != nil {
+		return false, err
+	}
+	if len(user.Follows) > 0 {
+		return true, nil
+	}
+	return false, nil
+}

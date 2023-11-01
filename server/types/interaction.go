@@ -64,6 +64,10 @@ type BarrageReq struct {
 	Timestamp uint   `json:"timestamp" form:"timestamp"` // 弹幕出现的时间戳
 }
 
+// 用户画像构建请求
+type PersonasReq struct {
+	CategoryId int64 `json:"category_id" form:"category_id"`
+}
 type GetFavResp struct {
 	VideoId         int64  `json:"video_id" form:"video_id"`
 	CreateTime      int64  `json:"create_time" form:"create_time"`

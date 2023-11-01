@@ -378,3 +378,36 @@ func Barrage(ctx *gin.Context) {
 	//返回给前端相应信息
 	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
 }
+
+// @Summary		用户喜好上传
+// @Description	通过表单提交用户感兴趣视频
+// @ID				Personas
+// @Accept			x-www-form-urlencoded
+// @Produce		json
+// @Param			CategoryId	formData	int		true	"标签id"
+// @Header			200			{string}	Token	"我的token"
+// @Success		200			{object}	Response
+// @Failure		400			{object}	ErrorResponse
+// @Router			/interaction/personas [post]
+func Personas(ctx *gin.Context) {
+	var req *types.PersonasReq
+	//ctx.ShouldBind(&req) 获取前端输入的表单信息
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
+		//打日志
+		util.LogrusObj.Error(err)
+		return
+
+	}
+	// 获取userSrv对象
+	srv := service.GetInterSrv()
+
+	resp, err := srv.Personas(ctx.Request.Context(), req, 0)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
+		return
+	}
+	//返回给前端相应信息
+	ctx.JSON(http.StatusOK, types.RespSuccess(ctx, resp, http.StatusOK))
+}

@@ -174,12 +174,24 @@ func (s *VideoSrv) VideoBefore(ctx context.Context, req *types.VideoBefore) (res
 // 视频流
 func (s *VideoSrv) VideoFeed(ctx context.Context, userId int64) (resp interface{}, err error) {
 	dao := dao2.NewVideoDao(ctx)
-	videos, err := dao.VideoFeed(0)
-
+	var videos []*model.Video
+	//随机推荐
+	randVideos, err := dao.VideoFeed(0)
 	if err != nil {
 		return
 	}
-	r := BuildVideos(ctx, videos)
+	videos = append(videos, randVideos...)
+	//用户推荐
+	if userId != 0 {
+		//根据用户画像推荐
+		videoOfPersonaIds := cache.GetTopTags(ctx, cache.PersonasKey(uint(userId)))
+		videoOfPersonas, _ := dao.GetVideoByIds(videoOfPersonaIds)
+		if len(videoOfPersonas) > 0 {
+			videos = append(videos, videoOfPersonas...)
+		}
+
+	}
+	r := BuildVideos(ctx, randVideos)
 
 	resp = types.DataList{
 		Item:  r,

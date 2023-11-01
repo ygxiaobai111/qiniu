@@ -8,8 +8,8 @@ mysql:
 
 redis:
   RedisDb: redis
-  RedisAddr: r-bp12xmzrbjr36iq7lepd.redis.rds.aliyuncs.com:6379
-  RedisPw:
+  RedisAddr: 192.168.88.130:6379
+  RedisPw: rh2004..
   RedisDbName: 0
 
 nacos:
@@ -23,3 +23,11 @@ application:
 
   video-center:
     ServiceName: vid
+
+
+qiniu:
+  accessKey: wccY3Xc1dpW5hGTYvvyYF4LnJZ1Rsk6-6mbbcxw_
+  secretKey: P11e3W-EyhiFESh0XPRhQT7Oihvj6OO48mcVig1E
+  bucket: dydemo-01
+  url: http://xzkckj.cn/
+

@@ -4,6 +4,7 @@ import (
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
 	"github.com/spf13/viper"
+	"www.github.com/ygxiaobai111/qiniu/server/config"
 )
 
 var Viper *viper.Viper
@@ -11,14 +12,18 @@ var UpToken *string
 var FormUploader *storage.FormUploader
 var Ret storage.PutRet
 
-// Init 传入包含AK和SK的文件路径,必须为yml文件 格式为qiniu.accessKey和qiniu.secretKey
-func Init() {
-	// 设置七牛云账号的AK和SK
-	accessKey := "wccY3Xc1dpW5hGTYvvyYF4LnJZ1Rsk6-6mbbcxw_"
-	secretKey := "P11e3W-EyhiFESh0XPRhQT7Oihvj6OO48mcVig1E"
+// 我的资源域名
+var MYURL string
 
+// Init 传入包含AK和SK的文件路径,必须为yml文件 格式为qiniu.accessKey和qiniu.secretKey
+func Init() (err error) {
+
+	accessKey := config.AccessKey
+	secretKey := config.SecretKey
+	MYURL = config.MYURL
 	// 设置要上传的空间
-	bucket := "dydemo-01"
+	bucket := config.Bucket
+
 	// 生成上传凭证
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
@@ -36,4 +41,5 @@ func Init() {
 	// 构建表单上传的对象
 	FormUploader = storage.NewFormUploader(&cfg)
 	Ret = storage.PutRet{}
+	return
 }

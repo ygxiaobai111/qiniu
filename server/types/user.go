@@ -51,4 +51,5 @@ type UserInfoResp struct {
 	Name            string `json:"name"`             // 用户名称
 	TotalFavorited  int64  `json:"total_favorited"`  // 获赞数量
 	WorkCount       int64  `json:"work_count"`       // 作品数
+	VideoCount      int64  `json:"video_count"`      // 视频数量
 }

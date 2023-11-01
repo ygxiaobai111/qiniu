@@ -84,7 +84,7 @@ func UserLogin(ctx *gin.Context) {
 // @Failure		400	{object}	ErrorResponse
 // @Router			/user/login [post]
 func UserInfo(ctx *gin.Context) {
-	var req *types.UserLoginReq
+	var req *types.UserInfoResp
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))

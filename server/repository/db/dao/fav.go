@@ -35,13 +35,13 @@ func (dao *FavDao) IsFavorite(ctx context.Context, videoId int64, userId int64) 
 }
 
 // GetFavoriteCount 获取用户点赞数量(给别人的赞)
-func (dao *FavDao) GetFavoriteCount(ctx context.Context, userId int64) (int32, error) {
+func (dao *FavDao) GetFavoriteCount(ctx context.Context, userId int64) (int64, error) {
 	var favCount int64
 	result := dao.WithContext(ctx).Model(&model.Fav{}).Where("user_id = ?", userId).Count(&favCount)
 	if result.Error != nil {
 		return 0, result.Error
 	}
-	return int32(favCount), nil
+	return favCount, nil
 }
 
 // GetSingleVideoFavoriteCount 获取单个视频点赞数量
@@ -60,17 +60,17 @@ func (dao *FavDao) UpdateFavoriteCountByVideoId(videoID int64, favoriteCount int
 }
 
 // ListFav 获取用户喜欢列表
-func (dao *FavDao) ListFav(ctx context.Context, userId int64) []model.Video {
-	var favs []model.Fav
+func (dao *FavDao) ListFav(ctx context.Context, userId int64) (favs []*model.Video) {
+
 	dao.WithContext(ctx).Where("user_id = ? ", userId).Find(&favs)
-	var videoIDs []int64
+	var videoIDs []uint
 	for _, rel := range favs {
-		videoIDs = append(videoIDs, rel.VideoId)
+		videoIDs = append(videoIDs, rel.ID)
 	}
 	if len(videoIDs) == 0 {
-		return []model.Video{}
+		return []*model.Video{}
 	}
-	var videos []model.Video
+	var videos []*model.Video
 	dao.WithContext(ctx).Find(&videos, videoIDs)
 	return videos
 }

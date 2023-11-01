@@ -49,8 +49,10 @@ func NewRouter() *gin.Engine {
 			vG.GET("search", api.VideoSearch)
 			//视频分类
 			vG.GET("channel/:id", api.VideoChannel)
+			//热门视频
+			vG.GET("hot", api.VideoHot)
 			//视频流
-			vG.GET("feed")
+			vG.GET("feed", api.VideoFeed)
 			//用户视频列表
 			vG.GET("publish/list", api.VideoGetPublish)
 			//用户投稿

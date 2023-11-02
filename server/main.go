@@ -26,7 +26,7 @@ func main() {
 
 	}
 	r := routes.NewRouter()
-	err = r.Run(":8811")
+	err = r.Run(":" + config.ServerPort)
 	if err != nil {
 		log.Println(err)
 

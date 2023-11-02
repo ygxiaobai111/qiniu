@@ -7,7 +7,7 @@ import (
 var (
 	ServiceName string
 	ServerIp    string
-	ServerPort  uint64
+	ServerPort  string
 	NacosIp     string
 
 	DbHost     string
@@ -27,17 +27,6 @@ var (
 	Bucket    string
 )
 
-// nacos配置项
-var (
-	NacosAddress string
-	NacosPort    uint64
-)
-
-// 微服务的服务名
-var (
-	VideoCenterServiceName string
-)
-
 // Init 初始化配置文件与引擎
 func Init() error {
 
@@ -53,6 +42,7 @@ func Init() error {
 	}
 
 	// 获取配置项的值并赋值给变量
+	ServerPort = viper.GetString("application.Port")
 	DbHost = viper.GetString("mysql.DbHost")
 	DbPort = viper.GetString("mysql.DbPort")
 	DbUser = viper.GetString("mysql.DbUser")
@@ -63,11 +53,11 @@ func Init() error {
 	RedisPw = viper.GetString("redis.RedisPw")
 	RedisDbName = viper.GetInt64("redis.RedisDbName")
 	// 设置七牛云账号的AK和SK
-	AccessKey = viper.GetString("qiniu.accessKey")
-	SecretKey = viper.GetString("qiniu.secretKey")
-	MYURL = viper.GetString("qiniu.url")
+	AccessKey = viper.GetString("qiniu.AccessKey")
+	SecretKey = viper.GetString("qiniu.SecretKey")
+	MYURL = viper.GetString("qiniu.Url")
 	// 设置要上传的空间
-	Bucket = viper.GetString("qiniu.bucket")
+	Bucket = viper.GetString("qiniu.Bucket")
 	// mysql 连接地址
 
 	return nil

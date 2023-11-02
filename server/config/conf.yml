@@ -21,13 +21,12 @@ application:
   Ip: localhost
   Port: 8811
 
-  video-center:
-    ServiceName: vid
+
 
 
 qiniu:
-  accessKey: wccY3Xc1dpW5hGTYvvyYF4LnJZ1Rsk6-6mbbcxw_
-  secretKey: P11e3W-EyhiFESh0XPRhQT7Oihvj6OO48mcVig1E
-  bucket: dydemo-01
-  url: http://xzkckj.cn/
+  AccessKey: wccY3Xc1dpW5hGTYvvyYF4LnJZ1Rsk6-6mbbcxw_
+  SecretKey: P11e3W-EyhiFESh0XPRhQT7Oihvj6OO48mcVig1E
+  Bucket: dydemo-01
+  Url: http://xzkckj.cn/
 

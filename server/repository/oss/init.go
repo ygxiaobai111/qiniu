@@ -10,7 +10,6 @@ import (
 var Viper *viper.Viper
 var UpToken *string
 var FormUploader *storage.FormUploader
-var Ret storage.PutRet
 
 // 我的资源域名
 var MYURL string
@@ -40,6 +39,6 @@ func Init() (err error) {
 
 	// 构建表单上传的对象
 	FormUploader = storage.NewFormUploader(&cfg)
-	Ret = storage.PutRet{}
+
 	return
 }

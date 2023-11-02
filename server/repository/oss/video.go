@@ -5,7 +5,13 @@ import (
 	"context"
 	"crypto/md5"
 	"fmt"
+	"github.com/disintegration/imaging"
 	"github.com/qiniu/go-sdk/v7/storage"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/math/fixed"
+	"image"
+	"image/png"
 	"log"
 	"time"
 )
@@ -17,29 +23,47 @@ func md5digest(str string) string {
 	return md5str
 }
 
+func AddWatermark(videoBytes []byte, watermarkText string) ([]byte, error) {
+	img, _, err := image.Decode(bytes.NewReader(videoBytes))
+	if err != nil {
+		return nil, err
+	}
+
+	watermarkedImg := imaging.Clone(img)
+
+	drawer := &font.Drawer{
+		Dst:  watermarkedImg,
+		Src:  image.White,
+		Face: basicfont.Face7x13,
+		Dot:  fixed.Point26_6{},
+	}
+	drawer.DrawString(watermarkText)
+
+	buf := new(bytes.Buffer)
+	err = png.Encode(buf, watermarkedImg)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
+}
 func Add(authorId int, title string, data []byte) (string, error) {
 
 	digest := md5digest(title)
 	log.Println("1", len(data))
 	// 生成视频和图片的Key
 	videoKey := fmt.Sprintf("public/%d/%s_%s.mp4", authorId, title, digest)
-	putExtra := storage.PutExtra{
-		Params: map[string]string{
-			"x:wmText":      "你牛",
-			"x:wmGravity":   "NorthWest",
-			"x:wmFontColor": "FFFFFF",
-			"x:wmDissolve":  "100",
-			"x:wmFontSize":  "200",
-		},
-	}
+	PubKey := fmt.Sprintf("%s_%s.mp4", title, digest)
+	ret := storage.PutRet{}
 	// 调用PutFile方法上传文件
-	err := FormUploader.Put(context.Background(), &Ret, *UpToken, videoKey, bytes.NewReader(data), int64(len(data)), &putExtra)
+	err := FormUploader.Put(context.Background(), &ret, *UpToken, videoKey, bytes.NewReader(data), int64(len(data)), nil)
 	if err != nil {
 		fmt.Println(err)
 		return "", err
 	}
 
-	videoUrl := MYURL + Ret.Key
+	videoUrl := MYURL + "shuiyin/" + PubKey
+
 	//coverUrl := videoUrl + "?vframe/jpg/offset/1"
 	return videoUrl, nil
 }

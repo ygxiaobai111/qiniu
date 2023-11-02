@@ -53,7 +53,6 @@ type UserFollowingReq struct {
 }
 
 type UserInfoResp struct {
-<<<<<<< HEAD
 	Avatar          string `json:"avatar"`           // 用户头像
 	BackgroundImage string `json:"background_image"` // 用户个人页顶部大图
 	FavoriteCount   int64  `json:"favorite_count"`   // 喜欢数
@@ -65,15 +64,5 @@ type UserInfoResp struct {
 	TotalFavorited  int64  `json:"total_favorited"`  // 获赞数量
 	WorkCount       int64  `json:"work_count"`       // 作品数
 	VideoCount      int64  `json:"video_count"`      // 视频数量
-=======
-	Avatar          string `json:"avatar" form:"avatar"`                     // 用户头像
-	BackgroundImage string `json:"background_image" form:"background_image"` // 用户个人页顶部大图
-	FavoriteCount   int64  `json:"favorite_count" form:"favorite_count"`     // 喜欢数
-	FollowCount     int64  `json:"follow_count" form:"follow_count"`         // 关注总数
-	FollowerCount   int64  `json:"follower_count" form:"follower_count"`     // 粉丝总数
-	ID              int64  `json:"id" form:"id"`                             // 用户 id
-	IsFollow        bool   `json:"is_follow" form:"is_follow"`               // true-已关注，false-未关注
-	Name            string `json:"name" form:"name"`                         // 用户名称
-	WorkCount       int64  `json:"work_count" form:"work_count"`             // 作品数
->>>>>>> 81b39fc1a0d80f50e5bd076e3fc728568eeb0635
+
 }

@@ -2,9 +2,9 @@ package indexs
 
 import (
 	"context"
-	"es_study/global"
-	"es_study/models"
 	"fmt"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/es"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/es/models"
 )
 
 // CreateIndex 创建索引
@@ -18,7 +18,7 @@ func CreateIndex() {
 		DeleteIndex(index)
 	}
 
-	createIndex, err := global.ESClient.
+	createIndex, err := es.EsClient.
 		CreateIndex(index).
 		BodyString(models.VideoModel{}.VideoMapping()).Do(context.Background())
 	if err != nil {

@@ -27,6 +27,12 @@ func VideoCreate(uid int64, vid int64, tid int64, name string) {
 
 // VideoTitleRetrieve 页码，页显示条数，视频标题
 func VideoTitleRetrieve(page int, limit int, name string) ([]int64, error) {
+	if limit == 0 {
+		limit = 15
+	}
+	if page <= 0 {
+		page = 1
+	}
 	from := limit * (page - 1)
 	query := elastic.NewMatchQuery(`nick_video_title`, name)
 	util.LogrusObj.Printf("Retrieving video titles: page=%d, limit=%d, name=%s\n", page, limit, name)
@@ -37,7 +43,7 @@ func VideoTitleRetrieve(page int, limit int, name string) ([]int64, error) {
 	var ids []int64
 	for _, hit := range res.Hits.Hits {
 		var source map[string]interface{}
-		err := json.Unmarshal(hit.Source, &source)
+		err = json.Unmarshal(hit.Source, &source)
 		if err != nil {
 			return nil, err
 		}
@@ -62,7 +68,7 @@ func VideoTagRetrieve(page int, limit int, Tag int64, shuffle bool) ([]int64, er
 	var ids []int64
 	for _, hit := range res.Hits.Hits {
 		var source map[string]interface{}
-		err := json.Unmarshal(hit.Source, &source)
+		err = json.Unmarshal(hit.Source, &source)
 		if err != nil {
 			return nil, err
 		}

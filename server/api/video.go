@@ -13,8 +13,6 @@ import (
 // @ID				VideoCreate
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			username	formData	string	true	"用户名"
-// @Param			password	formData	string	true	"密码"
 // @Param			image		formData	file	false	"封面"
 // @Param			video		formData	file	true	"视频"
 //
@@ -59,6 +57,7 @@ func VideoCreate(ctx *gin.Context) {
 // @Accept			x-www-form-urlencoded
 // @Produce		json
 // @Param			text	query		int64	true	"关键字"
+// @Param			type	query		int	true	"检索类型 1为视频 2为用户"
 // @Header			200		{string}	Token	"我的token"
 // @Success		200		{object}	types.GetFavResp
 // @Failure		400		{object}	ErrorResponse
@@ -75,7 +74,7 @@ func VideoSearch(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoSearch(ctx.Request.Context(), req)
+	resp, err := srv.VideoSearch(ctx.Request.Context(), req, 100001)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

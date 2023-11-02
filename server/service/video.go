@@ -12,6 +12,7 @@ import (
 	"www.github.com/ygxiaobai111/qiniu/server/repository/cache"
 	dao2 "www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/es"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/oss"
 	"www.github.com/ygxiaobai111/qiniu/server/types"
 )
@@ -34,13 +35,17 @@ func GetVideoSrv() *VideoSrv {
 }
 
 func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, videoF *multipart.FileHeader, image *multipart.FileHeader, userId int64) (resp interface{}, err error) {
+	b, err := s.IsVideoFile(videoF)
+	if b != true || err != nil {
+		return
+	}
 	vdao := dao2.NewVideoDao(ctx)
 
 	fileF, err := videoF.Open()
 	f := make([]byte, videoF.Size)
 
 	fileF.Read(f)
-	url, err := oss.Add(100001, "testTitle", f)
+	url, err := oss.Add(100001, req.Title, f)
 	if err != nil {
 		return
 	}
@@ -57,6 +62,7 @@ func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, vi
 		CategoryId:      req.CategoryId,
 	}
 	err = vdao.CreateVideo(video)
+	es.VideoCreate(userId, int64(video.ID), int64(req.CategoryId), req.Title)
 	return
 }
 func (s *VideoSrv) IsVideoFile(file *multipart.FileHeader) (bool, error) {
@@ -112,12 +118,68 @@ func (s *VideoSrv) IsImageFile(file *multipart.FileHeader) (bool, error) {
 	// 否则，不是图片文件
 	return false, nil
 }
-func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch) (resp interface{}, err error) {
+func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch, uid uint) (resp interface{}, err error) {
+
+	switch req.Type {
+	case 1: //视频检索
+		dao := dao2.NewVideoDao(ctx)
+		var vIds []int64
+		var videos []*model.Video
+		vIds, err = es.VideoTitleRetrieve(0, 0, req.Text)
+		if err != nil {
+			return
+		}
+		videos, err = dao.GetVideoByIds(vIds)
+		if err != nil {
+			return
+		}
+		r := BuildVideos(ctx, videos)
+		resp = types.DataList{
+			Item:  r,
+			Total: uint(len(r)),
+		}
+
+	case 2:
+		dao := dao2.NewUserDao(ctx)
+		var uIds []int64
+		var users []*model.User
+		uIds, err = es.UserRetrieve(0, 0, req.Text)
+		if err != nil {
+			return nil, err
+		}
+		users, err = dao.GetUserByIds(uIds)
+		if err != nil {
+			return
+		}
+		r := BuildUsers(ctx, users, uid)
+		resp = types.DataList{
+			Item:  r,
+			Total: uint(len(r)),
+		}
+
+	default:
+		err = errors.New(e2.GetMsg(e2.InvalidParams))
+	}
 
 	return
 
 }
 func (s *VideoSrv) VideoChannel(ctx context.Context, req *types.VideoChannel) (resp interface{}, err error) {
+	dao := dao2.NewVideoDao(ctx)
+	vIds, err := es.VideoTagRetrieve(0, 0, int64(req.ChannelId), false)
+	if err != nil {
+		return
+	}
+	videos, err := dao.GetVideoByIds(vIds)
+	if err != nil {
+		return
+	}
+	r := BuildVideos(ctx, videos)
+	resp = types.DataList{
+		Item:  r,
+		Total: uint(len(r)),
+	}
+
 	return
 
 }
@@ -151,16 +213,20 @@ func (s *VideoSrv) VideoUpdatePublish(ctx context.Context, req *types.VideoUpdat
 		video.CategoryId = req.CategoryId
 	}
 	err = dao.UpdateVideo(video)
+	//todo 想要视频标签
+	es.VideoUpdate(int64(req.VideoId), req.Title)
 	return
 
 }
 func (s *VideoSrv) VideoDelPublish(ctx context.Context, req *types.VideoDelPublish) (resp interface{}, err error) {
 	dao := dao2.NewVideoDao(ctx)
 	_, err = dao.GetVideoById(req.VideoId)
+
 	if err != nil {
 		return nil, err
 	}
 	err = dao.DeleteVideoByID(req.VideoId)
+	es.VideoDelete(int64(req.VideoId))
 	return
 
 }

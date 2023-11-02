@@ -5,6 +5,7 @@ import (
 	"www.github.com/ygxiaobai111/qiniu/server/config"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/cache"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/es"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/oss"
 	"www.github.com/ygxiaobai111/qiniu/server/routes"
 )
@@ -36,8 +37,10 @@ func main() {
 func init() {
 
 	config.Init()
+	es.Init()
 	dao.Init()
 	cache.Init()
+
 	oss.Init()
 
 }

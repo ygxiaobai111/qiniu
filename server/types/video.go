@@ -12,8 +12,8 @@ type VideoUpdateReq struct {
 
 type VideoSearch struct {
 	Text string `json:"text" form:"text"`
+	Type int    `json:"type" form:"type"`
 }
-
 type VideoChannel struct {
 	ChannelId uint `json:"channel_id" form:"channel_id"`
 }

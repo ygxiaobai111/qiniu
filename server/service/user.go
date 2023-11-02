@@ -9,6 +9,7 @@ import (
 	"www.github.com/ygxiaobai111/qiniu/server/pkg/util"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/es"
 	"www.github.com/ygxiaobai111/qiniu/server/types"
 )
 
@@ -65,7 +66,7 @@ func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) 
 		util.LogrusObj.Error(err)
 		return
 	}
-
+	es.UserCreate(int64(user.ID), user.UserName)
 	return
 }
 func (s *UserSrv) UserLogin(ctx context.Context, req *types.UserLoginReq) (resp interface{}, err error) {

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"www.github.com/ygxiaobai111/qiniu/server/config"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/cache"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/oss"
 	"www.github.com/ygxiaobai111/qiniu/server/routes"
@@ -36,6 +37,7 @@ func init() {
 
 	config.Init()
 	dao.Init()
-	//cache.Init()
+	cache.Init()
 	oss.Init()
+
 }

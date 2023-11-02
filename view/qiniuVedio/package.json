@@ -13,6 +13,7 @@
     "element-plus": "^2.4.1",
     "element-ui": "^2.15.14",
     "pinia": "^2.1.7",
+    "vant": "^4.7.3",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },

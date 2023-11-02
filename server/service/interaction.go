@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"log"
+	"strconv"
 	"sync"
 	"www.github.com/ygxiaobai111/qiniu/server/pkg/e"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/cache"
 	dao2 "www.github.com/ygxiaobai111/qiniu/server/repository/db/dao"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
 	"www.github.com/ygxiaobai111/qiniu/server/types"
@@ -235,6 +237,14 @@ func (s *InterSrv) Barrage(ctx context.Context, req *types.BarrageReq, userId ui
 		Timestamp: req.Timestamp,
 	}
 	err = dao.Create(dan)
+	return
+
+}
+
+func (s *InterSrv) Personas(ctx context.Context, req *types.PersonasReq, userId uint64) (resp interface{}, err error) {
+	struId := strconv.Itoa(int(userId))
+
+	err = cache.UpdateUserProfile(ctx, "personas"+struId, req.CategoryId, 1)
 	return
 
 }

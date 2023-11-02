@@ -64,6 +64,10 @@ type BarrageReq struct {
 	Timestamp uint   `json:"timestamp" form:"timestamp"` // 弹幕出现的时间戳
 }
 
+// 用户画像构建请求
+type PersonasReq struct {
+	CategoryId int64 `json:"category_id" form:"category_id"`
+}
 type GetFavResp struct {
 	VideoId         int64  `json:"video_id" form:"video_id"`
 	CreateTime      int64  `json:"create_time" form:"create_time"`
@@ -84,13 +88,6 @@ type GetFavlistResp struct {
 	CreateTime     int64         `json:"create_time" form:"create_time"`
 	Favlist        []*GetFavResp `json:"favlist" form:"favlist"`
 	Total          int64         `json:"total" form:"total"`
-}
-
-type GetFavoriteResp struct {
-	AuthorName string `json:"author_name" form:"author_name"`
-	PlayCount  int64  `json:"collection_count" form:"collection_count"`
-	CoverURL   string `json:"cover_url" form:"cover_url"`
-	Title      string `json:"title" form:"title"`
 }
 
 type GetCommentResp struct {

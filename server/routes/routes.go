@@ -92,7 +92,8 @@ func NewRouter() *gin.Engine {
 			iG.POST("favorite", api.Favorite)
 			//弹幕发送
 			iG.POST("barrage", api.Barrage)
-
+			//用户画像
+			iG.POST("personas", api.Personas)
 		}
 
 	}

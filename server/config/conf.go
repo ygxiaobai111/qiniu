@@ -20,6 +20,11 @@ var (
 	RedisAddr   string
 	RedisPw     string
 	RedisDbName int64
+
+	AccessKey string
+	SecretKey string
+	MYURL     string
+	Bucket    string
 )
 
 // nacos配置项
@@ -57,7 +62,12 @@ func Init() error {
 	RedisAddr = viper.GetString("redis.RedisAddr")
 	RedisPw = viper.GetString("redis.RedisPw")
 	RedisDbName = viper.GetInt64("redis.RedisDbName")
-
+	// 设置七牛云账号的AK和SK
+	AccessKey = viper.GetString("qiniu.accessKey")
+	SecretKey = viper.GetString("qiniu.secretKey")
+	MYURL = viper.GetString("qiniu.url")
+	// 设置要上传的空间
+	Bucket = viper.GetString("qiniu.bucket")
 	// mysql 连接地址
 
 	return nil

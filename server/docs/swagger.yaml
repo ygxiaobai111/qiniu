@@ -30,61 +30,51 @@ definitions:
   types.GetBarrageResp:
     properties:
       color:
-        description: 弹幕颜色
         type: string
       content:
-        description: 弹幕内容
         type: string
       timestamp:
-        description: 弹幕出现的时间戳
         type: integer
     type: object
   types.GetCommentResp:
     properties:
       avatar:
-        description: 用户头像
         type: string
       content:
-        description: 评论内容
         type: string
-      create_date:
-        description: 评论发布日期，格式 mm-dd
-        type: string
+      create_time:
+        type: integer
+      user_id:
+        type: integer
       user_name:
-        description: 用户名
         type: string
     type: object
   types.GetFavResp:
     properties:
+      author_id:
+        type: integer
       author_name:
-        description: 视频作者
         type: string
-      category_id:
-        description: 视频所属领域
+      category:
         type: string
       collection_count:
-        description: 视频总收藏数
         type: integer
       cover_url:
-        description: 视频封面地址
         type: string
       create_time:
-        description: 视频创建时间
         type: integer
       favorite_count:
-        description: 视频的点赞总数
         type: integer
       play_url:
-        description: 播放地址
         type: string
       title:
-        description: 视频标题
         type: string
+      video_id:
+        type: integer
     type: object
   types.GetFavlistResp:
     properties:
       collection_name:
-        description: 收藏夹名
         type: string
       create_time:
         type: integer
@@ -95,44 +85,51 @@ definitions:
       total:
         type: integer
       user_name:
-        description: 收藏夹创建人
         type: string
     type: object
-  types.GetFavoriteResp:
+  types.TokenData:
     properties:
-      author_name:
-        description: 视频作者
-        type: integer
-      collection_count:
-        description: 播放总数
-        type: integer
-      cover_url:
-        description: 视频封面地址
+      token:
         type: string
-      title:
-        description: 视频标题
-        type: string
+      user: {}
     type: object
-  types.Response:
+  types.UserInfoResp:
     properties:
-      data: {}
-      error:
+      avatar:
+        description: 用户头像
         type: string
-      msg:
+      background_image:
+        description: 用户个人页顶部大图
         type: string
-      status:
+      favorite_count:
+        description: 喜欢数
+        type: integer
+      follow_count:
+        description: 关注总数
+        type: integer
+      follower_count:
+        description: 粉丝总数
+        type: integer
+      id:
+        description: 用户 id
+        type: integer
+      is_follow:
+        description: true-已关注，false-未关注
+        type: boolean
+      name:
+        description: 用户名称
+        type: string
+      work_count:
+        description: 作品数
         type: integer
     type: object
   types.VideoUpdatePublish:
     properties:
       category_id:
-        description: 视频所属领域
         type: integer
       title:
-        description: 视频标题
         type: string
       video_id:
-        description: 视频id
         type: integer
     type: object
 host: localhost:8811
@@ -418,7 +415,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/types.GetFavoriteResp'
+            $ref: '#/definitions/types.GetFavResp'
         "400":
           description: Bad Request
           schema:
@@ -452,6 +449,30 @@ paths:
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: 点赞/取消赞
+  /interaction/personas:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 通过表单提交用户感兴趣视频
+      operationId: Personas
+      parameters:
+      - description: 标签id
+        in: formData
+        name: CategoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 用户喜好上传
   /user/action:
     post:
       consumes:
@@ -462,6 +483,11 @@ paths:
       - description: 对方用户id
         in: formData
         name: user_id
+        required: true
+        type: integer
+      - description: 1为关注，2取关
+        in: formData
+        name: type
         required: true
         type: integer
       produces:
@@ -476,8 +502,54 @@ paths:
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: 用户关注/取关
-  /user/login:
-    post:
+  /user/follow:
+    get:
+      description: 通过userId查询用户关注列表
+      operationId: UserFollow
+      parameters:
+      - description: 用户ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.UserInfoResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 关注列表
+  /user/follower:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 通过userId查询用户粉丝列表
+      operationId: UserFollower
+      parameters:
+      - description: 用户ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.UserInfoResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 粉丝列表
+  /user/info:
+    get:
       consumes:
       - application/json
       description: 通过对方id和我的token获取对方用户信息
@@ -494,12 +566,41 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.Response'
+            $ref: '#/definitions/types.UserInfoResp'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: 用户信息
+  /user/login:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 通过表单提交进行用户登录
+      operationId: UserLogin
+      parameters:
+      - description: 用户名
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.TokenData'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 用户登录
   /user/register:
     post:
       consumes:
@@ -529,6 +630,22 @@ paths:
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: 创建用户
+  /video/before:
+    get:
+      description: 通过表单获取该用户的历史视频
+      operationId: VideoFeed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.GetFavResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 视频流
   /video/channel:
     get:
       consumes:
@@ -553,7 +670,46 @@ paths:
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: 视频分类
+  /video/hot:
+    get:
+      description: 获取热门视频列表
+      operationId: VideoHot
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.GetFavResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 热门视频
   /video/publish/action:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 通过表单删除用户的视频
+      operationId: VideoDelPublish
+      parameters:
+      - description: 用户id
+        in: formData
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 删除用户视频
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -609,7 +765,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/types.Response'
+            $ref: '#/definitions/api.Response'
         "400":
           description: Bad Request
           schema:
@@ -663,4 +819,7 @@ paths:
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: 视频搜索
+securityDefinitions:
+  BasicAuth:
+    type: basic
 swagger: "2.0"

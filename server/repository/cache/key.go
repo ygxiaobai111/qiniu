@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -13,6 +12,8 @@ const (
 	SkillProductUserKey = "skill:user:%s"
 )
 
-func ProductViewKey(id uint) string {
-	return fmt.Sprintf("view:product:%s", strconv.Itoa(int(id)))
+func PersonasKey(id uint) string {
+	struId := strconv.Itoa(int(id))
+
+	return "personas" + struId
 }

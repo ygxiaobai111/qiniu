@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/cache"
 	"www.github.com/ygxiaobai111/qiniu/server/repository/db/model"
 )
 
@@ -58,6 +59,7 @@ func (dao *UserDao) UpdateUserById(uId uint, user *model.User) (err error) {
 // Follow 关注
 func (dao *UserDao) Follow(userId, toUserId int64) error {
 	fmt.Printf("userid：%v，toUserId：%v", userId, toUserId)
+	cache.AddFollow(context.Background(), uint(userId), uint(toUserId))
 	return dao.
 		Clauses(clause.Locking{Strength: "UPDATE"}).
 		Model(&model.User{Model: gorm.Model{ID: uint(userId)}}).
@@ -69,6 +71,7 @@ func (dao *UserDao) Follow(userId, toUserId int64) error {
 
 // Unfollow 取消关注
 func (dao *UserDao) Unfollow(userId, toUserId int64) error {
+	cache.DeleteFollow(context.Background(), uint(userId), uint(toUserId))
 	return dao.DB.
 		Model(&model.User{
 			Model: gorm.Model{ID: uint(userId)},
@@ -117,6 +120,10 @@ func (dao *UserDao) GetFriendList(userId int64) ([]*model.User, error) {
 
 // IsFollow 查询是否关注该用户
 func (dao *UserDao) IsFollow(uId, followId uint) (bool, error) {
+	b := cache.IsFollow(context.Background(), uId, followId)
+	if b != false {
+		return true, nil
+	}
 	var user model.User
 	err := dao.Where("id = ?", uId).Preload("Follows", "id = ?", followId).Find(&user).Error
 	if err != nil {

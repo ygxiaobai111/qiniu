@@ -477,7 +477,7 @@ const docTemplate = `{
         },
         "/interaction/personas": {
             "post": {
-                "description": "通过表单提交用户感兴趣视频",
+                "description": "通过表单提交用户感兴趣视频标签",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -878,20 +878,6 @@ const docTemplate = `{
                 "operationId": "VideoCreate",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "用户名",
-                        "name": "username",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "密码",
-                        "name": "password",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
                         "type": "file",
                         "description": "封面",
                         "name": "image",
@@ -901,6 +887,20 @@ const docTemplate = `{
                         "type": "file",
                         "description": "视频",
                         "name": "video",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "标签id",
+                        "name": "category_id",
                         "in": "formData",
                         "required": true
                     }
@@ -1007,6 +1007,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "关键字",
                         "name": "text",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "检索类型 1为视频 2为用户",
+                        "name": "type",
                         "in": "query",
                         "required": true
                     }
@@ -1128,6 +1135,9 @@ const docTemplate = `{
                 "favorite_count": {
                     "type": "integer"
                 },
+                "is_fav": {
+                    "type": "boolean"
+                },
                 "play_url": {
                     "type": "string"
                 },
@@ -1195,7 +1205,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "id": {
-                    "description": "用户 id",
+                    "description": "用户id",
                     "type": "integer"
                 },
                 "is_follow": {
@@ -1205,6 +1215,14 @@ const docTemplate = `{
                 "name": {
                     "description": "用户名称",
                     "type": "string"
+                },
+                "total_favorited": {
+                    "description": "获赞数量",
+                    "type": "integer"
+                },
+                "video_count": {
+                    "description": "视频数量",
+                    "type": "integer"
                 },
                 "work_count": {
                     "description": "作品数",

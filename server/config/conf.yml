@@ -1,9 +1,9 @@
 mysql:
   DB: mysql
-  DbHost: localhost
+  DbHost: 123.57.149.229
   DbPort: 3306
   DbUser: root
-  DbPassword:
+  DbPassword: mysecretpassword
   DbName: qiniu
 
 redis:
@@ -12,6 +12,10 @@ redis:
   RedisPw: rh2004..
   RedisDbName: 0
 
+es:
+  Url: http://8.130.100.107:9200
+  Username: elastic
+  Password: 123456
 nacos:
   Ip: 127.0.0.1
   Port: 8848

@@ -2,6 +2,7 @@ package util
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"time"
 )
 
@@ -24,7 +25,7 @@ func GenerateToken(id uint, userName string, authority int) (string, error) {
 		Authority: authority,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "FanOne-gin-mall",
+			Issuer:    "qiniu",
 		},
 	}
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -43,6 +44,17 @@ func ParseToken(token string) (*Claims, error) {
 		}
 	}
 	return nil, err
+}
+func GetUidInToken(ctx *gin.Context) uint {
+	token := ctx.GetHeader("Authorization")
+	claims, err := ParseToken(token)
+	if err != nil {
+		return 0
+	}
+	if claims != nil {
+		return 0
+	}
+	return claims.ID
 }
 
 type EmailClaims struct {
@@ -64,7 +76,7 @@ func GenerateEmailToken(userId, operation uint, email, password string) (string,
 		OperationType: operation,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "FanOne-gin-mall",
+			Issuer:    "qiniu",
 		},
 	}
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

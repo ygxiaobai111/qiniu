@@ -118,7 +118,7 @@ func UserInfo(ctx *gin.Context) {
 // @Failure		400		{object}	ErrorResponse
 // @Router			/user/action [post]
 func UserAction(ctx *gin.Context) {
-	var req *types.UserLoginReq
+	var req *types.UserFollowingReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
@@ -129,7 +129,7 @@ func UserAction(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserLogin(ctx.Request.Context(), req)
+	resp, err := srv.UserAction(ctx.Request.Context(), req, int64(util.GetUidInToken(ctx)))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -149,7 +149,7 @@ func UserAction(ctx *gin.Context) {
 // @Failure		400	{object}	ErrorResponse
 // @Router			/user/follow [get]
 func UserFollow(ctx *gin.Context) {
-	var req *types.UserLoginReq
+	var req *types.UserFollowReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
@@ -160,7 +160,7 @@ func UserFollow(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserLogin(ctx.Request.Context(), req)
+	resp, err := srv.UserFollow(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -181,7 +181,7 @@ func UserFollow(ctx *gin.Context) {
 // @Failure		400	{object}	ErrorResponse
 // @Router			/user/follower [get]
 func UserFollower(ctx *gin.Context) {
-	var req *types.UserLoginReq
+	var req *types.UserFollowerReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
@@ -192,7 +192,7 @@ func UserFollower(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserLogin(ctx.Request.Context(), req)
+	resp, err := srv.UserFollower(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -215,7 +215,7 @@ func UserFollower(ctx *gin.Context) {
 type UserFriendResp types.DataList
 
 func UserFriend(ctx *gin.Context) {
-	var req *types.UserLoginReq
+	var req *types.UserFriendReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, types.ErrorResponse(err))
@@ -226,7 +226,7 @@ func UserFriend(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserLogin(ctx.Request.Context(), req)
+	resp, err := srv.UserFriend(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

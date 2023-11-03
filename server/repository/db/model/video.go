@@ -18,7 +18,7 @@ type Video struct {
 	// 视频总收藏数
 	CollectionCount int64 `json:"collection_count"`
 	//弹幕总数
-	DanmakuCount int64
+	DanmakuCount int64 `json:"danmaku_count"`
 	// 视频播放地址
 	PlayURL string `json:"play_url"`
 	// 视频标题

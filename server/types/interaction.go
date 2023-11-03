@@ -80,6 +80,7 @@ type GetFavResp struct {
 	CollectionCount int64  `json:"collection_count" form:"collection_count"`
 	Title           string `json:"title" form:"title"`
 	Category        string `json:"category" form:"category"`
+	IsFav           bool   `json:"is_fav" form:"is_fav"`
 }
 
 type GetFavlistResp struct {

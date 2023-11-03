@@ -16,6 +16,7 @@ func JWT() gin.HandlerFunc {
 			code = 404
 		} else {
 			claims, err := util.ParseToken(token)
+
 			if err != nil {
 				code = e2.ErrorAuthToken
 			} else if time.Now().Unix() > claims.ExpiresAt {

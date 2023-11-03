@@ -26,7 +26,7 @@ func GetInterSrv() *InterSrv {
 	return InterSrvIns
 }
 
-func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (resp interface{}, err error) {
+func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq, uId uint) (resp interface{}, err error) {
 
 	cdao := dao2.NewCollectionDao(ctx)
 	udao := dao2.NewUserDao(ctx)
@@ -47,7 +47,7 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (re
 			if err != nil {
 				return
 			}
-			videos = BuildVideos(ctx, collection.Videos)
+			videos = BuildVideos(ctx, collection.Videos, uId)
 
 			r := types.GetFavlistResp{
 				UserName:       user.UserName,
@@ -75,7 +75,7 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (re
 	if err != nil {
 		return
 	}
-	videos = BuildVideos(ctx, collection.Videos)
+	videos = BuildVideos(ctx, collection.Videos, uId)
 
 	resp = types.GetFavlistResp{
 		UserName:       user.UserName,
@@ -87,14 +87,14 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq) (re
 	return
 
 }
-func (s *InterSrv) GetFavorite(ctx context.Context, req *types.GetFavoriteReq) (resp interface{}, err error) {
+func (s *InterSrv) GetFavorite(ctx context.Context, req *types.GetFavoriteReq, uId uint) (resp interface{}, err error) {
 	fdao := dao2.NewFavDao(ctx)
 
 	videos := fdao.ListFav(ctx, req.UserId)
 	if err != nil {
 		return
 	}
-	r := BuildVideos(ctx, videos)
+	r := BuildVideos(ctx, videos, uId)
 
 	resp = types.DataList{
 		Item:  r,
@@ -166,7 +166,7 @@ func (s *InterSrv) FavlistCreate(ctx context.Context, req *types.FavlisCreatetRe
 	err = dao.Create(collection)
 	return
 }
-func (s *InterSrv) FavlistAdd(ctx context.Context, req *types.FavlistAddReq) (resp interface{}, err error) {
+func (s *InterSrv) FavlistAdd(ctx context.Context, req *types.FavlistAddReq, uId uint) (resp interface{}, err error) {
 	cdao := dao2.NewCollectionDao(ctx)
 
 	c, err := cdao.GetCollection(req.FavlistId)
@@ -174,15 +174,23 @@ func (s *InterSrv) FavlistAdd(ctx context.Context, req *types.FavlistAddReq) (re
 		log.Println("err1:", err)
 		return
 	}
+	if c.UserID != uId {
+		err = errors.New(e.GetMsg(e.ErrorAuthCheckTokenFail))
+		return
+	}
 	err = cdao.AddVideo(c, uint(req.VideoId))
 	return
 
 }
-func (s *InterSrv) FavlistDel(ctx context.Context, req *types.FavlistDelReq) (resp interface{}, err error) {
+func (s *InterSrv) FavlistDel(ctx context.Context, req *types.FavlistDelReq, uId uint) (resp interface{}, err error) {
 	cdao := dao2.NewCollectionDao(ctx)
 
 	c, err := cdao.GetCollection(req.FavlistId)
 	if err != nil {
+		return
+	}
+	if uId != c.UserID {
+		err = errors.New(e.GetMsg(e.ErrorAuthCheckTokenFail))
 		return
 	}
 	err = cdao.RemoveVideo(c, uint(req.VideoId))
@@ -193,7 +201,6 @@ func (s *InterSrv) DelFavlist(ctx context.Context, req *types.DelFavlistReq, use
 	cdao := dao2.NewCollectionDao(ctx)
 
 	err = cdao.DelCollection(req.FavlistId, userId)
-	return
 	return
 
 }

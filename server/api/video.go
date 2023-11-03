@@ -15,6 +15,8 @@ import (
 // @Produce		json
 // @Param			image		formData	file	false	"封面"
 // @Param			video		formData	file	true	"视频"
+// @Param			title		formData	string	true	"标题"
+// @Param			category_id		formData int	true	"标签id"
 //
 // @Header			201			{string}	Token	"访问Token"
 //
@@ -38,9 +40,10 @@ func VideoCreate(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
 		return
 	}
+	//读取封面
 	image, _ := ctx.FormFile("image")
 
-	resp, err := srv.VideoCreate(ctx.Request.Context(), req, video, image, 100001)
+	resp, err := srv.VideoCreate(ctx.Request.Context(), req, video, image, int64(util.GetUidInToken(ctx)))
 
 	if err != nil {
 		util.LogrusObj.Infoln(err)
@@ -74,7 +77,7 @@ func VideoSearch(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoSearch(ctx.Request.Context(), req, 100001)
+	resp, err := srv.VideoSearch(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -106,7 +109,7 @@ func VideoChannel(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoChannel(ctx.Request.Context(), req)
+	resp, err := srv.VideoChannel(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -138,7 +141,7 @@ func VideoGetPublish(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoGetPublish(ctx.Request.Context(), req)
+	resp, err := srv.VideoGetPublish(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -172,7 +175,7 @@ func VideoUpdatePublish(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoUpdatePublish(ctx.Request.Context(), req)
+	resp, err := srv.VideoUpdatePublish(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -204,7 +207,7 @@ func VideoDelPublish(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoDelPublish(ctx.Request.Context(), req)
+	resp, err := srv.VideoDelPublish(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -259,7 +262,7 @@ func VideoFeed(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoFeed(ctx.Request.Context(), 100001)
+	resp, err := srv.VideoFeed(ctx.Request.Context(), int64(util.GetUidInToken(ctx)))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -282,7 +285,7 @@ func VideoHot(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoHot(ctx.Request.Context(), 100001)
+	resp, err := srv.VideoHot(ctx.Request.Context(), int64(util.GetUidInToken(ctx)))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

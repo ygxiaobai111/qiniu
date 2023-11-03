@@ -5,10 +5,7 @@ import (
 )
 
 var (
-	ServiceName string
-	ServerIp    string
-	ServerPort  string
-	NacosIp     string
+	ServerPort string
 
 	DbHost     string
 	DbPort     string
@@ -20,6 +17,10 @@ var (
 	RedisAddr   string
 	RedisPw     string
 	RedisDbName int64
+
+	EsUrl      string
+	EsUsername string
+	EsPassword string
 
 	AccessKey string
 	SecretKey string
@@ -52,6 +53,11 @@ func Init() error {
 	RedisAddr = viper.GetString("redis.RedisAddr")
 	RedisPw = viper.GetString("redis.RedisPw")
 	RedisDbName = viper.GetInt64("redis.RedisDbName")
+
+	EsUrl = viper.GetString("es.Url")
+	EsPassword = viper.GetString("es.Password")
+	EsUsername = viper.GetString("es.Username")
+
 	// 设置七牛云账号的AK和SK
 	AccessKey = viper.GetString("qiniu.AccessKey")
 	SecretKey = viper.GetString("qiniu.SecretKey")

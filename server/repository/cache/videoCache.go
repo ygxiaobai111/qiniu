@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// AddPopularVideo 热门视频
 func AddPopularVideo(ctx context.Context, videoID int64, score float64, createTime time.Time) error {
 	CleanUpOldVideos(ctx)
 	// 将视频ID和创建时间添加到一个Hash中
@@ -21,6 +22,7 @@ func AddPopularVideo(ctx context.Context, videoID int64, score float64, createTi
 	return nil
 }
 
+// CleanUpOldVideos 清除热门榜上七天前创建的视频
 func CleanUpOldVideos(ctx context.Context) {
 	// 获取当前时间7天前的Unix时间戳
 	sevenDaysAgo := time.Now().AddDate(0, 0, -7).Unix()
@@ -39,6 +41,7 @@ func CleanUpOldVideos(ctx context.Context) {
 	}
 }
 
+// GetTop30Videos 获取前三十个热门视频
 func GetTop30Videos(ctx context.Context) ([]int64, error) {
 	// 使用 ZREVRANGE 命令获取榜单中分数最高的前30个视频
 	cmd := RedisClient.ZRevRangeWithScores(ctx, "popular_videos", 0, 29)

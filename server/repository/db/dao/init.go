@@ -15,7 +15,7 @@ import (
 var db *gorm.DB
 
 func Init() error {
-	conn := strings.Join([]string{config.DbUser, ":", config.DbPassword, "@tcp(", config.DbHost, ":", config.DbPort, ")/", config.DbName, "?charset=utf8mb4&parseTime=true"}, "")
+	conn := strings.Join([]string{config.DbUser, ":", config.DbPassword, "@tcp(", config.DbHost, ":", config.DbPort, ")/", config.DbName, "?charset=utf8mb4&parseTime=true&loc=Local"}, "")
 
 	var ormLogger logger.Interface
 

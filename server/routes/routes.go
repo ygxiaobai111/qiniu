@@ -33,6 +33,7 @@ func NewRouter() *gin.Engine {
 			uG.POST("register", api.UserRegister)
 			//登录
 			uG.POST("login", api.UserLogin)
+			uG.Use(middleware.JWT())
 			//关注/取关
 			uG.POST("action", api.UserAction)
 			//关注列表
@@ -57,7 +58,9 @@ func NewRouter() *gin.Engine {
 			vG.GET("publish/list", api.VideoGetPublish)
 			//用户投稿
 			vG.POST("publish/action", api.VideoCreate)
+			//用户视频更新
 			vG.PUT("publish/action", api.VideoUpdatePublish)
+			//用户视频删除
 			vG.DELETE("publish/action", api.VideoDelPublish)
 			//历史视频
 			vG.GET("before", api.VideoBefore)

@@ -156,7 +156,7 @@ func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch, uid 
 		dao := dao2.NewVideoDao(ctx)
 		var vIds []int64
 		var videos []*model.Video
-		vIds, err = es.VideoTitleRetrieve(0, 0, req.Text)
+		vIds, err = es.VideoTitleRetrieve(req.PageNum, req.PageSize, req.Text)
 		if err != nil {
 			return
 		}
@@ -197,7 +197,7 @@ func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch, uid 
 }
 func (s *VideoSrv) VideoChannel(ctx context.Context, req *types.VideoChannel, uId uint) (resp interface{}, err error) {
 	dao := dao2.NewVideoDao(ctx)
-	vIds, err := es.VideoTagRetrieve(0, 0, int64(req.ChannelId), false)
+	vIds, err := es.VideoTagRetrieve(req.PageNum, req.PageSize, int64(req.ChannelId), false)
 	if err != nil {
 		return
 	}

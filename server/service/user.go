@@ -66,7 +66,7 @@ func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) 
 		util.LogrusObj.Error(err)
 		return
 	}
-	es.UserCreate(int64(user.ID), user.UserName)
+	es.UserCreate(user.ID, user.UserName)
 	return
 }
 func (s *UserSrv) UserLogin(ctx context.Context, req *types.UserLoginReq) (resp interface{}, err error) {
@@ -103,7 +103,7 @@ func (s *UserSrv) UserLogin(ctx context.Context, req *types.UserLoginReq) (resp 
 		return nil, errors.New(e2.GetMsg(e2.ERROR))
 	}
 	userResp := &types.UserInfoResp{
-		ID:            int64(user.ID),
+		ID:            user.ID,
 		Name:          user.UserName,
 		Avatar:        user.Avatar,
 		FollowCount:   user.FollowCount,
@@ -126,13 +126,13 @@ func (s *UserSrv) UserInfo(ctx context.Context, req *types.UserInfoShowReq, uid 
 	resp = user
 	return
 }
-func (s *UserSrv) UserAction(ctx context.Context, req *types.UserFollowingReq, userId int64) (resp interface{}, err error) {
+func (s *UserSrv) UserAction(ctx context.Context, req *types.UserFollowingReq, userId uint) (resp interface{}, err error) {
 	dao := dao.NewUserDao(ctx)
 	switch req.Type {
 	case 1:
-		err = dao.Follow(userId, int64(req.Id))
+		err = dao.Follow(userId, req.Id)
 	case 2:
-		err = dao.Unfollow(userId, int64(req.Id))
+		err = dao.Unfollow(userId, req.Id)
 	default:
 		err = errors.New(e2.GetMsg(e2.InvalidParams))
 	}
@@ -141,7 +141,7 @@ func (s *UserSrv) UserAction(ctx context.Context, req *types.UserFollowingReq, u
 func (s *UserSrv) UserFollow(ctx context.Context, req *types.UserFollowReq, uid uint) (resp interface{}, err error) {
 	udao := dao.NewUserDao(ctx)
 
-	users, err := udao.GetFollowList(int64(req.UserId))
+	users, err := udao.GetFollowList(req.UserId)
 	if err != nil {
 		return
 	}
@@ -168,7 +168,7 @@ func (s *UserSrv) UserFollower(ctx context.Context, req *types.UserFollowerReq, 
 }
 func (s *UserSrv) UserFriend(ctx context.Context, req *types.UserFriendReq, uid uint) (resp interface{}, err error) {
 	udao := dao.NewUserDao(ctx)
-	users, err := udao.GetFriendList(int64(req.UserId))
+	users, err := udao.GetFriendList(req.UserId)
 	if err != nil {
 		return
 	}
@@ -186,7 +186,7 @@ func BuildUser(ctx context.Context, data *model.User, myUId uint) (user *types.U
 	fdao := dao.NewFavDao(ctx)
 	udao := dao.NewUserDao(ctx)
 	workcount, _ := vdao.GetVideoCountByUId(data.ID)
-	favcount, _ := fdao.GetFavoriteCount(ctx, int64(data.ID))
+	favcount, _ := fdao.GetFavoriteCount(ctx, data.ID)
 	isFollow, _ := udao.IsFollow(myUId, data.ID)
 	user = &types.UserInfoResp{
 		Avatar:          data.Avatar,
@@ -194,7 +194,7 @@ func BuildUser(ctx context.Context, data *model.User, myUId uint) (user *types.U
 		FavoriteCount:   favcount,
 		FollowCount:     data.FollowCount,
 		FollowerCount:   data.FanCount,
-		ID:              int64(data.ID),
+		ID:              data.ID,
 		IsFollow:        isFollow,
 		Name:            data.UserName,
 		WorkCount:       workcount,

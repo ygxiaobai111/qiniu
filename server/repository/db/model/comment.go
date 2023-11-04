@@ -6,9 +6,9 @@ import "gorm.io/gorm"
 type Comment struct {
 	gorm.Model
 	//视频id
-	VideoID int64 `json:"video_id"`
+	VideoID uint `json:"video_id"`
 	//用户id
-	UserId int64 `json:"user_id"`
+	UserId uint `json:"user_id"`
 	// 评论内容
 	Content string `json:"content"`
 }

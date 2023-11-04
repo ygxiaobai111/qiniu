@@ -47,7 +47,7 @@ func AddWatermark(videoBytes []byte, watermarkText string) ([]byte, error) {
 
 	return buf.Bytes(), nil
 }
-func AddVideo(authorId int, title string, data []byte) (string, error) {
+func AddVideo(authorId uint, title string, data []byte) (string, error) {
 
 	digest := md5digest(title)
 	log.Println("1", len(data))
@@ -67,7 +67,7 @@ func AddVideo(authorId int, title string, data []byte) (string, error) {
 	//coverUrl := videoUrl + "?vframe/jpg/offset/1"
 	return videoUrl, nil
 }
-func AddImage(authorId int, title string, data []byte) (string, error) {
+func AddImage(authorId uint, title string, data []byte) (string, error) {
 
 	digest := md5digest(title)
 	log.Println("1", len(data))

@@ -21,10 +21,10 @@ func (dao *DanDao) Create(dan model.Danmaku) error {
 	if err != nil {
 		return err
 	}
-	err = dao.UpdateVideoDanCount(context.Background(), int64(dan.VideoID), 1)
+	err = dao.UpdateVideoDanCount(context.Background(), dan.VideoID, 1)
 	return err
 }
-func (dao *DanDao) GetDanByVid(id int64) (dans []*model.Danmaku, err error) {
+func (dao *DanDao) GetDanByVid(id uint) (dans []*model.Danmaku, err error) {
 	// CreateUser 创建数据
 	err = dao.DB.Model(&model.Danmaku{}).Where("video_id=?", id).Find(&dans).Error
 
@@ -32,7 +32,7 @@ func (dao *DanDao) GetDanByVid(id int64) (dans []*model.Danmaku, err error) {
 }
 
 // UpdateVideoCommentCount 更新视频的评论计数
-func (dao *DanDao) UpdateVideoDanCount(ctx context.Context, videoID int64, increment int) error {
+func (dao *DanDao) UpdateVideoDanCount(ctx context.Context, videoID uint, increment int) error {
 	result := dao.WithContext(ctx).Model(model.Video{}).Where("id = ?", videoID).UpdateColumn("danmaku_count", gorm.Expr("danmaku_count + ?", increment))
 	return result.Error
 }

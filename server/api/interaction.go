@@ -265,7 +265,7 @@ func DelFavlist(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetInterSrv()
 
-	resp, err := srv.DelFavlist(ctx.Request.Context(), req, int64(util.GetUidInToken(ctx)))
+	resp, err := srv.DelFavlist(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -299,7 +299,7 @@ func CommentCreate(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetInterSrv()
 
-	resp, err := srv.CommentCreate(ctx.Request.Context(), req, int64(util.GetUidInToken(ctx)))
+	resp, err := srv.CommentCreate(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -333,7 +333,7 @@ func Favorite(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetInterSrv()
 
-	resp, err := srv.Favorite(ctx.Request.Context(), req, int64(util.GetUidInToken(ctx)))
+	resp, err := srv.Favorite(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

@@ -11,7 +11,7 @@ import (
 )
 
 // UserCreate 向索引表传入用户id和用户名字
-func UserCreate(id int64, name string) (err error) {
+func UserCreate(id uint, name string) (err error) {
 	user := models.UserModel{
 		UserId:   id,
 		NickName: name,
@@ -27,7 +27,7 @@ func UserCreate(id int64, name string) (err error) {
 }
 
 // UserRetrieve 传入页码，一页显示条数，用户名，返回用户id数组
-func UserRetrieve(page int, limit int, name string) ([]int64, error) {
+func UserRetrieve(page int, limit int, name string) ([]uint, error) {
 	if limit == 0 {
 		limit = 15
 	}
@@ -42,7 +42,7 @@ func UserRetrieve(page int, limit int, name string) ([]int64, error) {
 		log.Println("err:", err)
 		return nil, err
 	}
-	var ids []int64
+	var ids []uint
 	for _, hit := range res.Hits.Hits {
 		var source map[string]interface{}
 		err = json.Unmarshal(hit.Source, &source)
@@ -50,7 +50,7 @@ func UserRetrieve(page int, limit int, name string) ([]int64, error) {
 			return nil, err
 		}
 		if id, ok := source["user_id"].(float64); ok {
-			ids = append(ids, int64(id))
+			ids = append(ids, uint(id))
 		} else {
 			util.LogrusObj.Println("Warning: could not convert user_id to float64")
 		}
@@ -59,7 +59,7 @@ func UserRetrieve(page int, limit int, name string) ([]int64, error) {
 }
 
 // UserUpdate 输入用户id和用户修改的姓名
-func UserUpdate(id int64, nickName string) {
+func UserUpdate(id uint, nickName string) {
 	query := elastic.NewTermQuery("user_id", id)
 	script := elastic.NewScriptInline("ctx._source.nick_name = params.nick_name").Param("nick_name", nickName)
 	updateByQuery := EsClient.UpdateByQuery().Index(models.UserModel{}.UserIndex()).Query(query).Script(script)
@@ -72,7 +72,7 @@ func UserUpdate(id int64, nickName string) {
 }
 
 // UserDelete 输入用户id删除用户索引行记录
-func UserDelete(id int64) {
+func UserDelete(id uint) {
 	query := elastic.NewTermQuery("user_id", id)
 	deleteByQuery := EsClient.DeleteByQuery().Index(models.UserModel{}.UserIndex()).Query(query)
 	deleteResponse, err := deleteByQuery.Do(context.Background())

@@ -80,22 +80,22 @@ func (dao *CollectionDao) Create(collection *model.Collection) (err error) {
 
 		return
 	}
-	err = dao.UpdateUserCollectionCount(context.Background(), int64(collection.UserID), -1)
+	err = dao.UpdateUserCollectionCount(context.Background(), collection.UserID, -1)
 	return
 }
-func (dao *CollectionDao) GetCollections(userId int64) (collections []*model.Collection, err error) {
+func (dao *CollectionDao) GetCollections(userId uint) (collections []*model.Collection, err error) {
 	err = dao.Model(model.Collection{}).Where("user_id=?", userId).Find(&collections).Error
 
 	return
 }
-func (dao *CollectionDao) GetCollection(id int64) (collection *model.Collection, err error) {
+func (dao *CollectionDao) GetCollection(id uint) (collection *model.Collection, err error) {
 	err = dao.Model(model.Collection{}).Where("id=?", id).First(&collection).Error
 
 	return
 }
 
 // 删除视频收藏夹
-func (dao *CollectionDao) DelCollection(id, userId int64) (err error) {
+func (dao *CollectionDao) DelCollection(id, userId uint) (err error) {
 	err = dao.Model(model.Collection{}).Where("id=? and user_id=?", id, userId).Delete(model.Collection{}).Error
 	if err != nil {
 		return
@@ -105,7 +105,7 @@ func (dao *CollectionDao) DelCollection(id, userId int64) (err error) {
 }
 
 // UpdateVideoCommentCount 更新用户的收藏计数
-func (dao *CollectionDao) UpdateUserCollectionCount(ctx context.Context, videoID int64, increment int) error {
+func (dao *CollectionDao) UpdateUserCollectionCount(ctx context.Context, videoID uint, increment int) error {
 	result := dao.WithContext(ctx).Model(model.User{}).Where("id = ?", videoID).UpdateColumn("collection_count", gorm.Expr("collection_count + ?", increment))
 	return result.Error
 }

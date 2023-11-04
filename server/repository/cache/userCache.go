@@ -9,7 +9,7 @@ import (
 )
 
 // 维护用户画像的函数
-func UpdateUserProfile(ctx context.Context, userKey string, tagID int64, score float64) error {
+func UpdateUserProfile(ctx context.Context, userKey string, tagID uint, score float64) error {
 	// 设置用户画像中的标签分数
 	z := redis.Z{
 		Score:  score,

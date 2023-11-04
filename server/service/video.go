@@ -43,7 +43,7 @@ func FileHeaderToBytes(f *multipart.FileHeader) ([]byte, error) {
 	vF.Read(vf)
 	return vf, nil
 }
-func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, videoF *multipart.FileHeader, imageF *multipart.FileHeader, userId int64) (resp interface{}, err error) {
+func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, videoF *multipart.FileHeader, imageF *multipart.FileHeader, userId uint) (resp interface{}, err error) {
 	//封面url
 	var coverURL string
 	var iFile, vFile []byte
@@ -57,7 +57,7 @@ func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, vi
 	if err != nil {
 		return
 	}
-	videoUrl, err := oss.AddVideo(int(userId), req.Title, vFile)
+	videoUrl, err := oss.AddVideo(userId, req.Title, vFile)
 	if err != nil {
 		return
 	}
@@ -71,7 +71,7 @@ func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, vi
 		if err != nil {
 			return
 		}
-		coverURL, err = oss.AddImage(int(userId), req.Title, iFile)
+		coverURL, err = oss.AddImage(userId, req.Title, iFile)
 		if err != nil {
 			return
 		}
@@ -79,7 +79,7 @@ func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, vi
 		coverURL = videoUrl + "?vframe/jpg/offset/1"
 	}
 	video := &model.Video{
-		AuthorId:        userId,
+		AuthorId:        uint(userId),
 		CoverURL:        videoUrl,
 		CommentCount:    0,
 		FavoriteCount:   0,
@@ -90,7 +90,7 @@ func (s *VideoSrv) VideoCreate(ctx context.Context, req types.VideoCreateReq, vi
 		CategoryId:      req.CategoryId,
 	}
 	err = vdao.CreateVideo(video)
-	es.VideoCreate(userId, int64(video.ID), int64(req.CategoryId), req.Title)
+	es.VideoCreate(userId, video.ID, req.CategoryId, req.Title)
 	return
 }
 
@@ -154,7 +154,7 @@ func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch, uid 
 	switch req.Type {
 	case 1: //视频检索
 		dao := dao2.NewVideoDao(ctx)
-		var vIds []int64
+		var vIds []uint
 		var videos []*model.Video
 		vIds, err = es.VideoTitleRetrieve(0, 0, req.Text)
 		if err != nil {
@@ -172,7 +172,7 @@ func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch, uid 
 
 	case 2:
 		dao := dao2.NewUserDao(ctx)
-		var uIds []int64
+		var uIds []uint
 		var users []*model.User
 		uIds, err = es.UserRetrieve(0, 0, req.Text)
 		if err != nil {
@@ -197,7 +197,7 @@ func (s *VideoSrv) VideoSearch(ctx context.Context, req *types.VideoSearch, uid 
 }
 func (s *VideoSrv) VideoChannel(ctx context.Context, req *types.VideoChannel, uId uint) (resp interface{}, err error) {
 	dao := dao2.NewVideoDao(ctx)
-	vIds, err := es.VideoTagRetrieve(0, 0, int64(req.ChannelId), false)
+	vIds, err := es.VideoTagRetrieve(0, 0, req.ChannelId, false)
 	if err != nil {
 		return
 	}
@@ -276,7 +276,7 @@ func (s *VideoSrv) VideoBefore(ctx context.Context, req *types.VideoBefore) (res
 }
 
 // 视频流
-func (s *VideoSrv) VideoFeed(ctx context.Context, userId int64) (resp interface{}, err error) {
+func (s *VideoSrv) VideoFeed(ctx context.Context, userId uint) (resp interface{}, err error) {
 	dao := dao2.NewVideoDao(ctx)
 	var videos []*model.Video
 	//随机推荐
@@ -288,13 +288,13 @@ func (s *VideoSrv) VideoFeed(ctx context.Context, userId int64) (resp interface{
 	//用户个性化推荐
 	if userId != 0 {
 		//根据用户画像推荐，返回标签id
-		tagIds := cache.GetTopTags(ctx, cache.PersonasKey(uint(userId)))
+		tagIds := cache.GetTopTags(ctx, cache.PersonasKey(userId))
 		// 需要推荐的视频id
-		var videoIds []int64
+		var videoIds []uint
 		// 每次返回视频数 ，逐渐减少
 		var VideoNum = 5
 		for _, v := range tagIds {
-			tagVids, _ := es.VideoTagRetrieve(0, VideoNum, v, true)
+			tagVids, _ := es.VideoTagRetrieve(0, VideoNum, 123, true)
 			if len(tagVids) > 0 {
 				videoIds = append(videoIds, tagVids...)
 			}
@@ -318,7 +318,7 @@ func (s *VideoSrv) VideoFeed(ctx context.Context, userId int64) (resp interface{
 }
 
 // VideoHot 热门视频
-func (s *VideoSrv) VideoHot(ctx context.Context, userId int64) (resp interface{}, err error) {
+func (s *VideoSrv) VideoHot(ctx context.Context, userId uint) (resp interface{}, err error) {
 	dao := dao2.NewVideoDao(ctx)
 	videosId, err := cache.GetTop30Videos(ctx)
 	if err != nil {
@@ -328,7 +328,7 @@ func (s *VideoSrv) VideoHot(ctx context.Context, userId int64) (resp interface{}
 	if err != nil {
 		return
 	}
-	r := BuildVideos(ctx, videos, uint(userId))
+	r := BuildVideos(ctx, videos, userId)
 
 	resp = types.DataList{
 		Item:  r,
@@ -393,15 +393,15 @@ func BuildVideo(ctx context.Context, video *model.Video, uId uint) (data *types.
 		username = user.UserName
 	}
 	//获取视频标签
-	c, err := cdao.GetCateById(int64(video.CategoryId))
+	c, err := cdao.GetCateById(video.CategoryId)
 	if err != nil {
 		categoryName = "其他"
 	} else {
 		categoryName = c.CategoryName
 	}
-	isFav, _ := udao.IsFollow(uId, uint(video.AuthorId))
+	isFav, _ := udao.IsFollow(uId, video.AuthorId)
 	data = &types.GetFavResp{
-		VideoId:         int64(video.ID),
+		VideoId:         video.ID,
 		AuthorId:        video.AuthorId,
 		CreateTime:      video.CreatedAt.Unix(),
 		AuthorName:      username,

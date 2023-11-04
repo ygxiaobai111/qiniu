@@ -46,7 +46,7 @@ func (dao *UserDao) GetUserById(id uint) (user *model.User, err error) {
 }
 
 // GetUserByIds 根据id获取user
-func (dao *UserDao) GetUserByIds(ids []int64) (users []*model.User, err error) {
+func (dao *UserDao) GetUserByIds(ids []uint) (users []*model.User, err error) {
 	err = dao.DB.Model(&model.User{}).Where("id IN ?", ids).Find(&users).Error
 	return
 }
@@ -57,20 +57,20 @@ func (dao *UserDao) UpdateUserById(uId uint, user *model.User) (err error) {
 }
 
 // Follow 关注
-func (dao *UserDao) Follow(userId, toUserId int64) error {
+func (dao *UserDao) Follow(userId, toUserId uint) error {
 	fmt.Printf("userid：%v，toUserId：%v", userId, toUserId)
-	cache.AddFollow(context.Background(), uint(userId), uint(toUserId))
+	cache.AddFollow(context.Background(), userId, toUserId)
 	return dao.
 		Clauses(clause.Locking{Strength: "UPDATE"}).
 		Model(&model.User{Model: gorm.Model{ID: uint(userId)}}).
 		Association("Follows").
 		Append(&model.User{
-			Model: gorm.Model{ID: uint(toUserId)},
+			Model: gorm.Model{ID: toUserId},
 		})
 }
 
 // Unfollow 取消关注
-func (dao *UserDao) Unfollow(userId, toUserId int64) error {
+func (dao *UserDao) Unfollow(userId, toUserId uint) error {
 	cache.DeleteFollow(context.Background(), uint(userId), uint(toUserId))
 	return dao.DB.
 		Model(&model.User{
@@ -83,7 +83,7 @@ func (dao *UserDao) Unfollow(userId, toUserId int64) error {
 }
 
 // GetFollowList 获取关注列表
-func (dao *UserDao) GetFollowList(userId int64) ([]*model.User, error) {
+func (dao *UserDao) GetFollowList(userId uint) ([]*model.User, error) {
 	var user *model.User
 	if err := dao.
 		Where("id = ?", userId).
@@ -107,7 +107,7 @@ func (dao *UserDao) GetFollowerList(userId int64) ([]*model.User, error) {
 }
 
 // GetFriendList 获取好友列表
-func (dao *UserDao) GetFriendList(userId int64) ([]*model.User, error) {
+func (dao *UserDao) GetFriendList(userId uint) ([]*model.User, error) {
 
 	// 获取粉丝的交集
 	var friends []*model.User

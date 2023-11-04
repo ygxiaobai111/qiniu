@@ -16,7 +16,7 @@ func NewCateDao(ctx context.Context) *CateDao {
 }
 
 // 通过id获取分类
-func (dao *CateDao) GetCateById(id int64) (cate *model.Category, err error) {
+func (dao *CateDao) GetCateById(id uint) (cate *model.Category, err error) {
 	err = dao.Model(model.Video{}).Where("id=?", id).Find(cate).Error
 	return
 }

@@ -43,7 +43,7 @@ func VideoCreate(ctx *gin.Context) {
 	//读取封面
 	image, _ := ctx.FormFile("image")
 
-	resp, err := srv.VideoCreate(ctx.Request.Context(), req, video, image, int64(util.GetUidInToken(ctx)))
+	resp, err := srv.VideoCreate(ctx.Request.Context(), req, video, image, util.GetUidInToken(ctx))
 
 	if err != nil {
 		util.LogrusObj.Infoln(err)
@@ -262,7 +262,7 @@ func VideoFeed(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoFeed(ctx.Request.Context(), int64(util.GetUidInToken(ctx)))
+	resp, err := srv.VideoFeed(ctx.Request.Context(), util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -285,7 +285,7 @@ func VideoHot(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetVideoSrv()
 
-	resp, err := srv.VideoHot(ctx.Request.Context(), int64(util.GetUidInToken(ctx)))
+	resp, err := srv.VideoHot(ctx.Request.Context(), util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

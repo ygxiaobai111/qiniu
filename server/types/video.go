@@ -8,14 +8,17 @@ type VideoCreateReq struct {
 type VideoUpdateReq struct {
 	Title      string `json:"title" form:"title"`
 	CategoryId uint   `json:"category_id" form:"category_id"`
+	Page
 }
 
 type VideoSearch struct {
 	Text string `json:"text" form:"text"`
 	Type int    `json:"type" form:"type"`
+	Page
 }
 type VideoChannel struct {
 	ChannelId uint `json:"channel_id" form:"channel_id"`
+	Page
 }
 
 type VideoGetPublish struct {

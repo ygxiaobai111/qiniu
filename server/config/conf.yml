@@ -16,12 +16,9 @@ es:
   Url: http://8.130.100.107:9200
   Username: elastic
   Password: 123456
-nacos:
-  Ip: 127.0.0.1
-  Port: 8848
 
 application:
-  ServiceName: user-center
+
   Ip: localhost
   Port: 8811
 

@@ -14,7 +14,10 @@ type Response struct {
 	Msg    string      `json:"msg"`
 	Error  string      `json:"error"`
 }
-
+type Page struct {
+	PageNum  int `form:"page_num"`
+	PageSize int `form:"page_size"`
+}
 type TokenData struct {
 	User  interface{} `json:"user"`
 	Token string      `json:"token"`

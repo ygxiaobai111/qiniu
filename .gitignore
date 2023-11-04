@@ -1,4 +1,4 @@
 .idea/
 server/.idea/
 server/.exe
-server/config/conf.yml
+./server/config/conf.yml

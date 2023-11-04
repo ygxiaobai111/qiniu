@@ -61,6 +61,8 @@ func VideoCreate(ctx *gin.Context) {
 // @Produce		json
 // @Param			text	query		int64	true	"关键字"
 // @Param			type	query		int	true	"检索类型 1为视频 2为用户"
+// @Param			page_num	query		int	true	"页码"
+// @Param			page_size	query		int	true	"每页显示数量"
 // @Header			200		{string}	Token	"我的token"
 // @Success		200		{object}	types.GetFavResp
 // @Failure		400		{object}	ErrorResponse
@@ -93,6 +95,8 @@ func VideoSearch(ctx *gin.Context) {
 // @Accept			x-www-form-urlencoded
 // @Produce		json
 // @Param			channel_id	query		int64	true	"分类id"
+// @Param			page_num	query		int	true	"页码"
+// @Param			page_size	query		int	true	"每页显示数量"
 // @Header			200			{string}	Token	"我的token"
 // @Success		200			{object}	types.GetFavResp
 // @Failure		400			{object}	ErrorResponse

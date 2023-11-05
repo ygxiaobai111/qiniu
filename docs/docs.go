@@ -422,7 +422,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/types.GetFavoriteResp"
+                            "$ref": "#/definitions/types.GetFavResp"
                         }
                     },
                     "400": {
@@ -475,22 +475,22 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/action": {
+        "/interaction/personas": {
             "post": {
-                "description": "通过表单提交进行关注/取关",
+                "description": "通过表单提交用户感兴趣视频标签",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "用户关注/取关",
-                "operationId": "UserAction",
+                "summary": "用户喜好上传",
+                "operationId": "Personas",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "对方用户id",
-                        "name": "user_id",
+                        "description": "标签id",
+                        "name": "CategoryId",
                         "in": "formData",
                         "required": true
                     }
@@ -511,8 +511,120 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/login": {
+        "/user/action": {
             "post": {
+                "description": "通过表单提交进行关注/取关",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "用户关注/取关",
+                "operationId": "UserAction",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "对方用户id",
+                        "name": "user_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "1为关注，2取关",
+                        "name": "type",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/follow": {
+            "get": {
+                "description": "通过userId查询用户关注列表",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "关注列表",
+                "operationId": "UserFollow",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UserInfoResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/follower": {
+            "get": {
+                "description": "通过userId查询用户粉丝列表",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "粉丝列表",
+                "operationId": "UserFollower",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UserInfoResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/info": {
+            "get": {
                 "description": "通过对方id和我的token获取对方用户信息",
                 "consumes": [
                     "application/json"
@@ -535,7 +647,50 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.Response"
+                            "$ref": "#/definitions/types.UserInfoResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "通过表单提交进行用户登录",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "用户登录",
+                "operationId": "UserLogin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.TokenData"
                         }
                     },
                     "400": {
@@ -590,6 +745,30 @@ const docTemplate = `{
                 }
             }
         },
+        "/video/before": {
+            "get": {
+                "description": "通过表单获取该用户的历史视频",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "视频流",
+                "operationId": "VideoFeed",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.GetFavResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/video/channel": {
             "get": {
                 "description": "通过表单提交获取该分类的视频",
@@ -610,6 +789,30 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.GetFavResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/video/hot": {
+            "get": {
+                "description": "获取热门视频列表",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "热门视频",
+                "operationId": "VideoHot",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -652,7 +855,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/types.Response"
+                            "$ref": "#/definitions/api.Response"
                         }
                     },
                     "400": {
@@ -675,20 +878,6 @@ const docTemplate = `{
                 "operationId": "VideoCreate",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "用户名",
-                        "name": "username",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "密码",
-                        "name": "password",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
                         "type": "file",
                         "description": "封面",
                         "name": "image",
@@ -698,6 +887,54 @@ const docTemplate = `{
                         "type": "file",
                         "description": "视频",
                         "name": "video",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "标签id",
+                        "name": "category_id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "通过表单删除用户的视频",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "删除用户视频",
+                "operationId": "VideoDelPublish",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户id",
+                        "name": "user_id",
                         "in": "formData",
                         "required": true
                     }
@@ -772,6 +1009,13 @@ const docTemplate = `{
                         "name": "text",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "检索类型 1为视频 2为用户",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -837,15 +1081,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "color": {
-                    "description": "弹幕颜色",
                     "type": "string"
                 },
                 "content": {
-                    "description": "弹幕内容",
                     "type": "string"
                 },
                 "timestamp": {
-                    "description": "弹幕出现的时间戳",
                     "type": "integer"
                 }
             }
@@ -854,19 +1095,18 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "avatar": {
-                    "description": "用户头像",
                     "type": "string"
                 },
                 "content": {
-                    "description": "评论内容",
                     "type": "string"
                 },
-                "create_date": {
-                    "description": "评论发布日期，格式 mm-dd",
-                    "type": "string"
+                "create_time": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
                 },
                 "user_name": {
-                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -874,33 +1114,38 @@ const docTemplate = `{
         "types.GetFavResp": {
             "type": "object",
             "properties": {
-                "author_name": {
-                    "description": "视频作者",
+                "author_id": {
                     "type": "integer"
                 },
-                "category_id": {
-                    "description": "视频所属领域",
+                "author_name": {
+                    "type": "string"
+                },
+                "category": {
                     "type": "string"
                 },
                 "collection_count": {
-                    "description": "视频总收藏数",
                     "type": "integer"
                 },
                 "cover_url": {
-                    "description": "视频封面地址",
                     "type": "string"
                 },
                 "create_time": {
-                    "description": "视频创建时间",
-                    "type": "string"
-                },
-                "favorite_count": {
-                    "description": "视频的点赞总数",
                     "type": "integer"
                 },
-                "title": {
-                    "description": "视频标题",
+                "favorite_count": {
+                    "type": "integer"
+                },
+                "is_fav": {
+                    "type": "boolean"
+                },
+                "play_url": {
                     "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "video_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -908,11 +1153,10 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "collection_name": {
-                    "description": "收藏夹名",
                     "type": "string"
                 },
                 "create_time": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "favlist": {
                     "type": "array",
@@ -924,43 +1168,64 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "user_name": {
-                    "description": "收藏夹创建人",
                     "type": "string"
                 }
             }
         },
-        "types.GetFavoriteResp": {
+        "types.TokenData": {
             "type": "object",
             "properties": {
-                "author_name": {
-                    "description": "视频作者",
-                    "type": "integer"
-                },
-                "collection_count": {
-                    "description": "播放总数",
-                    "type": "integer"
-                },
-                "cover_url": {
-                    "description": "视频封面地址",
+                "token": {
                     "type": "string"
                 },
-                "title": {
-                    "description": "视频标题",
-                    "type": "string"
-                }
+                "user": {}
             }
         },
-        "types.Response": {
+        "types.UserInfoResp": {
             "type": "object",
             "properties": {
-                "data": {},
-                "error": {
+                "avatar": {
+                    "description": "用户头像",
                     "type": "string"
                 },
-                "msg": {
+                "background_image": {
+                    "description": "用户个人页顶部大图",
                     "type": "string"
                 },
-                "status": {
+                "favorite_count": {
+                    "description": "喜欢数",
+                    "type": "integer"
+                },
+                "follow_count": {
+                    "description": "关注总数",
+                    "type": "integer"
+                },
+                "follower_count": {
+                    "description": "粉丝总数",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "用户id",
+                    "type": "integer"
+                },
+                "is_follow": {
+                    "description": "true-已关注，false-未关注",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "用户名称",
+                    "type": "string"
+                },
+                "total_favorited": {
+                    "description": "获赞数量",
+                    "type": "integer"
+                },
+                "video_count": {
+                    "description": "视频数量",
+                    "type": "integer"
+                },
+                "work_count": {
+                    "description": "作品数",
                     "type": "integer"
                 }
             }
@@ -969,18 +1234,20 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "category_id": {
-                    "description": "视频所属领域",
-                    "type": "string"
+                    "type": "integer"
                 },
                 "title": {
-                    "description": "视频标题",
                     "type": "string"
                 },
                 "video_id": {
-                    "description": "视频id",
-                    "type": "string"
+                    "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
         }
     }
 }`

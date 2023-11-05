@@ -52,7 +52,7 @@ func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) 
 		PasswordDigest: req.Password,
 		FollowCount:    0,
 		FanCount:       0,
-		Avatar:         "http://www.xzkckj.cn/image/T.jpg",
+		Avatar:         model.Avatar,
 	}
 	// 加密密码
 	if err = user.SetPassword(req.Password); err != nil {
@@ -75,6 +75,7 @@ func (s *UserSrv) UserLogin(ctx context.Context, req *types.UserLoginReq) (resp 
 		// 返回时若err!=nil则写入日志
 		if err != nil {
 			util.LogrusObj.Error("<login> ", err, " [be from req]:", req)
+
 		}
 	}()
 	// 数据验证

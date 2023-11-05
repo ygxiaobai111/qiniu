@@ -19,7 +19,8 @@ type User struct {
 }
 
 const (
-	PassWordCost = 12 // 密码加密难度
+	PassWordCost = 12                                 // 密码加密难度
+	Avatar       = "http://www.xzkckj.cn/image/T.jpg" //默认用户头像
 
 )
 

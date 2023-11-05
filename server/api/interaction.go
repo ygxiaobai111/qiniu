@@ -78,7 +78,7 @@ func GetFavorite(ctx *gin.Context) {
 }
 
 // @Summary		视频评论列表
-// @Description	通过表单提交查看评论列表
+// @Description	提交查看评论列表
 // @ID				GetComment
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -142,7 +142,7 @@ func GetBarrage(ctx *gin.Context) {
 }
 
 // @Summary		创建收藏夹
-// @Description	通过表单提交创建收藏夹
+// @Description	提交创建收藏夹
 // @ID				FavlistCreate
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -176,7 +176,7 @@ func FavlistCreate(ctx *gin.Context) {
 }
 
 // @Summary		加入收藏夹
-// @Description	通过表单提交将视频加入收藏夹
+// @Description	提交将视频加入收藏夹
 // @ID				FavlistAdd
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -209,12 +209,12 @@ func FavlistAdd(ctx *gin.Context) {
 }
 
 // @Summary		视频移除收藏夹
-// @Description	通过表单提交将视频移除收藏夹
+// @Description	提交将视频移除收藏夹
 // @ID				FavlistDel
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			FavlistId	formData	string	true	"收藏夹id"
-// @Param			VideoId		formData	string	true	"视频id"
+// @Param			favlist_id	formData	string	true	"收藏夹id"
+// @Param			video_id		formData	string	true	"视频id"
 // @Header			200			{string}	Token	"我的token"
 // @Success		200			{object}	Response
 // @Failure		400			{object}	ErrorResponse
@@ -243,11 +243,11 @@ func FavlistDel(ctx *gin.Context) {
 }
 
 // @Summary		删除收藏夹
-// @Description	通过表单提交删除收藏夹
+// @Description	提交删除收藏夹
 // @ID				DelFavlist
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			FavlistId	formData	string	true	"收藏夹id"
+// @Param			favlist_id	formData	string	true	"收藏夹id"
 // @Header			200			{string}	Token	"我的token"
 // @Success		200			{object}	Response
 // @Failure		400			{object}	ErrorResponse
@@ -276,12 +276,12 @@ func DelFavlist(ctx *gin.Context) {
 }
 
 // @Summary		创建评论
-// @Description	通过表单提交创建评论
+// @Description	提交创建评论
 // @ID				CommentCreateReq
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			VideoId	formData	int		true	"视频id"
-// @Param			Content	formData	string	true	"内容"
+// @Param			video_id	formData	int		true	"视频id"
+// @Param			content	formData	string	true	"内容"
 // @Header			200		{string}	Token	"我的token"
 // @Success		200		{object}	Response
 // @Failure		400		{object}	ErrorResponse
@@ -310,12 +310,12 @@ func CommentCreate(ctx *gin.Context) {
 }
 
 // @Summary		点赞/取消赞
-// @Description	通过表单提交点赞/取消赞
+// @Description	提交点赞/取消赞
 // @ID				Favorite
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			VideoId	formData	int		true	"视频id"
-// @Param			Type	formData	int		true	"1点赞 2取消"
+// @Param			video_id	formData	int		true	"视频id"
+// @Param			type	formData	int		true	"1点赞 2取消"
 // @Header			200		{string}	Token	"我的token"
 // @Success		200		{object}	Response
 // @Failure		400		{object}	ErrorResponse
@@ -344,14 +344,14 @@ func Favorite(ctx *gin.Context) {
 }
 
 // @Summary		弹幕发送
-// @Description	通过表单提交弹幕
+// @Description	提交弹幕
 // @ID				Barrage
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			VideoID		formData	int		true	" 弹幕所属视频的ID"
-// @Param			Content		formData	string	true	"弹幕内容"
-// @Param			Color		formData	string	true	"弹幕颜色"
-// @Param			Timestamp	formData	int		true	"弹幕出现的时间戳"
+// @Param			video_id		formData	int		true	" 弹幕所属视频的ID"
+// @Param			content		formData	string	true	"弹幕内容"
+// @Param			color		formData	string	true	"弹幕颜色"
+// @Param			timestamp	formData	int		true	"弹幕出现的时间戳"
 // @Header			200			{string}	Token	"我的token"
 // @Success		200			{object}	Response
 // @Failure		400			{object}	ErrorResponse
@@ -380,11 +380,11 @@ func Barrage(ctx *gin.Context) {
 }
 
 // @Summary		用户喜好上传
-// @Description	通过表单提交用户感兴趣视频标签
+// @Description	提交用户感兴趣视频标签
 // @ID				Personas
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			CategoryId	formData	int		true	"标签id"
+// @Param			category_id	formData	int		true	"标签id"
 // @Header			200			{string}	Token	"我的token"
 // @Success		200			{object}	Response
 // @Failure		400			{object}	ErrorResponse

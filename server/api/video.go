@@ -8,8 +8,8 @@ import (
 	"www.github.com/ygxiaobai111/qiniu/server/types"
 )
 
-// @Summary		创上传视频
-// @Description	通过表单提交创建用户
+// @Summary		创建上传视频
+// @Description	提交创建用户
 // @ID				VideoCreate
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -55,7 +55,7 @@ func VideoCreate(ctx *gin.Context) {
 }
 
 // @Summary		视频搜索
-// @Description	通过表单提交进行视频搜索
+// @Description	提交进行视频搜索
 // @ID				VideoSearch
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -90,7 +90,7 @@ func VideoSearch(ctx *gin.Context) {
 }
 
 // @Summary		视频分类
-// @Description	通过表单提交获取该分类的视频
+// @Description	提交获取该分类的视频
 // @ID				VideoChannel
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -124,7 +124,7 @@ func VideoChannel(ctx *gin.Context) {
 }
 
 // @Summary		用户视频列表
-// @Description	通过表单获取该用户发布的视频
+// @Description	获取该用户发布的视频
 // @ID				VideoGetPublish
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -156,7 +156,7 @@ func VideoGetPublish(ctx *gin.Context) {
 }
 
 // @Summary		用户视频更新
-// @Description	通过表单提交用户发布的视频
+// @Description	提交用户发布的视频
 // @ID				VideoUpdatePublish
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -190,11 +190,11 @@ func VideoUpdatePublish(ctx *gin.Context) {
 }
 
 // @Summary		删除用户视频
-// @Description	通过表单删除用户的视频
+// @Description	删除用户的视频
 // @ID				VideoDelPublish
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			user_id	formData	int		true	"用户id"
+// @Param			video_id	formData	int		true	"视频id"
 // @Header			200		{string}	Token	true	"我的token"
 // @Success		200		{object}	Response
 // @Failure		400		{object}	ErrorResponse
@@ -222,7 +222,7 @@ func VideoDelPublish(ctx *gin.Context) {
 }
 
 // @Summary		用户历史视频
-// @Description	通过表单获取该用户的历史视频
+// @Description	获取该用户的历史视频
 // @ID				VideoBefore
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -254,7 +254,7 @@ func VideoBefore(ctx *gin.Context) {
 }
 
 // @Summary		视频流
-// @Description	通过表单获取该用户的历史视频
+// @Description	获取该用户的历史视频
 // @ID				VideoFeed
 // @Produce		json
 // @Header			200		{string}	Token	true	"我的token"

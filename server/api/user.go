@@ -9,11 +9,11 @@ import (
 )
 
 // @Summary		创建用户
-// @Description	通过表单提交创建用户
+// @Description	提交创建用户
 // @ID				UserRegister
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			username	formData	string	true	"用户名"
+// @Param			user_name	formData	string	true	"用户名"
 // @Param			password	formData	string	true	"密码"
 // @Success		200			{object}	Response
 // @Failure		400			{object}	ErrorResponse
@@ -42,11 +42,11 @@ func UserRegister(ctx *gin.Context) {
 }
 
 // @Summary		用户登录
-// @Description	通过表单提交进行用户登录
+// @Description	提交进行用户登录
 // @ID				UserLogin
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			username	formData	string	true	"用户名"
+// @Param			user_name	formData	string	true	"用户名"
 // @Param			password	formData	string	true	"密码"
 // @Success		200			{object}	types.TokenData
 // @Failure		400			{object}	ErrorResponse
@@ -107,7 +107,7 @@ func UserInfo(ctx *gin.Context) {
 }
 
 // @Summary		用户关注/取关
-// @Description	通过表单提交进行关注/取关
+// @Description	提交进行关注/取关
 // @ID				UserAction
 // @Accept			x-www-form-urlencoded
 // @Produce		json
@@ -207,7 +207,7 @@ func UserFollower(ctx *gin.Context) {
 // @ID				UserFriend
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			id	query		int		true	"用户ID"
+// @Param			user_id	query		int		true	"用户ID"
 // @Header			200	{string}	Token	"我的token"
 // @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse

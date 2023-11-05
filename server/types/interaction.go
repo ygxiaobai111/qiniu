@@ -2,23 +2,23 @@ package types
 
 // 收藏夹
 type GetFavlistReq struct {
-	UserId    int64 `json:"user_id" form:"user_id"`
-	FavlistId int64 `json:"favlist_id" form:"favlist_id"`
+	UserId    uint `json:"user_id" form:"user_id"`
+	FavlistId uint `json:"favlist_id" form:"favlist_id"`
 }
 
 // 用户喜欢列表
 type GetFavoriteReq struct {
-	UserId int64 `json:"user_id" form:"user_id"`
+	UserId uint `json:"user_id" form:"user_id"`
 }
 
 // 评论列表
 type GetCommentReq struct {
-	VideoId int64 `json:"video_id" form:"video_id"`
+	VideoId uint `json:"video_id" form:"video_id"`
 }
 
 // 弹幕获取
 type GetBarrageReq struct {
-	VideoId int64 `json:"video_id" form:"video_id"`
+	VideoId uint `json:"video_id" form:"video_id"`
 }
 
 // 创建收藏夹
@@ -29,31 +29,31 @@ type FavlisCreatetReq struct {
 
 // 加入收藏夹
 type FavlistAddReq struct {
-	FavlistId int64 `json:"favlist_id" form:"favlist_id"`
-	VideoId   int64 `json:"video_id" form:"video_id"`
+	FavlistId uint `json:"favlist_id" form:"favlist_id"`
+	VideoId   uint `json:"video_id" form:"video_id"`
 }
 
 // 从收藏夹中删除
 type FavlistDelReq struct {
-	FavlistId int64 `json:"favlist_id" form:"favlist_id"`
-	VideoId   int64 `json:"video_id" form:"video_id"`
+	FavlistId uint `json:"favlist_id" form:"favlist_id"`
+	VideoId   uint `json:"video_id" form:"video_id"`
 }
 
 // 删除收藏夹
 type DelFavlistReq struct {
-	FavlistId int64 `json:"favlist_id" form:"favlist_id"`
+	FavlistId uint `json:"favlist_id" form:"favlist_id"`
 }
 
 // 评论
 type CommentCreateReq struct {
-	VideoId int64  `json:"video_id" form:"video_id"`
+	VideoId uint   `json:"video_id" form:"video_id"`
 	Content string `json:"content" form:"content"` // 内容
 }
 
 // 点赞/取消点赞
 type FavoriteReq struct {
-	VideoId int64 `json:"user_id" form:"user_id"`
-	Type    int   `json:"type" form:"type"`
+	VideoId uint `json:"user_id" form:"user_id"`
+	Type    int  `json:"type" form:"type"`
 }
 
 // 弹幕发送
@@ -66,12 +66,12 @@ type BarrageReq struct {
 
 // 用户画像构建请求
 type PersonasReq struct {
-	CategoryId int64 `json:"category_id" form:"category_id"`
+	CategoryId uint `json:"category_id" form:"category_id"`
 }
 type GetFavResp struct {
-	VideoId         int64  `json:"video_id" form:"video_id"`
+	VideoId         uint   `json:"video_id" form:"video_id"`
 	CreateTime      int64  `json:"create_time" form:"create_time"`
-	AuthorId        int64  `json:"author_id" form:"author_id"`
+	AuthorId        uint   `json:"author_id" form:"author_id"`
 	AuthorName      string `json:"author_name" form:"author_name"`
 	PlayCount       int64  `json:"collection_count" form:"collection_count"`
 	CoverURL        string `json:"cover_url" form:"cover_url"`
@@ -92,7 +92,7 @@ type GetFavlistResp struct {
 }
 
 type GetCommentResp struct {
-	UserId     int64  `json:"user_id" form:"user_id"`
+	UserId     uint   `json:"user_id" form:"user_id"`
 	UserName   string `json:"user_name" form:"user_name"`
 	Avatar     string `json:"avatar" form:"avatar"`
 	Content    string `json:"content" form:"content"`

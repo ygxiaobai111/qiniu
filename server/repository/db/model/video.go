@@ -6,7 +6,7 @@ import "gorm.io/gorm"
 type Video struct {
 	gorm.Model
 	// 视频作者信息
-	AuthorId int64 `json:"author_id"`
+	AuthorId uint `json:"author_id"`
 
 	// 视频封面地址
 	CoverURL string `json:"cover_url"`

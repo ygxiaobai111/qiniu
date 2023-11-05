@@ -42,7 +42,7 @@ func CleanUpOldVideos(ctx context.Context) {
 }
 
 // GetTop30Videos 获取前三十个热门视频
-func GetTop30Videos(ctx context.Context) ([]int64, error) {
+func GetTop30Videos(ctx context.Context) ([]uint, error) {
 	// 使用 ZREVRANGE 命令获取榜单中分数最高的前30个视频
 	cmd := RedisClient.ZRevRangeWithScores(ctx, "popular_videos", 0, 29)
 	if cmd.Err() != nil {
@@ -51,14 +51,14 @@ func GetTop30Videos(ctx context.Context) ([]int64, error) {
 	}
 
 	// 解析结果，获取视频ID
-	videoIDs := make([]int64, len(cmd.Val()))
+	videoIDs := make([]uint, len(cmd.Val()))
 	for i, member := range cmd.Val() {
 		videoID, err := strconv.ParseInt(member.Member.(string), 10, 64)
 		if err != nil {
 			fmt.Printf("解析视频ID失败: %v\n", err)
 			return nil, err
 		}
-		videoIDs[i] = videoID
+		videoIDs[i] = uint(videoID)
 	}
 
 	return videoIDs, nil

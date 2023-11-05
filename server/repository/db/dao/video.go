@@ -43,7 +43,7 @@ func (dao *VideoDao) GetVideoByUId(id uint) (videos []*model.Video, err error) {
 }
 
 // GetVideoByUId 根据id列表获取videos
-func (dao *VideoDao) GetVideoByIds(ids []int64) (videos []*model.Video, err error) {
+func (dao *VideoDao) GetVideoByIds(ids []uint) (videos []*model.Video, err error) {
 	err = dao.DB.Model(&model.Video{}).Where("id IN ?", ids).Find(&videos).Error
 	return
 }

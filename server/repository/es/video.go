@@ -9,7 +9,7 @@ import (
 )
 
 // VideoCreate 向视频索引表传入用户id，视频id，标签id，视频标题
-func VideoCreate(uid int64, vid int64, tid int64, name string) {
+func VideoCreate(uid uint, vid uint, tid uint, name string) {
 	user := models.VideoModel{
 		UserId:         uid,
 		VideoId:        vid,
@@ -26,7 +26,7 @@ func VideoCreate(uid int64, vid int64, tid int64, name string) {
 }
 
 // VideoTitleRetrieve 页码，页显示条数，视频标题
-func VideoTitleRetrieve(page int, limit int, name string) ([]int64, error) {
+func VideoTitleRetrieve(page int, limit int, name string) ([]uint, error) {
 	if limit == 0 {
 		limit = 15
 	}
@@ -40,7 +40,7 @@ func VideoTitleRetrieve(page int, limit int, name string) ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
-	var ids []int64
+	var ids []uint
 	for _, hit := range res.Hits.Hits {
 		var source map[string]interface{}
 		err = json.Unmarshal(hit.Source, &source)
@@ -48,7 +48,7 @@ func VideoTitleRetrieve(page int, limit int, name string) ([]int64, error) {
 			return nil, err
 		}
 		if id, ok := source["video_id"].(float64); ok {
-			ids = append(ids, int64(id))
+			ids = append(ids, uint(id))
 		} else {
 			util.LogrusObj.Println("Warning: could not convert video_id to float64")
 		}
@@ -57,7 +57,7 @@ func VideoTitleRetrieve(page int, limit int, name string) ([]int64, error) {
 }
 
 // VideoTagRetrieve 页码，页显示条数，视频标签，是否随机
-func VideoTagRetrieve(page int, limit int, Tag int64, shuffle bool) ([]int64, error) {
+func VideoTagRetrieve(page int, limit int, Tag uint, shuffle bool) ([]uint, error) {
 	from := limit * (page - 1)
 	query := elastic.NewMatchQuery(`tag_id`, Tag)
 	util.LogrusObj.Printf("Retrieving video tags: page=%d, limit=%d, tag=%d, shuffle=%v\n", page, limit, Tag, shuffle)
@@ -65,7 +65,7 @@ func VideoTagRetrieve(page int, limit int, Tag int64, shuffle bool) ([]int64, er
 	if err != nil {
 		return nil, err
 	}
-	var ids []int64
+	var ids []uint
 	for _, hit := range res.Hits.Hits {
 		var source map[string]interface{}
 		err = json.Unmarshal(hit.Source, &source)
@@ -73,7 +73,7 @@ func VideoTagRetrieve(page int, limit int, Tag int64, shuffle bool) ([]int64, er
 			return nil, err
 		}
 		if id, ok := source["video_id"].(float64); ok {
-			ids = append(ids, int64(id))
+			ids = append(ids, uint(id))
 		}
 	}
 

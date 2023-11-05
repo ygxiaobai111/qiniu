@@ -30,7 +30,7 @@ func (s *InterSrv) GetFavlist(ctx context.Context, req *types.GetFavlistReq, uId
 
 	cdao := dao2.NewCollectionDao(ctx)
 	udao := dao2.NewUserDao(ctx)
-	user, err := udao.GetUserById(uint(req.UserId))
+	user, err := udao.GetUserById(req.UserId)
 	if err != nil {
 		return nil, errors.New(e.GetMsg(e.ERROR))
 	}
@@ -197,14 +197,14 @@ func (s *InterSrv) FavlistDel(ctx context.Context, req *types.FavlistDelReq, uId
 	return
 
 }
-func (s *InterSrv) DelFavlist(ctx context.Context, req *types.DelFavlistReq, userId int64) (resp interface{}, err error) {
+func (s *InterSrv) DelFavlist(ctx context.Context, req *types.DelFavlistReq, userId uint) (resp interface{}, err error) {
 	cdao := dao2.NewCollectionDao(ctx)
 
 	err = cdao.DelCollection(req.FavlistId, userId)
 	return
 
 }
-func (s *InterSrv) CommentCreate(ctx context.Context, req *types.CommentCreateReq, userId int64) (resp interface{}, err error) {
+func (s *InterSrv) CommentCreate(ctx context.Context, req *types.CommentCreateReq, userId uint) (resp interface{}, err error) {
 	dao := dao2.NewCommentDao(ctx)
 	comment := model.Comment{
 		VideoID: req.VideoId,
@@ -221,7 +221,7 @@ func (s *InterSrv) CommentCreate(ctx context.Context, req *types.CommentCreateRe
 	return
 
 }
-func (s *InterSrv) Favorite(ctx context.Context, req *types.FavoriteReq, userId int64) (resp interface{}, err error) {
+func (s *InterSrv) Favorite(ctx context.Context, req *types.FavoriteReq, userId uint) (resp interface{}, err error) {
 	dao := dao2.NewFavDao(ctx)
 	switch req.Type {
 	case 1:

@@ -1,9 +1,9 @@
 package models
 
 type VideoModel struct {
-	UserId         int64  `json:"user_id"`
-	VideoId        int64  `json:"video_id"`
-	TagId          int64  `json:"tag_id"`
+	UserId         uint   `json:"user_id"`
+	VideoId        uint   `json:"video_id"`
+	TagId          uint   `json:"tag_id"`
 	NickVideoTitle string `json:"nick_video_title"`
 }
 

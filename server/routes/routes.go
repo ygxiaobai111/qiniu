@@ -54,6 +54,7 @@ func NewRouter() *gin.Engine {
 			vG.GET("hot", api.VideoHot)
 			//视频流
 			vG.GET("feed", api.VideoFeed)
+			vG.Use(middleware.JWT())
 			//用户视频列表
 			vG.GET("publish/list", api.VideoGetPublish)
 			//用户投稿
@@ -80,7 +81,7 @@ func NewRouter() *gin.Engine {
 			//弹幕获取
 			iG.GET("barrage", api.GetBarrage)
 
-			iG.Use()
+			iG.Use(middleware.JWT())
 			//创建收藏夹
 			iG.POST("favlist", api.FavlistCreate)
 			//加入收藏夹

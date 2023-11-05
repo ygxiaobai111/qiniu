@@ -8,8 +8,8 @@ mysql:
 
 redis:
   RedisDb: redis
-  RedisAddr: 192.168.88.130:6379
-  RedisPw: rh2004..
+  RedisAddr: 123.57.149.229:6379
+  RedisPw: ruanhang
   RedisDbName: 0
 
 es:

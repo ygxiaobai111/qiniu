@@ -7,6 +7,7 @@ import (
 	"www.github.com/ygxiaobai111/qiniu/server/pkg/util"
 )
 
+// 身份认证
 func JWT() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var code int

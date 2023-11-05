@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"sync"
 	e2 "www.github.com/ygxiaobai111/qiniu/server/pkg/e"
@@ -139,6 +140,7 @@ func (s *UserSrv) UserInfo(ctx context.Context, req *types.UserInfoShowReq, uid 
 	return
 }
 func (s *UserSrv) UserAction(ctx context.Context, req *types.UserFollowingReq, userId int64) (resp interface{}, err error) {
+	fmt.Println(userId)
 	dao := dao.NewUserDao(ctx)
 	switch req.Type {
 	case 1:

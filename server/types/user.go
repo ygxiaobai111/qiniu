@@ -48,7 +48,7 @@ type UserFriendReq struct {
 }
 
 type UserFollowingReq struct {
-	Type int
+	Type int  `json:"type" form:"type"`
 	Id   uint `json:"id" form:"id"`
 }
 

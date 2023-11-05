@@ -11,12 +11,12 @@ import (
 // ShowAccount godoc
 //
 //	@Summary		查看收藏夹
-//	@Description	通过表单提交方式查看收藏夹
+//	@Description	查看收藏夹
 //	@Tags			交互
 //	@Accept			json
 //	@Produce		json
-//	@Param			uid	query		int	true	"用户id"
-//	@Param			id	query		int	false	"收藏夹id"
+//	@Param			user_id	query		int	true	"用户id"
+//	@Param			favlist_id	query		int	false	"收藏夹id"
 //	@Success		200	{object}	types.GetFavlistResp
 //	@Failure		400	{object}	ErrorResponse
 //	@Failure		404	{object}	ErrorResponse
@@ -46,11 +46,11 @@ func GetFavlist(ctx *gin.Context) {
 }
 
 // @Summary		喜欢列表
-// @Description	通过表单提交方式查看喜欢列表
+// @Description	查看喜欢列表
 // @ID				GetFavorite
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			UserId	query		int	true	"用户id"
+// @Param			user_id	query		int	true	"用户id"
 // @Success		200		{object}	types.GetFavResp
 // @Failure		400		{object}	ErrorResponse
 // @Router			/interaction/favorite [get]
@@ -82,7 +82,7 @@ func GetFavorite(ctx *gin.Context) {
 // @ID				GetComment
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			VideoId	query		int	true	"视频id"
+// @Param			video_id	query		int	true	"视频id"
 // @Success		200		{object}	types.GetCommentResp
 // @Failure		400		{object}	ErrorResponse
 // @Router			/interaction/comment [get]
@@ -110,11 +110,11 @@ func GetComment(ctx *gin.Context) {
 }
 
 // @Summary		弹幕获取
-// @Description	通过表单提交获取弹幕
+// @Description	获取弹幕
 // @ID				GetBarrage
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			VideoId	query		int	true	"视频id"
+// @Param			video_id	query		int	true	"视频id"
 // @Success		200		{object}	types.GetBarrageResp
 // @Failure		400		{object}	ErrorResponse
 // @Router			/interaction/barrage [get]
@@ -146,8 +146,8 @@ func GetBarrage(ctx *gin.Context) {
 // @ID				FavlistCreate
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			FavlistName	formData	string	true	"收藏夹名称"
-// @Param			Type		formData	int		true	"收藏夹类型，1为公开 2为隐藏"
+// @Param			favlist_name	formData	string	true	"收藏夹名称"
+// @Param			type		formData	int		true	"收藏夹类型，1为公开 2为隐藏"
 // @Header			200			{string}	Token	"我的token"
 // @Success		200			{object}	Response
 // @Failure		400			{object}	ErrorResponse

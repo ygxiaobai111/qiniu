@@ -78,7 +78,7 @@ func UserLogin(ctx *gin.Context) {
 // @ID				UserInfo
 // @Accept			json
 // @Produce		json
-// @Param			id	query		int		true	"对方用户ID"
+// @Param			user_id	query		int		true	"对方用户ID"
 // @Header			200	{string}	Token	"我的token"
 // @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse
@@ -96,7 +96,7 @@ func UserInfo(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserInfo(ctx.Request.Context(), req, 10001)
+	resp, err := srv.UserInfo(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))
@@ -111,7 +111,7 @@ func UserInfo(ctx *gin.Context) {
 // @ID				UserAction
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			user_id	formData	int64	true	"对方用户id"
+// @Param			id	formData	int64	true	"对方用户id"
 // @Param			type	formData	int64	true	"1为关注，2取关"
 // @Header			200		{string}	Token	true	"我的token"
 // @Success		200		{object}	Response
@@ -143,11 +143,11 @@ func UserAction(ctx *gin.Context) {
 // @Description	通过userId查询用户关注列表
 // @ID				UserFollow
 // @Produce		json
-// @Param			id	query		int		true	"用户ID"
+// @Param			user_id	query		int		true	"用户ID"
 // @Header			200	{string}	Token	"我的token"
 // @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse
-// @Router			/user/follow [get]
+// @Router			/user/follow/list [get]
 func UserFollow(ctx *gin.Context) {
 	var req *types.UserFollowReq
 	//ctx.ShouldBind(&req) 获取前端输入的表单信息
@@ -175,7 +175,7 @@ func UserFollow(ctx *gin.Context) {
 // @ID				UserFollower
 // @Accept			x-www-form-urlencoded
 // @Produce		json
-// @Param			id	query		int		true	"用户ID"
+// @Param			user_id	query		int		true	"用户ID"
 // @Header			200	{string}	Token	"我的token"
 // @Success		200	{object}	types.UserInfoResp
 // @Failure		400	{object}	ErrorResponse

@@ -51,7 +51,7 @@ func GetUidInToken(ctx *gin.Context) uint {
 	if err != nil {
 		return 0
 	}
-	if claims != nil {
+	if claims == nil {
 		return 0
 	}
 	return claims.ID

@@ -17,35 +17,7 @@ func md5digest(str string) string {
 	return md5str
 }
 
-<<<<<<< HEAD
-func AddWatermark(videoBytes []byte, watermarkText string) ([]byte, error) {
-	img, _, err := image.Decode(bytes.NewReader(videoBytes))
-	if err != nil {
-		return nil, err
-	}
-
-	watermarkedImg := imaging.Clone(img)
-
-	drawer := &font.Drawer{
-		Dst:  watermarkedImg,
-		Src:  image.White,
-		Face: basicfont.Face7x13,
-		Dot:  fixed.Point26_6{},
-	}
-	drawer.DrawString(watermarkText)
-
-	buf := new(bytes.Buffer)
-	err = png.Encode(buf, watermarkedImg)
-	if err != nil {
-		return nil, err
-	}
-
-	return buf.Bytes(), nil
-}
 func AddVideo(authorId uint, title string, data []byte) (string, error) {
-=======
-func AddVideo(authorId int, title string, data []byte) (string, error) {
->>>>>>> c29129335107c819911416d59d6b4f0f9a9fcff0
 
 	digest := md5digest(title)
 	log.Println("1", len(data))

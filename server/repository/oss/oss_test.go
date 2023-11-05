@@ -19,7 +19,7 @@ func TestMain(m *testing.M) {
 
 		fileF.Read(f)
 		log.Println("f:", len(f))
-		vname, _ := Add(100001, "testTitle", f)
+		vname, _ := AddVideo(100001, "testTitle", f)
 		fmt.Println("name:", vname)
 	})
 	r.Run(":8080")

@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"sync"
 	e2 "www.github.com/ygxiaobai111/qiniu/server/pkg/e"
@@ -67,22 +66,9 @@ func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) 
 		util.LogrusObj.Error(err)
 		return
 	}
-<<<<<<< HEAD
+
 	es.UserCreate(user.ID, user.UserName)
-=======
 
-	//生成收藏夹
-	cdao := dao.NewCollectionDao(ctx)
-	c := &model.Collection{
-
-		Name:      "默认收藏夹",
-		IsPrivate: 1,
-		UserID:    user.ID,
-		Videos:    []*model.Video{},
-	}
-	err = cdao.Create(c)
-	es.UserCreate(int64(user.ID), user.UserName)
->>>>>>> c29129335107c819911416d59d6b4f0f9a9fcff0
 	return
 }
 func (s *UserSrv) UserLogin(ctx context.Context, req *types.UserLoginReq) (resp interface{}, err error) {
@@ -143,12 +129,9 @@ func (s *UserSrv) UserInfo(ctx context.Context, req *types.UserInfoShowReq, uid 
 	resp = user
 	return
 }
-<<<<<<< HEAD
-func (s *UserSrv) UserAction(ctx context.Context, req *types.UserFollowingReq, userId int64) (resp interface{}, err error) {
-	fmt.Println(userId)
-=======
+
 func (s *UserSrv) UserAction(ctx context.Context, req *types.UserFollowingReq, userId uint) (resp interface{}, err error) {
->>>>>>> 8e7c18eb94d08c04a84244c20a3f41d913aadb06
+
 	dao := dao.NewUserDao(ctx)
 	switch req.Type {
 	case 1:

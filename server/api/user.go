@@ -129,7 +129,7 @@ func UserAction(ctx *gin.Context) {
 	// 获取userSrv对象
 	srv := service.GetUserSrv()
 
-	resp, err := srv.UserAction(ctx.Request.Context(), req, int64(util.GetUidInToken(ctx)))
+	resp, err := srv.UserAction(ctx.Request.Context(), req, util.GetUidInToken(ctx))
 	if err != nil {
 		util.LogrusObj.Error(err)
 		ctx.JSON(http.StatusOK, types.ErrorResponse(err))

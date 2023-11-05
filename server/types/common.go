@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	e2 "www.github.com/ygxiaobai111/qiniu/server/pkg/e"
-	"www.github.com/ygxiaobai111/qiniu/server/serializer"
 )
 
 type Response struct {
@@ -61,22 +60,22 @@ func RespSuccess(ctx *gin.Context, data interface{}, code ...int) *Response {
 }
 
 // ErrorResponse 定义返回错误格式
-func ErrorResponse(err error) serializer.Response {
+func ErrorResponse(err error) Response {
 	if err == gorm.ErrRecordNotFound {
-		return serializer.Response{
+		return Response{
 			Status: 404,
 			Msg:    "并没有你想要的数据捏",
 			Error:  err.Error(),
 		}
 	}
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
-		return serializer.Response{
+		return Response{
 			Status: 400,
 			Msg:    "JSON类型不匹配",
 			Error:  err.Error(),
 		}
 	}
-	return serializer.Response{
+	return Response{
 		Status: 400,
 		Msg:    "参数错误",
 		Error:  err.Error(),

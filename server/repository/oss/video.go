@@ -5,13 +5,7 @@ import (
 	"context"
 	"crypto/md5"
 	"fmt"
-	"github.com/disintegration/imaging"
 	"github.com/qiniu/go-sdk/v7/storage"
-	"golang.org/x/image/font"
-	"golang.org/x/image/font/basicfont"
-	"golang.org/x/image/math/fixed"
-	"image"
-	"image/png"
 	"log"
 	"time"
 )
@@ -23,30 +17,6 @@ func md5digest(str string) string {
 	return md5str
 }
 
-func AddWatermark(videoBytes []byte, watermarkText string) ([]byte, error) {
-	img, _, err := image.Decode(bytes.NewReader(videoBytes))
-	if err != nil {
-		return nil, err
-	}
-
-	watermarkedImg := imaging.Clone(img)
-
-	drawer := &font.Drawer{
-		Dst:  watermarkedImg,
-		Src:  image.White,
-		Face: basicfont.Face7x13,
-		Dot:  fixed.Point26_6{},
-	}
-	drawer.DrawString(watermarkText)
-
-	buf := new(bytes.Buffer)
-	err = png.Encode(buf, watermarkedImg)
-	if err != nil {
-		return nil, err
-	}
-
-	return buf.Bytes(), nil
-}
 func AddVideo(authorId int, title string, data []byte) (string, error) {
 
 	digest := md5digest(title)

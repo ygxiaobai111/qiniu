@@ -66,6 +66,17 @@ func (s *UserSrv) UserRegister(ctx context.Context, req *types.UserRegisterReq) 
 		util.LogrusObj.Error(err)
 		return
 	}
+
+	//生成收藏夹
+	cdao := dao.NewCollectionDao(ctx)
+	c := &model.Collection{
+
+		Name:      "默认收藏夹",
+		IsPrivate: 1,
+		UserID:    user.ID,
+		Videos:    []*model.Video{},
+	}
+	err = cdao.Create(c)
 	es.UserCreate(int64(user.ID), user.UserName)
 	return
 }

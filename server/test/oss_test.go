@@ -1,14 +1,15 @@
-package oss
+package test
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"testing"
+	"www.github.com/ygxiaobai111/qiniu/server/repository/oss"
 )
 
-func TestMain(m *testing.M) {
-	Init()
+func oss_test(m *testing.M) {
+	oss.Init()
 	r := gin.Default()
 	r.POST("/p", func(context *gin.Context) {
 		file, err := context.FormFile("data")
@@ -19,7 +20,7 @@ func TestMain(m *testing.M) {
 
 		fileF.Read(f)
 		log.Println("f:", len(f))
-		vname, _ := AddVideo(100001, "testTitle", f)
+		vname, _ := oss.AddVideo(100001, "testTitle", f)
 		fmt.Println("name:", vname)
 	})
 	r.Run(":8080")

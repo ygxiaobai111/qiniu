@@ -52,7 +52,7 @@ type CommentCreateReq struct {
 
 // 点赞/取消点赞
 type FavoriteReq struct {
-	VideoId uint `json:"user_id" form:"user_id"`
+	VideoId uint `json:"video_id" form:"video_id"`
 	Type    int  `json:"type" form:"type"`
 }
 

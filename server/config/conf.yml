@@ -3,19 +3,19 @@ mysql:
   DbHost: 123.57.149.229
   DbPort: 3306
   DbUser: root
-  DbPassword: mysecretpassword
+  DbPassword: 
   DbName: qiniu
 
 redis:
   RedisDb: redis
   RedisAddr: 123.57.149.229:6379
-  RedisPw: ruanhang
+  RedisPw: 
   RedisDbName: 0
 
 es:
   Url: http://8.130.100.107:9200
   Username: elastic
-  Password: 123456
+  Password: 
 
 application:
 
@@ -26,8 +26,8 @@ application:
 
 
 qiniu:
-  AccessKey: wccY3Xc1dpW5hGTYvvyYF4LnJZ1Rsk6-6mbbcxw_
-  SecretKey: P11e3W-EyhiFESh0XPRhQT7Oihvj6OO48mcVig1E
+  AccessKey:
+  SecretKey: 
   Bucket: dydemo-01
   Url: http://xzkckj.cn/
 

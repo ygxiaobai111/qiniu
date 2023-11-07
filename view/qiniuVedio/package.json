@@ -10,6 +10,8 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.5",
+    "axios": "^1.6.0",
     "element-plus": "^2.4.1",
     "element-ui": "^2.15.14",
     "pinia": "^2.1.7",

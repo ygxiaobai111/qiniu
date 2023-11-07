@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/redis/go-redis/v9"
 	"time"
-	"www.github.com/ygxiaobai111/qiniu/server/pkg/util"
 )
 
 // 维护用户画像的函数
@@ -65,6 +64,7 @@ func DeleteFollow(ctx context.Context, uId, followId uint) error {
 		Err()
 }
 
+/*
 // AddUser 用户信息缓存
 func AddUser(ctx context.Context, uId uint, m map[string]interface{}) error {
 	err := RedisClient.HSet(ctx, GenUserInfoCacheKey(uId), m).Err()
@@ -86,4 +86,4 @@ func HasUser(ctx context.Context, uId uint) (cacheData map[string]string, err er
 	}
 	// 判断用户是否存在，如果哈希表为空，表示不存在，如果不为空，表示存在
 	return cacheData, nil
-}
+}*/

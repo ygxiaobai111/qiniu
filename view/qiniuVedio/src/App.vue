@@ -27,7 +27,7 @@
             </div>
           </el-col>
           <el-col span="5">
-            <el-button type="primary">
+            <el-button type="primary" @click="dialogFormVisible=true">
               <el-icon class="el-icon--left"><Position /></el-icon>
               登录
             </el-button>
@@ -112,6 +112,25 @@
         </el-main>
       </el-container>
     </el-container>
+    <!--   登陆 -->
+    <el-dialog v-model="dialogFormVisible" title="Shipping address">
+      <el-form :model="form">
+        <el-form-item label="Promotion name" :label-width="formLabelWidth">
+          <el-input v-model="formData.name"  />
+        </el-form-item>
+        <el-form-item label="Promotion name" :label-width="formLabelWidth">
+          <el-input v-model="formData.pwd"  />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">
+          登陆
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script setup lang="ts">
@@ -119,11 +138,16 @@ import Logo from '../src/assets/image/logo.png'
 import {ref} from "vue";
 import {RouterView} from "vue-router";
 let state=ref('');
+let dialogFormVisible=ref(false);
+let formData=ref({
+  'name':'',
+  'pwd':''
+})
 </script>
 <style scoped>
 .common-layout{
   width: 98vw;
   height: 90vh;
-  background: #2c3e50;
+  background: #ffffff;
 }
 </style>
